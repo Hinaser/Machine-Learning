@@ -1,0 +1,9 @@
+.idea/
+!.keep
+tmp/
+node_modules/
+typings/
+*.log
+nohup.out
+.DS_Store
+
