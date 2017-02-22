@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "http-server docs/",
+    "serve-watch": "gulp watch & http-server docs/",
     "build": "gulp build",
     "clean": "gulp clean"
   },
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/Hinaser/Machine-Learning#readme",
   "devDependencies": {
+    "browser-sync": "^2.18.8",
     "browserify": "^14.1.0",
     "del": "^2.2.2",
     "globby": "^6.1.0",
@@ -32,6 +34,7 @@
     "gulp-environments": "^0.1.1",
     "gulp-if": "^2.0.2",
     "gulp-minify-css": "^1.2.4",
+    "gulp-plumber": "^1.1.0",
     "gulp-pug": "^3.2.0",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-stylus": "^2.6.0",
@@ -39,7 +42,6 @@
     "gulp-util": "^3.0.8",
     "require-dir": "^0.3.1",
     "sprintf-js": "^1.0.3",
-    "through2": "^2.0.3",
     "tsify": "^3.0.1",
     "typescript": "^2.1.6",
     "typings": "^2.1.0",

@@ -13,33 +13,26 @@ I hope both readers and the author can learn ML deeper together and share though
 This part is for preparing to develop this website.  
 Maybe only for the original author.
 
-0. Make sure you already installed Node.js.  
-   For instance you can install it by the command below if your running OS is Ubuntu 16.04.
-```
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
+1. Make sure you already installed Node.js.  
+   You can install it by the command below if your running OS is Ubuntu 16.04.
+    ```
+    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    ```
 For different OS, learn how to install Node.js in [Node.js Official website](https://nodejs.org/en/download/package-manager/)
 
-1. Clone this repository
-```
-git clone https://github.com/Hinaser/Machine-Learning
-```
-
-2. Install dev dependencies
-```
-npm install
-```
-
-3. Build
-```
-npm run build
-```
-
+2. Clone this repository
+    ```
+    git clone https://github.com/Hinaser/Machine-Learning
+    ```
+3. Install dev dependencies
+    ```
+    npm install
+    ```
 4. Run a web server
-```
-npm run serve-watch
-```
+    ```
+    npm run serve-watch
+    ```
 
 # Contributing
 
