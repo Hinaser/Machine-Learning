@@ -12,31 +12,20 @@ if(!is_env_specified()){
     environments.current(environments.make('production'));
 }
 
-var tsconfig = {
-    "compilerOptions": {
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "target": "es5",
-        "module": "commonjs"
-    },
-    "exclude": [
-        "node_modules"
-    ]
-};
-
 var defaultConfig = {
     "js": {
         "srcDir": "src/javascript",
         "destDir": "docs/js",
         "compress": true,
         "sourcemaps": false,
-        "tsconfig": tsconfig
+        "libDir": 'src/javascript/lib'
     },
     "stylesheet": {
         "srcDir": "src/stylesheet",
         "destDir": "docs/css",
         "compress": true,
-        "sourcemaps": false
+        "sourcemaps": false,
+        "libDir": 'src/stylesheet/lib'
     },
     "image": {
         "srcDir": "src/image",

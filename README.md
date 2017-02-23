@@ -31,7 +31,7 @@ For different OS, learn how to install Node.js in [Node.js Official website](htt
     ```
 4. Run a web server
     ```
-    npm run serve-watch
+    npm run serve-sync
     ```
 
 # Contributing
