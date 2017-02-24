@@ -3,11 +3,11 @@ var del = require('del');
 var config = require('../config');
 
 gulp.task('clean:css', function(){
-    return del([config['stylesheet']['destDir'] + '/**/*.css']);
+    return del([config['stylesheet']['destDir'] + '/main.css']);
 });
 
 gulp.task('clean:js', function(){
-    return del([config['js']['destDir'] + '/**/*.js']);
+    return del([config['js']['destDir'] + '/main.js']);
 });
 
 gulp.task('clean:image', function(){

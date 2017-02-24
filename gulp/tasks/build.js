@@ -15,6 +15,7 @@ var plumber = require('gulp-plumber');
 var cleanCSS = require('gulp-clean-css');
 var browserify = require('browserify');
 var tsify = require('tsify');
+var uncache = require('gulp-uncache');
 var gutil = require('gulp-util');
 
 var config = require('../config.js');
@@ -56,15 +57,19 @@ gulp.task('build:image', ['clean:image'], function(){
         .pipe(gulp.dest(config['image']['destDir']));
 });
 
-gulp.task('build:html', ['clean:html'], function(){
+gulp.task('build:html', ['build:css', 'build:js', 'build:image', 'build:lib', 'clean:html'], function(){
     return gulp.src(config['html']['srcDir'] + '/*.pug')
         .pipe(plumber())
         .pipe(pug())
+        .pipe(uncache({
+            rename: false,
+            append: 'hash',
+            srcDir: config['html']['destDir']
+        }))
         .pipe(gulp.dest(config['html']['destDir']))
 });
 
-gulp.task('build', ['build:css', 'build:js', 'build:image', 'build:html', 'build:lib'], function(){
-});
+gulp.task('build', ['build:html']);
 
 gulp.task('build:lib:js', ['clean:lib:js'], function(){
     gulp.src(config['js']['libDir'] + '/*.js')
@@ -79,7 +84,7 @@ gulp.task('build:lib:css', ['clean:lib:css'], function() {
     return gulp.src(config['stylesheet']['libDir'] + '/*.css')
         .pipe(plumber())
         .pipe(gulpif(config['stylesheet']['sourcemaps'], sourcemaps.init()))
-        .pipe(cleanCSS())
+        .pipe(gulpif(config['stylesheet']['compress'], cleanCSS()))
         .pipe(concat('lib.css'))
         .pipe(gulpif(config['stylesheet']['sourcemaps'], sourcemaps.write()))
         .pipe(gulp.dest(config['stylesheet']['destDir']))
@@ -88,7 +93,7 @@ gulp.task('build:lib:css', ['clean:lib:css'], function() {
 gulp.task('build:lib', ['build:lib:js', 'build:lib:css']);
 
 gulp.task('watch-js', ['build:js'], function(){
-    gulp.watch(config['js']['srcDir'] + '/*.js', ['build:js']);
+    gulp.watch(config['js']['srcDir'] + '/*.ts', ['build:js']);
 });
 
 gulp.task('watch-css', ['build:css'], function(){
@@ -116,7 +121,7 @@ gulp.task('serve-sync', ['build'], function(){
         browsersync.reload();
     }
 
-    gulp.watch(config['js']['srcDir'] + '/*.js', ['build:js:sync']);
+    gulp.watch(config['js']['srcDir'] + '/*.ts', ['build:js:sync']);
     gulp.watch(config['stylesheet']['srcDir'] + '/*.styl', ['build:css:sync']);
     gulp.watch(config['html']['srcDir'] + '/*.pug', ['build:html:sync']);
 });

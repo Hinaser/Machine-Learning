@@ -2,5 +2,11 @@ html
   head(lang='ja')
     include common/head.pug
   body
-    p.
-      test
+    .dpln-layout.top-header-left-nav-layout.fixed-top
+      header.dpln-layout-header
+        | title
+        i.material-icons#toggle-nav
+          | view_headline
+      nav.dpln-layout-nav
+      main.dpln-layout-main
+        | test
