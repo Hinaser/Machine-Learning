@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/Hinaser/Machine-Learning#readme",
   "devDependencies": {
+    "@types/jquery": "^2.0.40",
     "browser-sync": "^2.18.8",
+    "browserify": "^14.1.0",
     "del": "^2.2.2",
     "globby": "^6.1.0",
     "gulp": "^3.9.1",
@@ -41,8 +43,12 @@
     "gulp-stylus": "^2.6.0",
     "gulp-uglify": "^2.0.1",
     "gulp-util": "^3.0.8",
+    "jquery": "^3.1.1",
     "require-dir": "^0.3.1",
     "sprintf-js": "^1.0.3",
+    "tsify": "^3.0.1",
+    "typescript": "^2.2.1",
+    "typings": "^2.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },

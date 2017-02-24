@@ -13,6 +13,8 @@ var buffer = require('vinyl-buffer');
 var pug = require('gulp-pug');
 var plumber = require('gulp-plumber');
 var cleanCSS = require('gulp-clean-css');
+var browserify = require('browserify');
+var tsify = require('tsify');
 var gutil = require('gulp-util');
 
 var config = require('../config.js');
@@ -32,11 +34,19 @@ gulp.task('build:css', ['clean:css'], function(){
 });
 
 gulp.task('build:js', function(){
-    gulp.src(config['js']['srcDir'] + '/*.js')
-        .pipe(gulpif(config['js']['sourcemaps'], sourcemaps.init()))
-        .pipe(concat('main.js'))
+    browserify({
+        debug: config['js']['sourcemaps']
+    })
+        .add(config['js']['srcDir'] + '/main.ts')
+        .plugin(tsify, config['js']['tsconfig'])
+        .bundle()
+        .on('error', function(err){
+            console.error(err.message);
+            this.emit('end');
+        })
+        .pipe(source('main.js'))
+        .pipe(buffer())
         .pipe(gulpif(config['js']['compress'], uglify()))
-        .pipe(gulpif(config['js']['sourcemaps'], sourcemaps.write()))
         .pipe(gulp.dest(config['js']['destDir']));
 });
 
