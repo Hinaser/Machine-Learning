@@ -12,10 +12,11 @@ wide-content-min-width = nav-width + page-min-width
 
 body
   margin: 0
-  font-family: "Noto Sans Japanese";
+  min-height: auto !important
+  font-family: "Noto Sans Japanese"
 
 table
-  font-family: "Noto Sans Japanese";
+  font-family: "Noto Sans Japanese"
 
 .dpln-layout.fixed-top
   header.dpln-layout-header
@@ -54,6 +55,41 @@ table
     z-index: 999
     transition: 0.4s all ease
     background-color: #FAFAFA
+    padding: 15px
+
+    figure.collapsible
+      background: white
+      box-shadow: 2px 2px 4px rgba(0,0,0,.2)
+      margin: 0 0 0 0
+      border-top: 1px solid rgba(200,200,200,.7)
+      border-right: 1px solid rgba(200,200,200,.7)
+      border-left: 1px solid rgba(200,200,200,.7)
+      figcaption
+        font-size: 18px
+        margin-left: 0
+        padding: 12px
+        cursor: pointer
+      ul
+        transition: 0.4s all ease
+        max-height: 0
+        list-style: none
+        margin: 0
+        padding: 0
+        overflow-y: hidden
+        li
+          font-size: 14px
+          margin-left: 20px
+      ul.dpln-expand
+        max-height: 1000px
+        padding-bottom: 15px
+
+    figure.collapsible:first-child
+      border-radius: 5px 5px 0 0;
+
+    figure.collapsible:last-child
+      border-bottom: 1px solid rgba(200,200,200,.7)
+      margin-bottom: 15px
+      border-radius: 0 0 5px 5px;
 
   main.dpln-layout-main
     border: 1px solid rgba(0,0,0,0.3)
@@ -80,7 +116,6 @@ table
       width: 0
       box-shadow: 0 0 0 transparent
       border-color: transparent
-      opacity: 0
     main.dpln-layout-main
       margin-left: 0
 
@@ -89,7 +124,6 @@ table
       width: nav-width
       box-shadow: 2px 0 4px rgba(0,0,0,.2)
       border: 1px solid rgba(0,0,0,0.3)
-      opacity: 1
     main.dpln-layout-main
       margin-left: 0
 
