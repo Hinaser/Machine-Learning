@@ -23,17 +23,20 @@ table
     z-index 1000
     line-height 64px
     font-size 24px
-    padding-left 40px
+    padding-left 30px
 
     .site-title
-      display inline-block
+      display inline
+      line-height 64px
       transition all 0.4s ease
+      position absolute
+      top 0
+      margin-left 312px
+      font-size 28px
 
     i#toggle-nav
       visibility hidden
       opacity 0
-      float right
-      margin-right 40px
       font-size 48px
       line-height header-height
       transition 0.4s all ease
@@ -96,6 +99,9 @@ table
 @media (max-width wide-content-min-width)
   .dpln-layout.fixed-top
     header.dpln-layout-header
+      .site-title
+        margin-left 20px
+
       i#toggle-nav
         visibility visible
         cursor pointer
