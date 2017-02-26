@@ -12,15 +12,13 @@ export class LearnTensorFlowPlayground {
             $('.tensorflowplayground-japanese').on('click', function(event: Event){
                 event.preventDefault();
                 event.stopPropagation();
-                window.open('/raw/learntensorflowplayground/index.html', '_blank', 'toolbar=0,location=0,menubar=0');
+                window.open('raw/learntensorflowplayground/index.html', '_blank', 'toolbar=0,location=0,menubar=0');
             });
         });
     }
 
     pin(obj: JQuery, top: number, right: number, width: number){
         let pinned: boolean = false;
-
-        console.log(1);
 
         obj.on('click', function(){
             if(!pinned){
