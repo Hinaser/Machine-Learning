@@ -1,6 +1,14 @@
 html
-  head
-    link(rel='stylesheet' href='css/global.css')
-    script(src='js/global.js')
-  body.
-    Index
+  head(lang='ja')
+    include common/head.pug
+  body
+    .dpln-layout.top-header-left-nav-layout.fixed-top
+      header.dpln-layout-header
+        span.site-title
+          | 機械学習、ディープラーニング
+        i.material-icons#toggle-nav
+          | view_headline
+      nav.dpln-layout-nav
+        include common/menulist.pug
+      main.dpln-layout-main
+        include articles/learntensorflowplayground.pug

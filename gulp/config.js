@@ -17,7 +17,9 @@ var tsconfig = {
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "target": "es5",
-        "module": "commonjs"
+        "module": "commonjs",
+        "removeComments": true,
+        "typeRoots": ["./node_modules/@types"]
     },
     "exclude": [
         "node_modules"
@@ -30,13 +32,17 @@ var defaultConfig = {
         "destDir": "docs/js",
         "compress": true,
         "sourcemaps": false,
+        "libDir": 'src/javascript/lib',
+        "rawDir": 'src/javascript/raw',
         "tsconfig": tsconfig
     },
     "stylesheet": {
         "srcDir": "src/stylesheet",
         "destDir": "docs/css",
         "compress": true,
-        "sourcemaps": false
+        "sourcemaps": false,
+        "libDir": 'src/stylesheet/lib',
+        "rawDir": 'src/stylesheet/raw'
     },
     "image": {
         "srcDir": "src/image",
@@ -45,6 +51,7 @@ var defaultConfig = {
     "html": {
         "srcDir": "src/html",
         "destDir": "docs",
+        "rawDir": "src/html/raw",
         "pretty": false
     }
 };

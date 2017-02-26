@@ -1,0 +1,166 @@
+main.dpln-layout-main
+  a.in-page-anchor
+    display block
+    position relative
+    top -(header-height + 15px)
+    visibility hidden
+
+  h1
+    font-size 32px
+  h2
+    font-size 28px
+
+  table
+    td
+      padding 3px
+
+  details
+    margin-bottom 16px
+    summary
+      cursor pointer
+
+  @media(max-width: page-min-width)
+    span.social-share
+      display block
+      margin-top 20px
+
+  img
+    padding 10px
+
+  #img-backprop, #img-regularization
+    cursor pointer
+    transition all 0.4s ease
+    max-width page-min-width
+
+  #img-backprop:hover, #img-regularization:hover
+    background-color black
+    opacity 0.2
+
+  @media(max-width: page-min-width)
+    img, #img-backprop, #img-regularization
+      max-width 100%
+      margin-left auto
+      margin-right auto
+
+  details#regard-nn-as-func
+    padding-left 40px
+
+  details#regard-nn-as-func summary
+    margin-bottom 10px
+
+  details#chain-rule
+    padding-left 40px
+
+  details#chain-rule summary
+    margin-bottom 10px
+
+  table#input-features
+    border-collapse collapse
+    margin-bottom 15px
+
+  table#input-features thead tr td
+    border-bottom 1px solid gray
+
+  .material-icons
+    .md-18
+      font-size 18px
+    .md-24
+      font-size 24px
+    .md-36
+      font-size 36px
+    .md-48
+      font-size 48px
+
+  .article-metadata
+    margin-bottom 20px
+    &after
+      clear both
+      content ''
+      display table
+    #post-date
+      float left
+      height 30px
+      line-height 30px
+      span
+        margin-left 10px
+
+    #post-date i,
+    #post-date span
+      display inline-block
+      line-height 24px
+      vertical-align middle
+      font-size 24px
+
+    #author
+      float left
+      height 30px
+      line-height 30px
+      margin-left 20px
+      span
+        margin-left 10px
+
+    #author i,
+    #author span
+      display inline-block
+      line-height 24px
+      vertical-align middle
+      font-size 24px
+
+  .paragraph + .paragraph
+    margin-top 40px
+
+  .paragraph i
+    color gray
+
+  table#input-dataset-table
+    border-collapse collapse
+    margin-bottom 15px
+    tbody td
+      border-top 1px solid gray
+    thead tr td:nth-child(2)
+      border-left 1px solid gray
+    .input-classification td
+      border-top 1px solid gray
+      padding 7px
+    .dataset-graph
+      text-align center
+      border-left 1px solid gray
+      @media(max-width: page-min-width)
+        img
+          max-width unset
+    .dataset-description
+      min-width 300px
+    .input-regression td
+      padding 7px
+
+  table
+    &.activators
+      border-collapse collapse
+      table-layout fixed
+      thead
+        td
+          border-bottom 1px solid gray
+          white-space nowrap
+          width 1px
+          padding 10px !important
+          &:nth-child(2)
+            padding-left 20px
+      td
+        white-space nowrap
+        width 1px
+        padding 0 10px 0 10px !important
+        &:not(:last-child)
+          border-right 1px solid gray
+      tr
+        &:not(:last-child)
+          td
+            border-bottom 1px solid gray
+      span
+        &.mjx-chtml
+          margin-left 0 !important
+
+
+@media only print
+    .doc-header > a, .doc-header > span
+      display none
+
