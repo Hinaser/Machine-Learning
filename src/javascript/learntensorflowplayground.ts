@@ -9,7 +9,7 @@ export class LearnTensorFlowPlayground {
             this.pin(backprop_img, 80, 40, 700);
             this.pin(regularization_img, 80, 40, 400);
 
-            $('#tensorflowplayground-japanese').on('click', function(event: Event){
+            $('.tensorflowplayground-japanese').on('click', function(event: Event){
                 event.preventDefault();
                 event.stopPropagation();
                 window.open('/raw/learntensorflowplayground/index.html', '_blank', 'toolbar=0,location=0,menubar=0');
