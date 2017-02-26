@@ -40,6 +40,15 @@ function main(): any {
         btn_icon.text(next_icon);
     });
 
+    // Collapse menu when a link in the menu is clicked
+    $('figure.collapsible ul a').on('click', function(){
+        let layout = $('.dpln-layout.top-header-left-nav-layout');
+        if(layout.hasClass('dpln-expand')){
+            layout.removeClass('dpln-expand');
+            layout.addClass('dpln-collapse');
+        }
+    });
+
     // Dispatch page script
     Dispatcher.initPageScript();
 }
