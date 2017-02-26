@@ -33,6 +33,7 @@ var defaultConfig = {
         "compress": true,
         "sourcemaps": false,
         "libDir": 'src/javascript/lib',
+        "rawDir": 'src/javascript/raw',
         "tsconfig": tsconfig
     },
     "stylesheet": {
@@ -40,7 +41,8 @@ var defaultConfig = {
         "destDir": "docs/css",
         "compress": true,
         "sourcemaps": false,
-        "libDir": 'src/stylesheet/lib'
+        "libDir": 'src/stylesheet/lib',
+        "rawDir": 'src/stylesheet/raw'
     },
     "image": {
         "srcDir": "src/image",
@@ -49,6 +51,7 @@ var defaultConfig = {
     "html": {
         "srcDir": "src/html",
         "destDir": "docs",
+        "rawDir": "src/html/raw",
         "pretty": false
     }
 };

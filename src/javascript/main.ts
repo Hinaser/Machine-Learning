@@ -4,6 +4,8 @@
 import * as $ from 'jquery';
 (<any>window).$  = $; // For debug purpose, expose jquery object to global window
 
+import Dispatcher from './dispatcher';
+
 function main(): any {
     // Navigation sidebar gimmick
     $('#toggle-nav').on('click', function(){
@@ -17,11 +19,29 @@ function main(): any {
             layout.addClass('dpln-expand');
         }
     });
-    
-    $('figure.collapsible figcaption').on('click', function(){
-        let target = $(this).next();
+
+    // Collapse/Expand menu
+    $('figure.collapsible > figcaption').on('click', function(){
+        // First of all, collapse all expanding menus
+        let self = this;
+        $('figure.collapsible.dpln-expand').each(function(){
+            if($(self).parent().is(this)){
+                return;
+            }
+            $(this).removeClass('dpln-expand');
+            $(this).find('button i.material-icons').text('keyboard_arrow_down');
+        });
+
+        let target = $(this).parent();
         target.toggleClass('dpln-expand');
+
+        let btn_icon = $(this).find('button i.material-icons');
+        let next_icon = btn_icon.text() == 'keyboard_arrow_up' ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
+        btn_icon.text(next_icon);
     });
+
+    // Dispatch page script
+    Dispatcher.initPageScript();
 }
 
 $(main);

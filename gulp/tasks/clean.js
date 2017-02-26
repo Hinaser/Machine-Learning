@@ -6,8 +6,16 @@ gulp.task('clean:css', function(){
     return del([config['stylesheet']['destDir'] + '/main.css']);
 });
 
+gulp.task('clean:css:raw', function(){
+    return del([config['stylesheet']['destDir'] + '/raw/**/*']);
+});
+
 gulp.task('clean:js', function(){
     return del([config['js']['destDir'] + '/main.js']);
+});
+
+gulp.task('clean:js:raw', function(){
+    return del([config['js']['destDir'] + '/raw/**/*']);
 });
 
 gulp.task('clean:image', function(){
@@ -16,6 +24,10 @@ gulp.task('clean:image', function(){
 
 gulp.task('clean:html', function(){
     return del([config['html']['destDir'] + '/*.html']);
+});
+
+gulp.task('clean:html:raw', function(){
+    return del([config['html']['destDir'] + '/raw/**/*']);
 });
 
 gulp.task('clean:lib:js', function(){
