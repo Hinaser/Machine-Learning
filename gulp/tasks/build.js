@@ -18,6 +18,7 @@ var tsify = require('tsify');
 var uncache = require('gulp-uncache');
 var newer = require('gulp-newer');
 var imagemin = require('gulp-imagemin');
+var ignore = require('gulp-ignore');
 var gutil = require('gulp-util');
 
 var config = require('../config.js');
@@ -81,6 +82,8 @@ gulp.task('build', ['build:html']);
 gulp.task('build:lib:js', /*['clean:lib:js'],*/ function(){ // clean:lib:js cannot be used with gulp-newer
     return gulp.src(config['js']['libDir'] + '/*.js')
         .pipe(plumber())
+        // Exclude turbolinks because it cannot work with Browser-Sync
+        .pipe(gulpif(config["environment"]=="development", ignore.exclude('turbolinks.js')))
         .pipe(newer(config['js']['destDir'] + '/lib.js'))
         .pipe(gulpif(config['js']['sourcemaps'], sourcemaps.init()))
         .pipe(concat('lib.js'))
@@ -142,7 +145,7 @@ gulp.task('watch', ['watch-js', 'watch-css', 'watch-html']);
 
 gulp.task('build:html:sync', ['build:html'], function(){browsersync.reload();});
 
-gulp.task('serve-sync', ['build'], function(){
+gulp.task('serve:dev', ['build'], function(){
     browsersync.init({
         server: {
             baseDir: './docs'
