@@ -1,0 +1,18 @@
+html
+  head(lang='ja')
+    include head.pug
+  body
+    .dpln-layout.top-header-left-nav-layout.fixed-top
+      header.dpln-layout-header
+        i.material-icons#toggle-nav
+          | view_headline
+        span.site-title
+          | 機械学習、ディープラーニング
+      nav.dpln-layout-nav
+        include menulist.pug
+      main.dpln-layout-main
+        block article
+    //uncache
+    script(src='js/main.js')
+    //enduncache
+    script(src='js/raw/analytics.js')
