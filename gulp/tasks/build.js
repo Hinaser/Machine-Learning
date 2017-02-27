@@ -16,6 +16,8 @@ var cleanCSS = require('gulp-clean-css');
 var browserify = require('browserify');
 var tsify = require('tsify');
 var uncache = require('gulp-uncache');
+var newer = require('gulp-newer');
+var imagemin = require('gulp-imagemin');
 var gutil = require('gulp-util');
 
 var config = require('../config.js');
@@ -37,7 +39,7 @@ gulp.task('build:css', ['clean:css'], function(){
         .pipe(gulp.dest(config['stylesheet']['destDir']))
 });
 
-gulp.task('build:js', function(){
+gulp.task('build:js', ['clean:js'], function(){
     browserify({
         debug: config['js']['sourcemaps']
     })
@@ -54,9 +56,11 @@ gulp.task('build:js', function(){
         .pipe(gulp.dest(config['js']['destDir']));
 });
 
-gulp.task('build:image', ['clean:image'], function(){
+gulp.task('build:image', /*['clean:image'],*/ function(){ // gulp-changed cannot be used with clean
     return gulp.src([config['image']['srcDir'] + '/**/*.{tiff,jpg,png,gif}'], {base: config['image']['srcDir']})
         .pipe(plumber())
+        .pipe(newer(config['image']['destDir']))
+        .pipe(imagemin())
         .pipe(gulp.dest(config['image']['destDir']));
 });
 
@@ -74,8 +78,10 @@ gulp.task('build:html', ['build:css', 'build:js', 'build:image', 'build:lib', 'b
 
 gulp.task('build', ['build:html']);
 
-gulp.task('build:lib:js', ['clean:lib:js'], function(){
-    gulp.src(config['js']['libDir'] + '/*.js')
+gulp.task('build:lib:js', /*['clean:lib:js'],*/ function(){ // clean:lib:js cannot be used with gulp-newer
+    return gulp.src(config['js']['libDir'] + '/*.js')
+        .pipe(plumber())
+        .pipe(newer(config['js']['destDir'] + '/lib.js'))
         .pipe(gulpif(config['js']['sourcemaps'], sourcemaps.init()))
         .pipe(concat('lib.js'))
         .pipe(gulpif(config['js']['compress'], uglify()))
@@ -83,9 +89,10 @@ gulp.task('build:lib:js', ['clean:lib:js'], function(){
         .pipe(gulp.dest(config['js']['destDir']));
 });
 
-gulp.task('build:lib:css', ['clean:lib:css'], function() {
+gulp.task('build:lib:css', /*['clean:lib:css'],*/ function() { // clean:lib:css cannot be used with gulp-newer
     return gulp.src(config['stylesheet']['libDir'] + '/*.css')
         .pipe(plumber())
+        .pipe(newer(config['stylesheet']['destDir'] + '/lib.css'))
         .pipe(gulpif(config['stylesheet']['sourcemaps'], sourcemaps.init()))
         .pipe(gulpif(config['stylesheet']['compress'], cleanCSS()))
         .pipe(concat('lib.css'))
@@ -95,16 +102,18 @@ gulp.task('build:lib:css', ['clean:lib:css'], function() {
 
 gulp.task('build:lib', ['build:lib:js', 'build:lib:css']);
 
-gulp.task('build:css:raw', ['clean:css:raw'], function(){
+gulp.task('build:css:raw', /*['clean:css:raw'],*/ function(){
     return gulp.src(config['stylesheet']['rawDir'] + '/**/*.css')
         .pipe(plumber())
+        .pipe(newer(config['stylesheet']['destDir'] + '/raw'))
         .pipe(gulpif(config['stylesheet']['compress'], cleanCSS()))
         .pipe(gulp.dest(config['stylesheet']['destDir'] + '/raw'));
 });
 
-gulp.task('build:js:raw', ['clean:js:raw'], function(){
+gulp.task('build:js:raw', /*['clean:js:raw'],*/ function(){
     return gulp.src(config['js']['rawDir'] + '/**/*.js')
         .pipe(plumber())
+        .pipe(newer(config['js']['destDir'] + '/raw'))
         .pipe(gulpif(config['js']['compress'], uglify()))
         .pipe(gulp.dest(config['js']['destDir'] + '/raw'));
 });
