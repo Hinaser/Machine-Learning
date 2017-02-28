@@ -76,6 +76,13 @@ gulp.task('build:html', ['build:css', 'build:js', 'build:image', 'build:lib', 'b
         .pipe(gulp.dest(config['html']['destDir']))
 });
 
+gulp.task('build:html:only', function(){
+    return gulp.src(config['html']['srcDir'] + '/*.pug')
+        .pipe(plumber())
+        .pipe(pug())
+        .pipe(gulp.dest(config['html']['destDir']))
+});
+
 gulp.task('build', ['build:html']);
 
 gulp.task('build:lib:js', /*['clean:lib:js'],*/ function(){ // clean:lib:js cannot be used with gulp-newer
@@ -141,6 +148,7 @@ gulp.task('watch-html', ['build:html'], function(){
 gulp.task('watch', ['watch-js', 'watch-css', 'watch-html']);
 
 gulp.task('build:html:sync', ['build:html'], function(){browsersync.reload();});
+gulp.task('build:html:only:sync', ['build:html:only'], function(){browsersync.reload();});
 
 gulp.task('serve:dev', ['build'], function(){
     browsersync.init({
@@ -149,11 +157,18 @@ gulp.task('serve:dev', ['build'], function(){
         }
     });
 
-    function reload(){
-        browsersync.reload();
-    }
-
     gulp.watch(config['js']['srcDir'] + '/**/*.ts', ['build:html:sync']);
     gulp.watch(config['stylesheet']['srcDir'] + '/**/*.styl', ['build:html:sync']);
     gulp.watch(config['html']['srcDir'] + '/**/*.pug', ['build:html:sync']);
+});
+
+// Only watches/compiles .pug files
+gulp.task('serve:dev:html', ['build:html:only'], function(){
+    browsersync.init({
+        server: {
+            baseDir: './docs'
+        }
+    });
+
+    gulp.watch(config['html']['srcDir'] + '/**/*.pug', ['build:html:only:sync']);
 });
