@@ -9,8 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "http-server docs/",
-    "serve-watch": "gulp watch & http-server docs/",
-    "serve-sync": "gulp serve-sync",
+    "serve:dev": "gulp serve:dev",
     "build": "gulp build",
     "clean": "gulp clean"
   },
@@ -37,6 +36,8 @@
     "gulp-data": "^1.2.1",
     "gulp-environments": "^0.1.1",
     "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-newer": "^1.3.0",
     "gulp-plumber": "^1.1.0",
     "gulp-pug": "^3.2.0",
     "gulp-sourcemaps": "^2.4.1",

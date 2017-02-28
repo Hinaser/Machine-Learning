@@ -1,48 +1,66 @@
-figure.collapsible.dpln-expand
+figure.collapsible(data-page='learntensorflowplayground')
   figcaption
     span.menu-title
       | TensorFlow Playgroundの仕組み
     button.mdl-button.mdl-js-button.mdl-button--icon
-      i.material-icons keyboard_arrow_up
+      i.material-icons keyboard_arrow_down
+  block expand-flag-learntensorflowplayground
   ul
     li
-      a(href='#preface-part') はじめに
+      a(href='index.html#preface-part') はじめに
     li
-     a(href='#reference-part') 参考文献
+     a(href='index.html#reference-part') 参考文献
     li
-      a(href='#summary-part') Playgroundの仕組み
+      a(href='index.html#summary-part') Playgroundの仕組み
     li
-      a(href='#learningsettings-part') ニューラルネットワークについて
+      a(href='index.html#learningsettings-part') ニューラルネットワークについて
     li
-      a(href='#about-learning-in-nn-part') ニューラルネットワークの学習に関する設定
+      a(href='index.html#about-learning-in-nn-part') ニューラルネットワークの学習に関する設定
     li
-      a(href='#learningrate-part') 学習率
+      a(href='index.html#learningrate-part') 学習率
     li
-      a(href='#activator-part') 活性化関数
+      a(href='index.html#activator-part') 活性化関数
     li
-      a(href='#regularization-part') 正則化、正則化項
+      a(href='index.html#regularization-part') 正則化、正則化項
     li
-      a(href='#problemtype-part') 統計モデルの種類
+      a(href='index.html#problemtype-part') 統計モデルの種類
     li
-      a(href='#inputdata-part') データに関する設定
+      a(href='index.html#inputdata-part') データに関する設定
     li
-      a(href='#dataselection-part') どのデータセットを使うか
+      a(href='index.html#dataselection-part') どのデータセットを使うか
     li
-      a(href='#ratio-of-training-data-part') トレーニングデータの割合
+      a(href='index.html#ratio-of-training-data-part') トレーニングデータの割合
     li
-      a(href='#noise-part') ノイズ
+      a(href='index.html#noise-part') ノイズ
     li
-      a(href='#batchsize-part') バッチサイズ
+      a(href='index.html#batchsize-part') バッチサイズ
     li
-      a(href='#feature-part') 入力するデータの特徴と隠し層
+      a(href='index.html#feature-part') 入力するデータの特徴と隠し層
     li
-      a(href='#backpropagation-part') バックプロパゲーション(誤差逆伝搬法)
-figure.collapsible
+      a(href='index.html#backpropagation-part') バックプロパゲーション(誤差逆伝搬法)
+figure.collapsible(data-page='deeplearning-by-tensorflow')
+  figcaption
+    span.menu-title
+      | TensorFlowでディープラーニング
+    button.mdl-button.mdl-js-button.mdl-button--icon
+      i.material-icons keyboard_arrow_down
+  block expand-flag-deeplearning-by-tensorflow
+  ul
+    li
+      a(href='deeplearning-by-tensorflow.html') TensorFlowのインストール
+    li
+      a(href='deeplearning-by-tensorflow.html#vefiry-install') インストールの検証
+figure.collapsible(data-page='["profile", "reference", "useful-tools-and-services"]')
   figcaption
     span.menu-title
       | その他
     button.mdl-button.mdl-js-button.mdl-button--icon
       i.material-icons keyboard_arrow_down
+  block expand-flag-misc
   ul
-    li サイト情報
-    li プロフィール
+    li
+      a(href='profile.html') 著者プロフィール
+    li
+      a(href='reference.html') 参考サイト集
+    li
+      a(href='useful-tools-and-services.html') お世話になっているツール/サービス

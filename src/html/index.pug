@@ -1,18 +1,10 @@
-html
-  head(lang='ja')
-    include common/head.pug
-  body
-    .dpln-layout.top-header-left-nav-layout.fixed-top
-      header.dpln-layout-header
-        i.material-icons#toggle-nav
-          | view_headline
-        span.site-title
-          | 機械学習、ディープラーニング
-      nav.dpln-layout-nav
-        include common/menulist.pug
-      main.dpln-layout-main
-        include articles/learntensorflowplayground.pug
-    //uncache
-    script(src='js/main.js')
-    //enduncache
-    script(src='js/raw/analytics.js')
+extends common/layout.pug
+
+block title
+  title 機械学習とディープラーニング
+
+block article
+  include articles/learntensorflowplayground.pug
+
+block expand-flag-learntensorflowplayground
+  .dpln-expand

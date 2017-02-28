@@ -53,7 +53,8 @@ var defaultConfig = {
         "destDir": "docs",
         "rawDir": "src/html/raw",
         "pretty": false
-    }
+    },
+    "environment": ""
 };
 
 var clone = function(obj){
@@ -72,4 +73,7 @@ config["development"]["js"]["compress"] = false;
 config["development"]["js"]["sourcemaps"] = true;
 config["development"]["html"]["pretty"] = true;
 
-module.exports = config[environments.current().$name];
+var exports = config[environments.current().$name];
+exports["environment"] = environments.current().$name;
+
+module.exports = exports;

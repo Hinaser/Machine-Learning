@@ -41,6 +41,9 @@ table
       line-height header-height
       transition 0.4s all ease
 
+    @media only print
+      display none
+
   nav.dpln-layout-nav
   //border 1px solid rgba(0,0,0,0.3)
   //background-color #FAFAFA
@@ -55,6 +58,9 @@ table
     transition 0.4s all ease
     padding 15px
 
+    @media only print
+      display none
+
     figure.collapsible
       margin 0 0 0 0
       figcaption
@@ -64,6 +70,10 @@ table
         .menu-title
           cursor pointer
           transition 0.2s all ease
+        button
+          opacity 0
+        button.dpln-visible
+          opacity 1
         @media(min-width wide-content-min-width)
           .menu-titlehover
             background-color rgba(158,158,158,.2)
@@ -82,8 +92,7 @@ table
           lihover
             background-color rgba(158,158,158,.2)
 
-    figure.collapsible.dpln-expand
-      ul
+      .dpln-expand + ul
         max-height 1000px
         padding-bottom 15px
 
@@ -95,6 +104,102 @@ table
     margin header-height 0 0 nav-width
     padding 15px 30px
     transition 0.4s all ease
+
+    @media only print
+      margin 15px 0 15px 0
+
+    a.in-page-anchor
+      display block
+      position relative
+      top -(header-height + 15px)
+      visibility hidden
+
+    h1
+      font-size 32px
+    h2
+      font-size 28px
+
+    table
+      td
+        padding 3px
+
+    details
+      margin-bottom 16px
+      summary
+        cursor pointer
+
+    .article-metadata
+      margin-bottom 20px
+      &after
+        clear both
+        content ''
+        display table
+      #post-date
+        float left
+        height 30px
+        line-height 30px
+        span
+          margin-left 10px
+
+      #post-date i,
+      #post-date span
+        display inline-block
+        line-height 24px
+        vertical-align middle
+        font-size 24px
+
+      #author
+        float left
+        height 30px
+        line-height 30px
+        margin-left 20px
+        span
+          margin-left 10px
+
+      #author i,
+      #author span
+        display inline-block
+        line-height 24px
+        vertical-align middle
+        font-size 24px
+
+      a.header-logo-invertocat
+        line-height 30px
+        display inline-block
+        vertical-align middle
+        margin-left 20px
+
+      @media only print
+        &::after
+          clear both
+          content ''
+          display table
+        .author-external-profile, .social-share
+          display none
+
+    @media(max-width: page-min-width)
+      span.author-external-profile
+        display block
+        clear left
+        &::after
+          clear both
+          display table
+          content ''
+        a.header-logo-invertocat
+          display block
+          float left
+          margin-left 0
+        a.header-logo-invertocat + a
+          display block
+          float left
+          margin-left 20px
+      span.social-share
+        display block
+        clear left
+        margin-top 10px
+
+    img
+      padding 10px
 
 @media (max-width wide-content-min-width)
   .dpln-layout.fixed-top

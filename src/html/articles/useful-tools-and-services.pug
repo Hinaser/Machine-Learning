@@ -1,0 +1,84 @@
+include ../common/mixin
+
+article.main-article(data-page='useful-tools-and-services')
+  a#preface-part.in-page-anchor
+  h1 お世話になっているツール/サービス
+
+  table
+    //-
+      thead
+        tr
+          td
+          td Webサイト
+          td 説明
+    tbody
+      tr
+        td
+          img(src='https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png' alt='')
+        td
+          a(href='https://pages.github.com/')
+            | Github Pages
+        td
+          | このWebサイトを無料でホスティングしてくれているサイト。
+          | https://<ユーザ名>.github.io/<レポジトリ名> でGithubレポジトリ上のhtmlファイル、css/javascriptファイルを
+          | ユーザに配信してくれる。
+      tr
+        td
+          img(src='http://design.ubuntu.com/wp-content/uploads/ubuntu-logo32.png' alt='')
+        td
+          a(href='https://www.ubuntu.com/desktop')
+            | Ubuntu 16.04 LTS Desktop
+        td
+          | このWebサイトのためにTensorFlowを動作させているLinux OS。
+          | 昔はLinuxはWindowsと比較して認識できるデバイスが少なかったり、
+          | 使いやすいマルチメディア関連のソフトウェアが比較的少なかったりとなかなかLinux OSをメインとして使うモチベーションが上がらなかったが、
+          | 最近のLinux OSは特に何もせずともUSB Bluetoothアダプタを認識し、Bluetoothスピーカーと不具合無く瞬時に接続してくれたりと
+          | 数年前とは比べ物にならないほど使い勝手がよくなっている。
+      tr
+        td
+          img(src='https://unetbootin.github.io/screenshot1.jpg' alt='')
+        td
+          a(href='https://unetbootin.github.io/')
+            | UNetbootin
+        td
+          | USBやDVDディスクなしでWindowsマシンにデュアルブート用のLinuxをインストールするために必要なツール。
+          | TensorFlowを作業用Windowsマシン上の仮想マシンではなく物理マシンで動かしたかったため利用させていただいた。
+          | ただ、この作業はOSブートの仕組みにある程度理解がないとOSが起動できなくなる可能性が高い危険な作業であり、万人にはおすすめできない。
+          | 時間があればやり方を解説する予定。
+      tr
+        td
+          img(src='https://confluence.jetbrains.com/download/attachments/20237/RUBYDEV?version=2&modificationDate=1449748395000&api=v2' alt='')
+        td
+          a(href='https://www.jetbrains.com/pycharm/')
+            | RubyMine
+        td
+          | JetBrain社製の統合開発環境(IDE)。その名前からRuby専用の開発ツールに見られがちだがプラグインを導入すれば
+          | Node.jsなど様々な言語の開発に使用できる。このWebサイトの作成にこのツールを使っている。ちなみに筆者はサブスクリプション契約を購入し
+          | 年間およそ1万円の利用料を支払っているが、多少値上げしても即決で契約更新するレベルで重宝している。
+      tr
+        td
+          img(src='https://d3nmt5vlzunoa1.cloudfront.net/pycharm/files/2015/12/PyCharm_400x400_Twitter_logo_white.png' alt='')
+        td
+          a(href='https://www.jetbrains.com/pycharm/')
+            | PyCharm
+        td
+          | JetBrain社製のPythonの統合開発環境(IDE)。Pythonのコーディングはこの統合開発環境上で行っている。Ruby統合開発環境のRubyMineとは異なり、
+          | こちらは個人開発者向けは基本無料で提供されている。
+      tr
+        td
+          img(src='https://github.com/gulpjs/artwork/raw/master/gulp.png' alt='')
+        td
+          a(href='http://gulpjs.com/')
+            | Gulp
+        td
+          | いわゆるタスクランナーと呼ばれるツール。主にNode.jsのソースコードのビルドを自動化するために導入した。
+
+//-
+  tr
+    td
+      img(src='' alt='')
+    td
+      a(href='')
+        |
+    td
+      |

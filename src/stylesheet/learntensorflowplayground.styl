@@ -1,32 +1,4 @@
-main.dpln-layout-main
-  a.in-page-anchor
-    display block
-    position relative
-    top -(header-height + 15px)
-    visibility hidden
-
-  h1
-    font-size 32px
-  h2
-    font-size 28px
-
-  table
-    td
-      padding 3px
-
-  details
-    margin-bottom 16px
-    summary
-      cursor pointer
-
-  @media(max-width: page-min-width)
-    span.social-share
-      display block
-      margin-top 20px
-
-  img
-    padding 10px
-
+.main-article[data-page='learntensorflowplayground']
   #img-backprop, #img-regularization
     cursor pointer
     transition all 0.4s ease
@@ -70,41 +42,6 @@ main.dpln-layout-main
       font-size 36px
     .md-48
       font-size 48px
-
-  .article-metadata
-    margin-bottom 20px
-    &after
-      clear both
-      content ''
-      display table
-    #post-date
-      float left
-      height 30px
-      line-height 30px
-      span
-        margin-left 10px
-
-    #post-date i,
-    #post-date span
-      display inline-block
-      line-height 24px
-      vertical-align middle
-      font-size 24px
-
-    #author
-      float left
-      height 30px
-      line-height 30px
-      margin-left 20px
-      span
-        margin-left 10px
-
-    #author i,
-    #author span
-      display inline-block
-      line-height 24px
-      vertical-align middle
-      font-size 24px
 
   .paragraph + .paragraph
     margin-top 40px
@@ -158,9 +95,3 @@ main.dpln-layout-main
       span
         &.mjx-chtml
           margin-left 0 !important
-
-
-@media only print
-    .doc-header > a, .doc-header > span
-      display none
-

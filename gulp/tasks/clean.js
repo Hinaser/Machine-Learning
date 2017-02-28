@@ -40,6 +40,6 @@ gulp.task('clean:lib:css', function(){
 
 gulp.task('clean:lib', ['clean:lib:js', 'clean:lib:css']);
 
-gulp.task('clean', ['clean:css', 'clean:js', 'clean:image', 'clean:html'], function(){
+gulp.task('clean', ['clean:css', 'clean:js', 'clean:image', 'clean:html', 'clean:lib'], function(){
     return true;
 });
