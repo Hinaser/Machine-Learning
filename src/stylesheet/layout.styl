@@ -41,6 +41,9 @@ table
       line-height header-height
       transition 0.4s all ease
 
+    @media only print
+      display none
+
   nav.dpln-layout-nav
   //border 1px solid rgba(0,0,0,0.3)
   //background-color #FAFAFA
@@ -54,6 +57,9 @@ table
     z-index 999
     transition 0.4s all ease
     padding 15px
+
+    @media only print
+      display none
 
     figure.collapsible
       margin 0 0 0 0
@@ -98,6 +104,9 @@ table
     margin header-height 0 0 nav-width
     padding 15px 30px
     transition 0.4s all ease
+
+    @media only print
+      margin 15px 0 15px 0
 
     a.in-page-anchor
       display block
@@ -159,6 +168,14 @@ table
         display inline-block
         vertical-align middle
         margin-left 20px
+
+      @media only print
+        &::after
+          clear both
+          content ''
+          display table
+        .author-external-profile, .social-share
+          display none
 
     @media(max-width: page-min-width)
       span.author-external-profile
