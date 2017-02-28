@@ -76,7 +76,7 @@ gulp.task('build:html', ['build:css', 'build:js', 'build:image', 'build:lib', 'b
         .pipe(gulp.dest(config['html']['destDir']))
 });
 
-gulp.task('build:html:only', function(){
+gulp.task('build:html:only', ['build:css', 'build:image'], function(){
     return gulp.src(config['html']['srcDir'] + '/*.pug')
         .pipe(plumber())
         .pipe(pug())
