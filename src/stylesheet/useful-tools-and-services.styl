@@ -1,0 +1,30 @@
+.main-article[data-page='useful-tools-and-services']
+  > table
+    border-collapse collapse
+
+    @media(min-width: page-min-width)
+      width page-min-width
+    @media(max-width: page-min-width)
+      width 100%
+      margin-left auto
+      margin-right auto
+
+    > thead > tr > td
+        border-bottom 1px solid #DDD
+    > tbody > tr
+      > td
+        padding 7px
+      > td:first-child
+        width 64px
+        padding 0
+        vertical-align top
+        img
+          width 100%
+      > td:nth-child(2)
+        width 30%
+        vertical-align top
+      > td:nth-child(3)
+        vertical-align top
+      &:not(:first-child)
+        td
+          padding-top 15px
