@@ -171,4 +171,5 @@ gulp.task('serve:dev:html', ['build:html:only'], function(){
     });
 
     gulp.watch(config['html']['srcDir'] + '/**/*.pug', ['build:html:only:sync']);
+    gulp.watch(config['stylesheet']['srcDir'] + '/**/*.styl', ['build:html:only:sync']);
 });
