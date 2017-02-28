@@ -24,16 +24,21 @@ function main(): any {
     $('figure.collapsible > figcaption').on('click', function(){
         // First of all, collapse all expanding menus
         let self = this;
-        $('figure.collapsible.dpln-expand').each(function(){
-            if($(self).parent().is(this)){
+        $('figure.collapsible > .dpln-expand').each(function(){
+            if($(self).next('.dpln-expand').is(this)){
                 return;
             }
-            $(this).removeClass('dpln-expand');
-            $(this).find('button i.material-icons').text('keyboard_arrow_down');
+            $(this).parent().find('> figcaption button i.material-icons').text('keyboard_arrow_down');
+            $(this).remove();
         });
 
-        let target = $(this).parent();
-        target.toggleClass('dpln-expand');
+        let target = $(this).parent().find('> .dpln-expand');
+        if(target.length > 0){
+            target.remove();
+        }
+        else{
+            $(this).parent().find('> ul').before($('<div />', {'class': 'dpln-expand'}));
+        }
 
         let btn_icon = $(this).find('button i.material-icons');
         let next_icon = btn_icon.text() == 'keyboard_arrow_up' ? 'keyboard_arrow_down' : 'keyboard_arrow_up';

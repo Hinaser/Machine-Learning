@@ -16,8 +16,9 @@ export default class Dispatcher {
     }
 
     static initMenu(page_id: string): void {
-        let menu = $('#' + page_id);
-        menu.addClass('dpln-expand');
-        menu.find('figcaption button i').text('keyboard_arrow_up');
+        let arrow = $('#' + page_id).find('figcaption button i');
+        arrow.text('keyboard_arrow_up');
+        let all_arrows = $('figcaption button');
+        all_arrows.addClass('dpln-visible');
     }
 }

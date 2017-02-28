@@ -64,6 +64,10 @@ table
         .menu-title
           cursor pointer
           transition 0.2s all ease
+        button
+          opacity 0
+        button.dpln-visible
+          opacity 1
         @media(min-width wide-content-min-width)
           .menu-titlehover
             background-color rgba(158,158,158,.2)
@@ -82,8 +86,7 @@ table
           lihover
             background-color rgba(158,158,158,.2)
 
-    figure.collapsible.dpln-expand
-      ul
+      .dpln-expand + ul
         max-height 1000px
         padding-bottom 15px
 
