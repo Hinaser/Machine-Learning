@@ -2,8 +2,111 @@ include ../common/mixin
 
 article.main-article(data-page='deeplearning-by-tensorflow')
   a#preface-part.in-page-anchor
-  h1 TensorFlowのインストール
-  +article-header('----/--/--')
+  h1 TensorFlowでディープラーニング
+  +article-header('2017-03-01')
+
+  img.tensorflow-logo(src='image/deeplearning-by-tensorflow/tf_logo_transp.png', alt='')
 
   .paragraph
-    h4 作成中
+    h4 TensorFlowとは
+    p
+      a(href='https://www.tensorflow.org/#about-tensorflow')
+        | TensorFlow
+      | はGoogleの開発したオープンソースの数値計算ソフトウェアライブラリです。
+      | ”機械学習のための”、という枕詞がつかないのは、機械学習に限定されない様々な用途で利用できるためです。
+      br
+      | TensorFlowは他の多くの科学数値計算ライブラリと同様に
+      a(href='https://www.python.org/')
+        | Python
+      | 上で動作します。(Python以外の言語で利用できないわけではありません。詳細は
+      a(href='https://www.tensorflow.org/extend/language_bindings')
+        | こちら
+      | 。)
+
+    p
+      | 私も現在のところTensorFlowを勉強中なので、説明ができるレベルで理解ができ次第この項目に文章を追加していこうと思います。
+
+
+  .paragraph
+    a#install-tensorflow.in-page-anchor
+    h4 TensorFlowのインストール
+
+    p
+      | TensorFlowのインストール方法は
+      a(href='https://www.tensorflow.org/install/')
+        | オフィシャルサイト
+      | で詳しく説明されています。このサイトに改めてインストール方法を書くことはしません。
+      | 自分の環境にあったインストール方法でTensorFlowをインストールしてください。
+      | ちなみにTensorFlowは現在はWindowsにネイティブで(仮想環境を介さずに)インストールできるようになりましたが、
+      |
+      a(href='https://developers.googleblog.com/2016/11/tensorflow-0-12-adds-support-for-windows.html')
+        |2016年11月までWindowsネイティブでの動作がサポート対象外だったこともあり
+      |、 Ubuntu Linuxでの実行をおすすめします。
+      | 私はUbuntu Linux OS上でTensorFlowを実行しています。
+    p
+      | 私と同じ環境でTensorFlowを実行したい方は、私の環境を下記に記載しますので参考にしてください。
+    table.install-environment
+      tr
+        td OS
+        td Ubuntu 16.04 64bit
+        td
+          a(href='https://www.ubuntu.com/download/desktop')
+            | Ubuntu Desktop
+      tr
+        td Python
+        td 3.5.2
+        td
+          code
+            | sudo apt-get install python3
+      tr
+        td TensorFlow
+        td r1.0
+        td
+          a(href='https://github.com/tensorflow/tensorflow/tree/r1.0')
+            | https://github.com/tensorflow/tensorflow/tree/r1.0
+    p
+      | また、TensorFlowのインストール方法はソースインストールを選択しています。virtualenvやDocker経由ではありません。
+      | 理由は、ソースからのインストール以外の方法でTensorFlowをインストールすると、私の環境では下記のようなワーニングが毎回コンソールに出力されてしまうためです。
+    code.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE3 instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+    p
+      | メッセージは、SSE3やAVXなどの
+      a(href='https://ja.wikipedia.org/wiki/Streaming_SIMD_Extensions')
+        |拡張命令セット
+      | が利用できる環境であるにもかかわらず、これらの拡張命令を使用するようにTensorFlowがビルドされていないと言っているようです。
+      | virtualenvなどのパッケージインストール経由でのインストールでは毎回このワーニングがコンソールに出力されてしまいますが、
+      | 他の人はとりあえずメッセージをスルーしているのか、何らかの方法でワーニングが出力されないようにしているのか気になります。
+    p
+      | オフィシャルのTensorflowのソースインストール作業の手順の注意点を下記に記述します。
+    h5
+      | JDK 9がインストールされている場合はアンインストールする。
+    p
+      | bazelがJDK1.9に対応していないため、手順途中でエラーが発生します。下記の手順を
+      code.code
+        | ./configure
+      | コマンド実行前にJDK1.9/JRE1.9をアンインストールし、JDK1.8を有効にする必要があります。
+      br
+      | 他の人の環境でうまく行くかはわかりませんし、
+      | 利用している他のソフトウェアがJava1.9を利用している場合はそのソフトウェアが動作しなくなる可能性があります。
+      | コマンドの意味や影響がわからなければ実行しないでください。
+    pre.code
+      | sudo apt-get purge openjdk-9* java-9*
+      | sudo apt-get install openjdk-8-j*
+    h5
+      | 拡張命令セットを有効にする
+    p
+      | 拡張命令セットを有効にするには、上記手順内の
+      code.code
+        | ./configure
+      | 実行時のオプションで追加の設定をします。
+      .code
+        | Please specify optimization flags to use during compilation [Default is -march=native]:
+        span.user-input
+          | -mavx -mavx2 -mfma -mfpmath=both -msse4.2
+    p
+      | これで拡張命令セットが有効なTensorFlowのビルドイメージが出来上がります。
