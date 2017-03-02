@@ -12,7 +12,8 @@ export class LearnTensorFlowPlayground {
             $('.tensorflowplayground-japanese').on('click', function(event: Event){
                 event.preventDefault();
                 event.stopPropagation();
-                window.open('raw/learntensorflowplayground/index.html', '_blank', 'toolbar=0,location=0,menubar=0');
+
+                window.open('raw/learntensorflowplayground/index.html', '_blank', 'chrome=yes,centerscreen=yes,toolbar=0,location=0,menubar=0,height=880,width=1400');
             });
         });
     }

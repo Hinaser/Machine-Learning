@@ -8,7 +8,7 @@ export default class Dispatcher {
             Dispatcher.initMenu(page);
 
             switch(page){
-                case 'page-learntensorflowplayground':
+                case 'learntensorflowplayground':
                     new LearnTensorFlowPlayground();
                     break;
             }
