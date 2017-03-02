@@ -2,7 +2,7 @@ include ../common/mixin
 
 article.main-article(data-page='learntensorflowplayground')
   a#preface-part.in-page-anchor
-  h1#preface-part(data-paragraph='はじめに') TensorFlow Playgroundの仕組み
+  h1(data-paragraph='はじめに') TensorFlow Playgroundの仕組み
   +article-header('2017-02-14')
 
   .paragraph
@@ -26,7 +26,7 @@ article.main-article(data-page='learntensorflowplayground')
       |  までご連絡ください。
   .paragraph
     a#reference-part.in-page-anchor
-    h2#reference-part(data-paragraph='') 参考文献
+    h2(data-paragraph='') 参考文献
     hr
     p
       | はじめにこのサイトを作るにあたって参考にした資料を載せておきます。 ここで解説する内容は大なり小なりこれらのサイトの解説を自分の言葉でまとめ直したようなものです。 私の拙い文章が分かりにくいと感じたらこれらの参考文献を直接読んでいただいてかまいません。
@@ -50,7 +50,7 @@ article.main-article(data-page='learntensorflowplayground')
     p  このサイトの言い回しや例えは上記の参考文献の影響を多大に受けています。似たような言い回しがいくつか見つかると思いますがご容赦ください。
   .paragraph
     a#summary-part.in-page-anchor
-    h2#summary-part(data-paragraph='') Playgroundの仕組み概要
+    h2(data-paragraph='') Playgroundの仕組み概要
     hr
     .centering
       a.tensorflowplayground-japanese(href='http://playground.tensorflow.org/', target='_blank')
@@ -164,7 +164,7 @@ article.main-article(data-page='learntensorflowplayground')
     p  より詳しい説明に移る前に、ニューラルネットワークの概観や画面に表示されているいくつかの設定項目について説明します。
   .paragraph
     a#learningsettings-part.in-page-anchor
-    h2#learningsettings-part(data-paragraph='') ニューラルネットワークについて
+    h2(data-paragraph='') ニューラルネットワークについて
     hr
     p
       | 巷には非常にわかりやすくまとまったWebサイトが溢れているため このサイトではニューラルネットワークについてゼロから解説することはしません。 ニューラルネットワークの概要を知りたい方は参考文献の欄にも記載した
@@ -260,12 +260,12 @@ article.main-article(data-page='learntensorflowplayground')
     p  ニューラルネットワークについてより詳しく知りたい方は前述の参考文献をご確認ください。
   .paragraph
     a#about-learning-in-nn-part.in-page-anchor
-    h2#about-learning-in-nn-part(data-paragraph='') ニューラルネットワークの学習に関する設定
+    h2(data-paragraph='') ニューラルネットワークの学習に関する設定
     hr
     .centering
       img.img-learning-settings(src='image/learntensorflowplayground/learning-settings.png', alt='learning parameter')
     a#learningrate-part.in-page-anchor
-    h4#learningrate-part(data-paragraph='') 学習率
+    h4(data-paragraph='') 学習率
     p
       | 学習率は、一度の学習でどの程度重みやバイアスの値を修正するかの率を表します。 学習率が大きいと1度に修正される重み、バイアスの量が大きくなります。 小さくすると重み、バイアスの値を1度に少しだけ修正しようとします。 学習率が機械学習にどのような影響があるのか、TensorFlow Playgroundで確かめてみましょう。 初期値では学習率は0.03に設定されていますが、これを1に変えて再生(▶)ボタンをクリックしてみます。 ネットワークの重みの線の色と太さが初期値の0.03の時と比較して大きいステップで更新される様子が見られるはずです。 逆に0.0003など小さな値にして再実行してみましょう。再生(▶)ボタンの左の反時計周りの矢印ボタンで最初から再実行できます。 この場合、出力や重みの変化がほとんど見られないことが分かります。
     p
@@ -304,7 +304,7 @@ article.main-article(data-page='learntensorflowplayground')
       br
       |  ステップ幅が小さいと小刻みに$w$の値が修正されていきますが、そのため誤差$C$が0に近づくまでにたくさんの時間を要します。 ステップ幅が大きいと$C$が0に近づく勢いは強いですが、勢いがありすぎて$C = 0$を飛び越してしまうことが頻発します。 最適な学習率はどのくらいなのかは難しい質問です。 直感的には、誤差$C$が大きい時には$\eta$を大きくし、$C$が十分に小さくなったあとは$\eta$を小さな値にして微修正をして誤差0に近づける、 といった方法もありそうです。 私が調べた範囲では機械学習を始める前から「これがベストな学習率$\eta$の値だ」と決められるものではないようです。
     a#activator-part.in-page-anchor
-    h4#activator-part(data-paragraph='') 活性化関数
+    h4(data-paragraph='') 活性化関数
     .centering
       img.img-perceptron(src='image/learntensorflowplayground/perceptron.png', alt='perceptron')
     p
@@ -357,7 +357,7 @@ article.main-article(data-page='learntensorflowplayground')
       a(href='#backpropagation-part') バックプロパゲーション
       | の項に書きます。
     a#regularization-part.in-page-anchor
-    h4#regularization-part(data-paragraph='') 正則化、正則化項
+    h4(data-paragraph='') 正則化、正則化項
     p
       | 正則化を理解するためには、まず過学習(over-fitting)について知る必要があります。
       br
@@ -442,7 +442,7 @@ article.main-article(data-page='learntensorflowplayground')
     p
       | このように、正則化項を加えるとトレーニングデータのみで学習したネットワークに一定量の疑いを差し挟むことになります。 どのくらいトレーニングデータを疑うかの度合いを正則化項のパラメータ$\lambda$で指定するのです。
     a#problemtype-part.in-page-anchor
-    h4#problemtype-part(data-paragraph='') 統計モデルの種類
+    h4(data-paragraph='') 統計モデルの種類
     .centering
       img.img-problem-type(src='image/learntensorflowplayground/problem-type.png', alt='Problem type')
     p
@@ -461,12 +461,12 @@ article.main-article(data-page='learntensorflowplayground')
       | 左の&quot;分類&quot;の図は点々がブルー(+1)かオレンジ(-1)かの二通りの出力結果のデータの分布です。 対して右の&quot;回帰&quot;の図は+1の点がブルー、-1の点がオレンジであることには変わりありませんが 白味がかった-1と+1の間の中間の値のデータも含まれています。
   #datasetting-part.paragraph
     a#inputdata-part.in-page-anchor
-    h2#inputdata-part(data-paragraph='') データに関する設定
+    h2(data-paragraph='') データに関する設定
     hr
     .centering
       img.img-data-settings(src='image/learntensorflowplayground/data-settings.png', alt='data-settings')
     a#dataselection-part.in-page-anchor
-    h4#dataselection-part(data-paragraph='') どのデータセットを使うか
+    h4(data-paragraph='') どのデータセットを使うか
     p
       | TensorFlow Playgroundでは統計モデルの種類が&quot;分類&quot;で4種類、&quot;回帰&quot;で2種類学習させたい分布を選択できます。
       br
@@ -535,7 +535,7 @@ article.main-article(data-page='learntensorflowplayground')
           td.dataset-description
             | $x,y$座標上の6つの点 $\boldsymbol{\mu}_i$ について、それぞれの点の近傍で$f(x,y)$の絶対値が大きくなる。 $f(x,y)$の符号は$(x,y)$から最も近い$\boldsymbol{\mu_i}$がどれかによって決まる。 これら6つの点のどの点からも離れている座標$(x,y)$では$f(x,y)$の絶対値が小さくなる。 また $D(\boldsymbol{x})$の上限は$2$とし、$D &gt; 2$となる$D$については$D=2$と置き換える。
     a#ratio-of-training-data-part.in-page-anchor
-    h4#ratio-of-training-data(data-paragraph='') トレーニングデータの割合
+    h4(data-paragraph='') トレーニングデータの割合
     p
       | TensorFlow Playgroundで学習に用いるデータのサンプル数は&quot;分類&quot;で500個、&quot;回帰&quot;で1200個です。
       br
@@ -554,13 +554,13 @@ article.main-article(data-page='learntensorflowplayground')
       |  TensorFlow Playgroundでは上図のように数百個のデータサンプルのうち何割をトレーニングデータに回し何割をテストデータに回すか設定できます。 例えばトレーニングデータの割合を60%とすると、上記の例では500個のデータサンプルの内300個をトレーニングデータに、 200個のデータをテストデータに回します。
     p  このように、サンプルデータを分割してトレーニングデータとテストデータに分けて学習の妥当性を検証することを交差検証と呼びます。
     a#noise-part.in-page-anchor
-    h4#noise-part(data-paragraph='') ノイズ
+    h4(data-paragraph='') ノイズ
     .centering
       img(src='image/learntensorflowplayground/noise-0-50.png', alt='noise comparison')
     p
       | ここで設定できるノイズとは、円やガウシアンなどの選択したデータセットに対してかけるノイズです。 TensorFlow Playground上の画面からはノイズは0〜50まで5刻みで設定できますが、 どのようにノイズをかけるかは選択したデータセットによって変わります。 ちなみにノイズの数値は%単位です。 ガウシアンの分布生成時に分散の値としてノイズを使っていますが、画面上からノイズを50と設定した場合、 分散の値としては0.5が使われます。
     a#batchsize-part.in-page-anchor
-    h4#batchsize-part(data-paragraph='') バッチサイズ
+    h4(data-paragraph='') バッチサイズ
     .centering
       img(src='image/learntensorflowplayground/batch-size.png', alt='Batch size')
     p  batch: 1束の、1回分の、ひとまとまりの数
@@ -593,7 +593,7 @@ article.main-article(data-page='learntensorflowplayground')
       |  ちなみにTensorFlow Playgroundの実装では、エポック毎にトレーニングデータをランダムにシャッフルして並び替え、 先頭から順々に$m$個ずつトレーニングデータを取り出して機械学習させています。
   #featuresetting-part.paragraph
     a#feature-part.in-page-anchor
-    h2#feature-part(data-paragraph='') 入力するデータの特徴と隠し層
+    h2(data-paragraph='') 入力するデータの特徴と隠し層
     hr
     .centering
       img(src='image/learntensorflowplayground/input-feature.png', alt='input feature')

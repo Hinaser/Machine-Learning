@@ -2,8 +2,319 @@ include ../common/mixin
 
 article.main-article(data-page='deeplearning-by-tensorflow')
   a#preface-part.in-page-anchor
-  h1 TensorFlowのインストール
-  +article-header('----/--/--')
+  h1 TensorFlowでディープラーニング
+  +article-header('2017-03-02')
+
+  img.tensorflow-logo(src='image/deeplearning-by-tensorflow/tf_logo_transp.png', alt='')
 
   .paragraph
-    h4 作成中
+    h4 TensorFlowとは
+    p
+      a(href='https://www.tensorflow.org/#about-tensorflow')
+        | TensorFlow
+      | はGoogleの開発したオープンソースの数値計算ソフトウェアライブラリです。
+      | ”機械学習のための”、という枕詞がつかないのは、機械学習に限定されない様々な用途で利用できるためです。
+      br
+      | TensorFlowは他の多くの科学数値計算ライブラリと同様に
+      a(href='https://www.python.org/')
+        | Python
+      | 上で動作します。(Python以外の言語で利用できないわけではありません。詳細は
+      a(href='https://www.tensorflow.org/extend/language_bindings')
+        | こちら
+      | 。)
+
+    p
+      | 私も現在のところTensorFlowを勉強中なので、説明ができるレベルで理解ができ次第この項目に文章を追加していこうと思います。
+
+
+  .paragraph
+    a#install-tensorflow.in-page-anchor
+    h4 TensorFlowのインストール
+
+    p
+      | TensorFlowのインストール方法は
+      a(href='https://www.tensorflow.org/install/')
+        | オフィシャルサイト
+      | で詳しく説明されています。
+      | ちなみにTensorFlowは現在はWindowsにネイティブで(仮想環境を介さずに)インストールできるようになりましたが、
+      a(href='https://developers.googleblog.com/2016/11/tensorflow-0-12-adds-support-for-windows.html')
+        | 2016年11月までWindowsネイティブでの動作がサポート対象外だったこともあり
+      | 、 Ubuntu Linuxでの実行をおすすめします。
+      | 私はUbuntu Linux OS上でTensorFlowを実行しています。
+    p
+      | 一点、私の環境では上記オフィシャル手順ではスムーズにインストールが完了しませんでした。
+    p
+      | 私と同じ環境でTensorFlowを実行したい方は、私の環境、および実施したインストール手順を下記に記載しますので参考にしてください。
+    table.install-environment
+      tr
+        td OS
+        td Ubuntu 16.04 64bit
+        td
+          a(href='https://www.ubuntu.com/download/desktop')
+            | Ubuntu Desktop
+      tr
+        td Python
+        td 3.5.2
+        td
+          code
+            | sudo apt-get install python3
+      tr
+        td TensorFlow
+        td r1.0
+        td
+          a(href='https://github.com/tensorflow/tensorflow/tree/r1.0')
+            | https://github.com/tensorflow/tensorflow/tree/r1.0
+    p
+      | 私の環境ではTensorFlowをソースインストールしています。
+      | 理由は、ソースからのインストール以外の方法でTensorFlowをインストールすると、私の環境では下記のようなワーニングが毎回コンソールに出力されてしまうためです。
+    code.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE3 instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+    p
+      | メッセージは、SSE3やAVXなどの
+      a(href='https://ja.wikipedia.org/wiki/Streaming_SIMD_Extensions')
+        |拡張命令セット
+      | が利用できる環境であるにもかかわらず、これらの拡張命令を使用するようにTensorFlowがビルドされていないと言っているようです。
+      | プリコンパイル済みTensorFlowをインストールすると毎回このワーニングがコンソールに出力されてしまいます。
+
+    h5 インストール手順
+    p
+      | Ubuntu 16.04/Python3.5/GPUサポート無し/ソースインストール/virtualenv利用 の構成でのインストール手順を紹介します。
+      br
+      | ちなみにこの手順は2017/3/2に検証した手順であり、将来同じ手順で正しくTensorFlowをインストールできない可能性があります。
+
+    h6 Bazelのインストール
+    p
+      | 参考URL:
+      a(href='https://bazel.build/versions/master/docs/install.html')
+        | https://bazel.build/versions/master/docs/install.html
+    p
+      | BazelはGoogle製のビルドツールです。TensorFlowをソースからビルドする際に必要になります。
+      br
+      | bazelがJDK1.9に対応していないため、JDK1.9がOSにインストールされていると上記手順途中でエラーが発生します。
+      | 私は下記のようにしてJava9/JDK1.9をアンインストールしました。
+      br
+      small
+        | * 利用している他のソフトウェアがJava1.9を利用している場合はそのソフトウェアが動作しなくなる可能性があります。
+        | コマンドの意味や影響がわからなければ実行しないでください。
+    .code
+      | $&nbsp;
+      span.user-input sudo apt-get purge openjdk-9* java-9*
+    p 次にJDK1.8をインストールします。
+    .code
+      | $&nbsp;
+      span.user-input sudo apt-get install openjdk-8-j*
+      br
+      | $&nbsp;
+      span.user-input java -version
+      br
+      | &nbsp;&nbsp;# openjdk version "1.8.x_xxx" と表示されることを確認。
+    p Bazelの配布用URIとパッケージソースの追加
+    .code
+      | $&nbsp;
+      span.user-input echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+      br
+      | $&nbsp;
+      span.user-input curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+    p Bazelのインストール
+    .code
+      | $&nbsp;
+      span.user-input sudo apt-get update && sudo apt-get install bazel
+
+    h6 PythonのVirtualenv環境のセットアップ
+    p
+      | TensorFlow専用のPython実行環境を作成します。Virtualenvを使うとプロジェクト専用のPythonバージョン、Pythonソフトウェアパッケージ
+      | を構築できるようになります。Virtualenv環境を切り替えるとPythonのバージョンや利用できるパッケージも自由に切り替えられるようになります。
+    p
+      | pip3をインストールします。
+    .code
+      | $&nbsp;
+      span.user-input sudo apt-get install python3-pip
+      br
+      | $&nbsp;
+      span.user-input pip3 install --upgrade pip
+    p
+      | virtualenvをインストールします。
+    .code
+      | $&nbsp;
+      span.user-input sudo apt-get install python-virtualenv
+    p
+      | TensorFlow用のvirtualenv環境を作成し、環境を有効にします。
+    .code
+      | $&nbsp;
+      span.user-input virtualenv -p python3 --system-site-packages ~/tensorflow
+      br
+      | $&nbsp;
+      span.user-input source ~/tensorflow/bin/activate
+    p
+      | 環境が有効になっていればプロンプトが下記のように変化しているはずです。
+    .code
+      | (tensorflow)$
+    p
+      | この状態でpip installを実行すると、このvirtualenv環境にのみpipパッケージがインストールされます。
+    .indent
+      p ※ちなみに環境を抜けたい場合は下記を実行すればOKです。
+      .code
+        | (tensorflow)$&nbsp;
+        span.user-input deactivate
+    p
+      | 次にTensorFlowで必要なパッケージをvirtualenv環境にインストールします。
+    .code
+      | (tensorflow)$&nbsp;
+      span.user-input pip install six numpy wheel
+
+    h5 TensorFlowのソースをダウンロード/ビルド構成を設定する。
+    p
+      | まずはGithubのTensorFlowのレポジトリからソースコードをダウンロードします。
+    .code
+      | (tensorflow)$&nbsp;
+      span.user-input cd <任意のプロジェクト親ディレクトリ ~/projectsなど>
+      br
+      | (tensorflow)$&nbsp;
+      span.user-input git clone https://github.com/tensorflow/tensorflow
+      br
+      | (tensorflow)$&nbsp;
+      span.user-input cd tensorflow
+      br
+      | (tensorflow)$&nbsp;
+      span.user-input git checkout r1.0
+    p
+      | ソースのビルド構成を設定します。赤字の部分のみ入力し、他はそのままEnterを押してデフォルトの設定を使います。
+    .code
+      | (tensorflow)$&nbsp;
+      span.user-input ./configure
+      br
+      | Please specify the location of python. [Default is /home/ユーザ名/tensorflow/bin/python]:
+      br
+      | Please specify optimization flags to use during compilation [Default is -march=native]:&nbsp;
+      span.user-input
+        | -mavx -mavx2 -mfma -mfpmath=both -msse4.2
+      br
+      | Do you wish to use jemalloc as the malloc implementation? (Linux only) [Y/n]
+      br
+      | Do you wish to build TensorFlow with Google Cloud Platform support? [y/N]
+      br
+      | Do you wish to build TensorFlow with Hadoop File System support? [y/N]
+      br
+      | Do you wish to build TensorFlow with the XLA just-in-time compiler (experimental)? [y/N]
+      br
+      | Please input the desired Python library path to use.  Default is [/home/ユーザ名/tensorflow/lib/python3.5/site-packages]
+      br
+      | Do you wish to build TensorFlow with OpenCL support? [y/N]
+      br
+      | Do you wish to build TensorFlow with CUDA support? [y/N]
+    .indent
+      p ちなみに私の環境ではここで下記のようなエラーが出力されてしまいました。
+      code.
+        ERROR: /home/ユーザ名/projects/tensorflow/tensorflow/python/BUILD:2275:1: every rule of type _py_wrap_cc implicitly depends upon the target '@swig//:templates', but this target could not be found because of: no such package '@swig//': Error downloading [http://bazel-mirror.storage.googleapis.com/ufpr.dl.sourceforge.net/project/swig/swig/swig-3.0.8/swig-3.0.8.tar.gz, http://ufpr.dl.sourceforge.net/project/swig/swig/swig-3.0.8/swig-3.0.8.tar.gz, http://pilotfiber.dl.sourceforge.net/project/swig/swig/swig-3.0.8/swig-3.0.8.tar.gz] to /home/ユーザ名/.cache/bazel/_bazel_ユーザ名/3f6df72b6e217920e9a8b0ddfd37c24d/external/swig/swig-3.0.8.tar.gz: All mirrors are down: [].
+        ERROR: Evaluation of query "deps((//tensorflow/... - //tensorflow/examples/android/...))" failed: errors were encountered while computing transitive closure.
+      p
+        | 私が確認した限りでは、tensorflowの外部依存パッケージ'swig'のダウンロードタイムアウトが原因のエラーのようです。
+        br
+        | curlコマンドで上記エラー内の"bazel-mirror.storage.googleapis.com"と"pilotfiber.dl.sourceforge.net"および"pilotfiber.dl.sourceforge.net"
+        | に対してswig-3.0.8.tar.gzのダウンロードを試してみたところ、"bazel-mirror.storage.googleapis.com"以外の2つのミラーサイトの反応が遅いことがわかりました。
+        | (数秒待てばダウンロード自体は始まります)。
+        | おそらくbazelはパッケージのダウンロードに対するレスポンスタイムアウトの閾値が厳しく設定されており、
+        | パッケージの配信サーバがもたつくとサーバがダウンしていると判断してしまうようです。
+      p
+        | この問題を解決するため、 tensorflow/tensorflow/workspace.bzl ファイルを下記のように修正し、
+        | レスポンスが遅い２つのサーバをダウンロードリストから外して再度
+        code.code ./configure
+        | コマンドを実行したところ、無事エラーなくコマンドが完了しました。
+      .code.file-edit
+        | native.new_http_archive(
+        | &nbsp;&nbsp;&nbsp;&nbsp;name = "swig",
+        | &nbsp;&nbsp;&nbsp;&nbsp;sha256 = "58a475dbbd4a4d7075e5fe86d4e54c9edde39847cdb96a3053d87cb64a23a453",
+        | &nbsp;&nbsp;&nbsp;&nbsp;urls = [
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"http://bazel-mirror.storage.googleapis.com/ufpr.dl.sourceforge.net/project/swig/swig/swig-3.0.8/swig-3.0.8.tar.gz",
+        br
+        span.strike-through
+          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"http://ufpr.dl.sourceforge.net/project/swig/swig/swig-3.0.8/swig-3.0.8.tar.gz",
+        | &nbsp;←この行を削除
+        br
+        span.strike-through
+          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"http://pilotfiber.dl.sourceforge.net/project/swig/swig/swig-3.0.8/swig-3.0.8.tar.gz",
+        | &nbsp;←この行を削除
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;],
+        | &nbsp;&nbsp;&nbsp;&nbsp;strip_prefix = "swig-3.0.8",
+        | &nbsp;&nbsp;&nbsp;&nbsp;build_file = str(Label("//third_party:swig.BUILD")),
+        | )
+      p
+        | 同じようなエラーが発生した方は上記の方法を試してみてください。
+        code.code ./configure
+        | コマンドの実行が完了したあとは、ソースコードを
+        code.code git reset --hard
+        | で戻しておきましょう。
+
+    h5 TensorFlowのソースをビルドする。
+    p
+      | bazel buildでソースをビルドします。
+      br
+      | ちなみに私のマシン(CPU: i5-4570S@2.9GHz, 4core, RAM: 8GB)では23分かかりました。
+      | CPU使用率もほとんどの時間で4コアとも使用率100%、メモリも見ていた限り最大で8GBの99.7%、スワップも3.5GB使用していました。
+      | 他の作業と同時並行でビルドするのはやめたほうが良いです。他のアプリを閉じたうえでビルドしましょう。
+    .code
+      | (tensorflow)$
+      span.user-input bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
+    p
+      | 上記のコマンドが完了すると、bazel-bin/tensorflow/tools/pip_package/build_pip_packageというファイルが作成されます。
+      | そのファイル名の通り、TensorFlowのpipパッケージを作成するツールです。
+    //-
+      p
+        | pipパッケージを生成する前に、TensorBoardのビルドも追加で実行します。
+        a(href='https://www.tensorflow.org/get_started/graph_viz')
+          | TensorBoardはTensorFlowで作成した"計算グラフ"を可視化するツール
+        | です。このビルドも私の環境で20分超かかりました。
+        br
+        | もしかしたらbuild_pip_packageのビルド時にTensorBoardのビルドも同時に完了していたかもしれません。
+      pre.code
+        | (tensorflow)$ bazel build tensorflow/tensorboard:tensorboard
+
+    h5 TensorFlowのpipパッケージを作成し、インストールする。
+    p
+      | カスタムビルドしたTensorFlowをpipパッケージ化します。
+      | 下記のコマンドを実行すると、/tmp/tensorflow_pkgディレクトリ直下にpipパッケージファイル(~.whl)を生成します。
+      | このコマンドは先程までとは違い、20秒ほどで完了します。
+    .code
+      | (tensorflow)$&nbsp;
+      span.user-input bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+    p
+      | 生成された.whlファイルでpipインストールします。
+    .code
+      | (tensorflow)$&nbsp;
+      span.user-input pip install $(ls /tmp/tensorflow_pkg/*.whl)
+      br
+      | ...
+      | Successfully installed protobuf-3.2.0 tensorflow-1.0.0
+    p
+      | これでTensorFlowのソースインストールは完了です。
+
+    h5 インストールの検証
+    p
+      | TensorFlowが正しくインストールされたか確認します。
+    .code
+      | # tensorflowのプロジェクトディレクトリにいるままだとエラーがでるのでディレクトリを出ます。
+      | (tensorflow)$&nbsp;
+      span.user-input cd ../
+      br
+      | (tensorflow)$&nbsp;
+      span.user-input python
+      br
+      | >>>&nbsp;
+      span.user-input import tensorflow as tf
+      br
+      | >>>&nbsp;
+      span.user-input hello = tf.constant('Hello world')
+      br
+      | >>>&nbsp;
+      span.user-input sess = tf.Session()
+      br
+      | >>>&nbsp;
+      span.user-input print(sess.run(hello))
+      br
+      | # b'Hello world' と表示されればOKです。
