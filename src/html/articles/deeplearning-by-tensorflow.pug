@@ -134,16 +134,14 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     .code
       | $&nbsp;
       span.user-input sudo apt-get install python3-pip
-      br
-      | $&nbsp;
-      span.user-input pip3 install --upgrade pip
     p
       | virtualenvをインストールします。
     .code
       | $&nbsp;
       span.user-input sudo apt-get install python-virtualenv
     p
-      | TensorFlow用のvirtualenv環境を作成し、環境を有効にします。
+      | TensorFlow用のvirtualenv環境を作成し、環境を有効にします。下記のコマンドを実行すると/home/&lt;ユーザ名&gt; ディレクトリ直下に
+      | 新たにtensorflowというディレクトリを作成します。
     .code
       | $&nbsp;
       span.user-input virtualenv -p python3 --system-site-packages ~/tensorflow
@@ -172,7 +170,10 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       | まずはGithubのTensorFlowのレポジトリからソースコードをダウンロードします。
     .code
       | (tensorflow)$&nbsp;
-      span.user-input cd <任意のプロジェクト親ディレクトリ ~/projectsなど>
+      span.user-input mkdir -p ~/projects
+      br
+      | (tensorflow)$&nbsp;
+      span.user-input cd ~/projects
       br
       | (tensorflow)$&nbsp;
       span.user-input git clone https://github.com/tensorflow/tensorflow
@@ -183,16 +184,14 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       | (tensorflow)$&nbsp;
       span.user-input git checkout r1.0
     p
-      | ソースのビルド構成を設定します。赤字の部分のみ入力し、他はそのままEnterを押してデフォルトの設定を使います。
+      | ソースのビルド構成を設定します。全てそのままEnterを押してデフォルトの設定を使います。
     .code
       | (tensorflow)$&nbsp;
       span.user-input ./configure
       br
       | Please specify the location of python. [Default is /home/ユーザ名/tensorflow/bin/python]:
       br
-      | Please specify optimization flags to use during compilation [Default is -march=native]:&nbsp;
-      span.user-input
-        | -mavx -mavx2 -mfma -mfpmath=both -msse4.2
+      | Please specify optimization flags to use during compilation [Default is -march=native]:
       br
       | Do you wish to use jemalloc as the malloc implementation? (Linux only) [Y/n]
       br
@@ -260,7 +259,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       | 他の作業と同時並行でビルドするのはやめたほうが良いです。他のアプリを閉じたうえでビルドしましょう。
     .code
       | (tensorflow)$
-      span.user-input bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
+      span.user-input bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both --copt=-msse4.2 //tensorflow/tools/pip_package:build_pip_package
     p
       | 上記のコマンドが完了すると、bazel-bin/tensorflow/tools/pip_package/build_pip_packageというファイルが作成されます。
       | そのファイル名の通り、TensorFlowのpipパッケージを作成するツールです。
