@@ -24,9 +24,11 @@
   },
   "homepage": "https://github.com/Hinaser/Machine-Learning#readme",
   "devDependencies": {
+    "@types/clipboard": "^1.5.31",
     "@types/jquery": "^2.0.40",
     "browser-sync": "^2.18.8",
     "browserify": "^14.1.0",
+    "clipboard": "^1.6.1",
     "del": "^2.2.2",
     "globby": "^6.1.0",
     "gulp": "^3.9.1",

@@ -5,54 +5,11 @@ import * as $ from 'jquery';
 (<any>window).$  = $; // For debug purpose, expose jquery object to global window
 
 import Dispatcher from './dispatcher';
+import {initSidebar, createScript} from './commonLib';
 
 function main(): any {
-    // Navigation sidebar gimmick
-    $('#toggle-nav').on('click', function(){
-        let layout = $('.dpln-layout.top-header-left-nav-layout');
-        if(layout.hasClass('dpln-expand')){
-            layout.removeClass('dpln-expand');
-            layout.addClass('dpln-collapse');
-        }
-        else {
-            layout.removeClass('dpln-collapse');
-            layout.addClass('dpln-expand');
-        }
-    });
-
-    // Collapse/Expand menu
-    $('figure.collapsible > figcaption').on('click', function(){
-        // First of all, collapse all expanding menus
-        let self = this;
-        $('figure.collapsible > .dpln-expand').each(function(){
-            if($(self).next('.dpln-expand').is(this)){
-                return;
-            }
-            $(this).parent().find('> figcaption button i.material-icons').text('keyboard_arrow_down');
-            $(this).remove();
-        });
-
-        let target = $(this).parent().find('> .dpln-expand');
-        if(target.length > 0){
-            target.remove();
-        }
-        else{
-            $(this).parent().find('> ul').before($('<div />', {'class': 'dpln-expand'}));
-        }
-
-        let btn_icon = $(this).find('button i.material-icons');
-        let next_icon = btn_icon.text() == 'keyboard_arrow_up' ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
-        btn_icon.text(next_icon);
-    });
-
-    // Collapse menu when a link in the menu is clicked
-    $('figure.collapsible ul a').on('click', function(){
-        let layout = $('.dpln-layout.top-header-left-nav-layout');
-        if(layout.hasClass('dpln-expand')){
-            layout.removeClass('dpln-expand');
-            layout.addClass('dpln-collapse');
-        }
-    });
+    // Initialize sidebar
+    initSidebar();
 
     // Dispatch page script
     Dispatcher.initPageScript();
