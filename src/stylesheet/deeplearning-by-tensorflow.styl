@@ -38,3 +38,44 @@
   span.strike-through
     text-decoration line-through
     color rgba(255,255,255,.8)
+  .code-line
+    &:not(.no-copy):hover
+      background-color rgba(255,255,255,.3)
+      .clipboard
+        opacity 1
+    .clipboard
+      display block
+      transition 0.2s all ease
+      opacity 0
+      float right
+      cursor pointer
+      height 14px
+      position relative
+      margin-top 1px
+      &.tooltipped::before
+        height 0
+        width 0
+        border-left 10px solid transparent
+        border-right 10px solid transparent
+        border-bottom 10px solid rgba(0,0,0,.7)
+        margin-left -5px
+        display block
+        content ''
+        position absolute
+        top 18px
+
+      &.tooltipped::after
+        margin-top 14px
+        margin-left -24px
+        height 20px
+        width 60px
+        background-color rgba(0,0,0,.7)
+        color white
+        display block
+        content 'Copied!'
+        position absolute
+        top 14px
+        font-size 12px
+        text-align center
+        border-radius 5px
+

@@ -1,5 +1,10 @@
 include ../common/mixin
 
+mixin user-input(text)
+  span.user-input= text
+  .clipboard
+    i.fa.fa-clipboard(aria-hidden='true')
+
 article.main-article(data-page='deeplearning-by-tensorflow')
   a#preface-part.in-page-anchor
   h1 TensorFlowでディープラーニング
@@ -102,28 +107,32 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         | * 利用している他のソフトウェアがJava1.9を利用している場合はそのソフトウェアが動作しなくなる可能性があります。
         | コマンドの意味や影響がわからなければ実行しないでください。
     .code
-      | $&nbsp;
-      span.user-input sudo apt-get purge openjdk-9* java-9*
+      .code-line
+        | $&nbsp;
+        +user-input("sudo apt-get purge openjdk-9* java-9*")
     p 次にJDK1.8をインストールします。
     .code
-      | $&nbsp;
-      span.user-input sudo apt-get install openjdk-8-j*
-      br
-      | $&nbsp;
-      span.user-input java -version
-      br
-      | &nbsp;&nbsp;# openjdk version "1.8.x_xxx" と表示されることを確認。
+      .code-line
+        | $&nbsp;
+        +user-input("sudo apt-get install openjdk-8-j*")
+      .code-line
+        | $&nbsp;
+        +user-input("java -version")
+      .code-line.no-copy
+        | &nbsp;&nbsp;# openjdk version "1.8.x_xxx" と表示されることを確認。
     p Bazelの配布用URIとパッケージソースの追加
     .code
-      | $&nbsp;
-      span.user-input echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-      br
-      | $&nbsp;
-      span.user-input curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+      .code-line
+        | $&nbsp;
+        +user-input('echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list')
+      .code-line
+        | $&nbsp;
+        +user-input("curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -")
     p Bazelのインストール
     .code
-      | $&nbsp;
-      span.user-input sudo apt-get update && sudo apt-get install bazel
+      .code-line
+        | $&nbsp;
+        +user-input("sudo apt-get update && sudo apt-get install bazel")
 
     h6 PythonのVirtualenv環境のセットアップ
     p
@@ -132,80 +141,87 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     p
       | pip3をインストールします。
     .code
-      | $&nbsp;
-      span.user-input sudo apt-get install python3-pip
+      .code-line
+        | $&nbsp;
+        +user-input("sudo apt-get install python3-pip")
     p
       | virtualenvをインストールします。
     .code
-      | $&nbsp;
-      span.user-input sudo apt-get install python-virtualenv
+      .code-line
+        | $&nbsp;
+        +user-input("sudo apt-get install python-virtualenv")
     p
       | TensorFlow用のvirtualenv環境を作成し、環境を有効にします。下記のコマンドを実行すると/home/&lt;ユーザ名&gt; ディレクトリ直下に
       | 新たにtensorflowというディレクトリを作成します。
     .code
-      | $&nbsp;
-      span.user-input virtualenv -p python3 --system-site-packages ~/tensorflow
-      br
-      | $&nbsp;
-      span.user-input source ~/tensorflow/bin/activate
+      .code-line
+        | $&nbsp;
+        +user-input("virtualenv -p python3 --system-site-packages ~/tensorflow")
+      .code-line
+        | $&nbsp;
+        +user-input("source ~/tensorflow/bin/activate")
     p
       | 環境が有効になっていればプロンプトが下記のように変化しているはずです。
     .code
-      | (tensorflow)$
+      .code-line.no-copy
+        | (tensorflow)$
     p
       | この状態でpip installを実行すると、このvirtualenv環境にのみpipパッケージがインストールされます。
     .indent
       p ※ちなみに環境を抜けたい場合は下記を実行すればOKです。
       .code
-        | (tensorflow)$&nbsp;
-        span.user-input deactivate
+        .code-line
+          | (tensorflow)$&nbsp;
+          +user-input("deactivate")
     p
       | 次にTensorFlowで必要なパッケージをvirtualenv環境にインストールします。
     .code
-      | (tensorflow)$&nbsp;
-      span.user-input pip install six numpy wheel
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("pip install six numpy wheel")
 
     h5 TensorFlowのソースをダウンロード/ビルド構成を設定する。
     p
       | まずはGithubのTensorFlowのレポジトリからソースコードをダウンロードします。
     .code
-      | (tensorflow)$&nbsp;
-      span.user-input mkdir -p ~/projects
-      br
-      | (tensorflow)$&nbsp;
-      span.user-input cd ~/projects
-      br
-      | (tensorflow)$&nbsp;
-      span.user-input git clone https://github.com/tensorflow/tensorflow
-      br
-      | (tensorflow)$&nbsp;
-      span.user-input cd tensorflow
-      br
-      | (tensorflow)$&nbsp;
-      span.user-input git checkout r1.0
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("mkdir -p ~/projects")
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("cd ~/projects")
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("git clone https://github.com/tensorflow/tensorflow")
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("cd tensorflow")
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("git checkout r1.0")
     p
       | ソースのビルド構成を設定します。全てそのままEnterを押してデフォルトの設定を使います。
     .code
-      | (tensorflow)$&nbsp;
-      span.user-input ./configure
-      br
-      | Please specify the location of python. [Default is /home/ユーザ名/tensorflow/bin/python]:
-      br
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("./configure")
+      .code-line.no-copy
+        | Please specify the location of python. [Default is /home/ユーザ名/tensorflow/bin/python]:
       | Please specify optimization flags to use during compilation [Default is -march=native]:
-      br
-      | Do you wish to use jemalloc as the malloc implementation? (Linux only) [Y/n]
-      br
-      | Do you wish to build TensorFlow with Google Cloud Platform support? [y/N]
-      br
-      | Do you wish to build TensorFlow with Hadoop File System support? [y/N]
-      br
-      | Do you wish to build TensorFlow with the XLA just-in-time compiler (experimental)? [y/N]
-      br
-      | Please input the desired Python library path to use.  Default is [/home/ユーザ名/tensorflow/lib/python3.5/site-packages]
-      br
-      | Do you wish to build TensorFlow with OpenCL support? [y/N]
-      br
-      | Do you wish to build TensorFlow with CUDA support? [y/N]
+      .code-line.no-copy
+        | Do you wish to use jemalloc as the malloc implementation? (Linux only) [Y/n]
+      .code-line.no-copy
+        | Do you wish to build TensorFlow with Google Cloud Platform support? [y/N]
+      .code-line.no-copy
+        | Do you wish to build TensorFlow with Hadoop File System support? [y/N]
+      .code-line.no-copy
+        | Do you wish to build TensorFlow with the XLA just-in-time compiler (experimental)? [y/N]
+      .code-line.no-copy
+        | Please input the desired Python library path to use.  Default is [/home/ユーザ名/tensorflow/lib/python3.5/site-packages]
+      .code-line.no-copy
+        | Do you wish to build TensorFlow with OpenCL support? [y/N]
+      .code-line.no-copy
+        | Do you wish to build TensorFlow with CUDA support? [y/N]
     .indent
       p ちなみに私の環境ではここで下記のようなエラーが出力されてしまいました。
       code.
@@ -258,8 +274,9 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       | CPU使用率もほとんどの時間で4コアとも使用率100%、メモリも見ていた限り最大で8GBの99.7%、スワップも3.5GB使用していました。
       | 他の作業と同時並行でビルドするのはやめたほうが良いです。他のアプリを閉じたうえでビルドしましょう。
     .code
-      | (tensorflow)$
-      span.user-input bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both --copt=-msse4.2 //tensorflow/tools/pip_package:build_pip_package
+      .code-line
+        | (tensorflow)$
+        +user-input("bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both --copt=-msse4.2 //tensorflow/tools/pip_package:build_pip_package")
     p
       | 上記のコマンドが完了すると、bazel-bin/tensorflow/tools/pip_package/build_pip_packageというファイルが作成されます。
       | そのファイル名の通り、TensorFlowのpipパッケージを作成するツールです。
@@ -280,16 +297,19 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       | 下記のコマンドを実行すると、/tmp/tensorflow_pkgディレクトリ直下にpipパッケージファイル(~.whl)を生成します。
       | このコマンドは先程までとは違い、20秒ほどで完了します。
     .code
-      | (tensorflow)$&nbsp;
-      span.user-input bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg")
     p
       | 生成された.whlファイルでpipインストールします。
     .code
-      | (tensorflow)$&nbsp;
-      span.user-input pip install $(ls /tmp/tensorflow_pkg/*.whl)
-      br
-      | ...
-      | Successfully installed protobuf-3.2.0 tensorflow-1.0.0
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input("pip install $(ls /tmp/tensorflow_pkg/*.whl)")
+      .code-line.no-copy
+        | ...
+      .code-line.no-copy
+        | Successfully installed protobuf-3.2.0 tensorflow-1.0.0
     p
       | これでTensorFlowのソースインストールは完了です。
 
@@ -297,23 +317,25 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     p
       | TensorFlowが正しくインストールされたか確認します。
     .code
-      | # tensorflowのプロジェクトディレクトリにいるままだとエラーがでるのでディレクトリを出ます。
-      | (tensorflow)$&nbsp;
-      span.user-input cd ../
-      br
-      | (tensorflow)$&nbsp;
-      span.user-input python
-      br
-      | >>>&nbsp;
-      span.user-input import tensorflow as tf
-      br
-      | >>>&nbsp;
-      span.user-input hello = tf.constant('Hello world')
-      br
-      | >>>&nbsp;
-      span.user-input sess = tf.Session()
-      br
-      | >>>&nbsp;
-      span.user-input print(sess.run(hello))
-      br
-      | # b'Hello world' と表示されればOKです。
+      .code-line.no-copy
+        | # tensorflowのプロジェクトディレクトリにいるままだとエラーがでるのでディレクトリを出ます。
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input('cd ../')
+      .code-line
+        | (tensorflow)$&nbsp;
+        +user-input('python')
+      .code-line
+        | >>>&nbsp;
+        +user-input('import tensorflow as tf')
+      .code-line
+        | >>>&nbsp;
+        +user-input("hello = tf.constant('Hello world')")
+      .code-line
+        | >>>&nbsp;
+        +user-input('sess = tf.Session()')
+      .code-line
+        | >>>&nbsp;
+        +user-input('print(sess.run(hello))')
+      .code-line.no-copy
+        | # b'Hello world' と表示されればOKです。
