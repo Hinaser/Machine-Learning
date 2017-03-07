@@ -35,3 +35,31 @@ mixin article-header(date)
       span.st_facebook_hcount(displaytext='Facebook')
       span.st_twitter_hcount(displaytext='Tweet')
       span.st_googleplus_hcount(displaytext='Google +')
+
+mixin mathjax()
+  script(type='text/javascript', async='', src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML')
+  script(type='text/x-mathjax-config').
+    MathJax.Hub.Config({
+    tex2jax: {
+    inlineMath: [['$','$']],
+    processEscapes: true
+    },
+    CommonHTML: {matchFontHeight: false },
+    displayAlign: "left",
+    displayIndent: "2em"
+    });
+
+
+mixin disqus()
+  #disqus_thread
+  script.
+    var disqus_config = function () {
+        this.page.url = document.location.href;
+        this.page.identifier = document.location.pathname;
+    };
+    (function () { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://hinaser-github-io-machine-learning.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();

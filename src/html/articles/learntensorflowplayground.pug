@@ -813,14 +813,6 @@ article.main-article(data-page='learntensorflowplayground')
     p
       | ここまで導出した式を下記にまとめます。 $$ \delta^{l}_{q} = \sum_{r} \delta^{l+1}_{r} w^{l+1}_{r,q} \phi&apos;(z^{l}_{q}) $$ $$ \delta^{L}_{s} = \frac{\partial C}{\partial z^{L}_{s}} = (a^{L}_{s}-y)\left( 1 - tanh^2(z^{L}_{s}) \right) $$ $$ \frac{\partial C}{\partial w^{l}_{q,p}} = \delta^{l}_{q} a^{l-1}_{p} $$ $$ \frac{\partial C}{\partial b^{l}_{q}} = \delta^{l}_{q} $$ バックプロパゲーションではこれらの式より1ステップ後の重み$w&apos;$とバイアス$b&apos;$を計算します。
 
-script(type='text/javascript', async='', src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML')
-script(type='text/x-mathjax-config').
-  MathJax.Hub.Config({
-  tex2jax: {
-  inlineMath: [['$','$']],
-  processEscapes: true
-  },
-  CommonHTML: {matchFontHeight: false },
-  displayAlign: "left",
-  displayIndent: "2em"
-  });
+  +disqus()
+
++mathjax()
