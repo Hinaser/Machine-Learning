@@ -19,17 +19,17 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       | GPUは並列化処理に優れておりTensorFlowでの数値計算速度を向上させることができます。
     p
       | TensorFlowはCUDAと呼ばれる、NVidia社が開発した並列計算プラットフォームを利用して高速化させることができます。
-      a(href='http://www.cs.nyu.edu/manycores/cuda_many_cores.pdf') CUDAについてはこちらを参考にしてください。
+      a(href='http://www.cs.nyu.edu/manycores/cuda_many_cores.pdf', target='_blank') CUDAについてはこちらを参考にしてください。
 
     h4 GPU版TensorFlowが利用できるNVidia GeForce GPU
     p
       | 2017年3月6日現在、
-      a(href='https://www.tensorflow.org/install/install_sources#optional_install_tensorflow_for_gpu_prerequisites')
+      a(href='https://www.tensorflow.org/install/install_sources#optional_install_tensorflow_for_gpu_prerequisites', target='_blank')
         | TensorFlowのインストールページ
       | ではCuda Compute Capability3.0以上のグラフィックカードが必要と記載されていいます。
       | CUDA 3.0以上対応GeForceグラフィックカードは下記のとおりです。
       | 参考:
-      a(href='https://developer.nvidia.com/cuda-gpus') CUDA GPUs
+      a(href='https://developer.nvidia.com/cuda-gpus', target='_blank') CUDA GPUs
       br
       | ざっと見たところ、6XX系以上のGeForceグラフィックカードを持っていれば大丈夫のようです。
 
@@ -89,7 +89,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         td OS
         td Ubuntu 16.04 64bit
         td
-          a(href='https://www.ubuntu.com/download/desktop')
+          a(href='https://www.ubuntu.com/download/desktop', target='_blank')
             | Ubuntu Desktop
       tr
         td Python
@@ -101,7 +101,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         td TensorFlow
         td r1.0
         td
-          a(href='https://github.com/tensorflow/tensorflow/tree/r1.0')
+          a(href='https://github.com/tensorflow/tensorflow/tree/r1.0', target='_blank')
             | https://github.com/tensorflow/tensorflow/tree/r1.0
 
     h4 インストール手順
@@ -137,7 +137,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       | Ubuntu 16.04用のCUDA Tookitをインストールします。
       br
       | まず、
-      a(href='https://developer.nvidia.com/cuda-downloads') CUDAダウンロードページ
+      a(href='https://developer.nvidia.com/cuda-downloads', target='_blank') CUDAダウンロードページ
       | からUbuntu用debファイルをダウンロードします。
       br
       img.download-cuda-toolkit(src='image/deeplearning-by-tensorflow/download-cuda-toolkit.png')
@@ -213,7 +213,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     h5 4. Bazelのインストール
     p
       | 参考URL:
-      a(href='https://bazel.build/versions/master/docs/install.html')
+      a(href='https://bazel.build/versions/master/docs/install.html', target='_blank')
         | https://bazel.build/versions/master/docs/install.html
     p
       | BazelはGoogle製のビルドツールです。TensorFlowをソースからビルドする際に必要になります。

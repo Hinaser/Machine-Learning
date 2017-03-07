@@ -15,16 +15,16 @@ article.main-article(data-page='deeplearning-by-tensorflow')
   .paragraph
     h4 TensorFlowとは
     p
-      a(href='https://www.tensorflow.org/#about-tensorflow')
+      a(href='https://www.tensorflow.org/#about-tensorflow', target='_blank')
         | TensorFlow
       | はGoogleの開発したオープンソースの数値計算ソフトウェアライブラリです。
       | ”機械学習のための”、という枕詞がつかないのは、機械学習に限定されない様々な用途で利用できるためです。
       br
       | TensorFlowは他の多くの科学数値計算ライブラリと同様に
-      a(href='https://www.python.org/')
+      a(href='https://www.python.org/', target='_blank')
         | Python
       | 上で動作します。(Python以外の言語で利用できないわけではありません。詳細は
-      a(href='https://www.tensorflow.org/extend/language_bindings')
+      a(href='https://www.tensorflow.org/extend/language_bindings', target='_blank')
         | こちら
       | 。)
 
@@ -38,11 +38,11 @@ article.main-article(data-page='deeplearning-by-tensorflow')
 
     p
       | TensorFlowのインストール方法は
-      a(href='https://www.tensorflow.org/install/')
+      a(href='https://www.tensorflow.org/install/', target='_blank')
         | オフィシャルサイト
       | で詳しく説明されています。
       | ちなみにTensorFlowは現在はWindowsにネイティブで(仮想環境を介さずに)インストールできるようになりましたが、
-      a(href='https://developers.googleblog.com/2016/11/tensorflow-0-12-adds-support-for-windows.html')
+      a(href='https://developers.googleblog.com/2016/11/tensorflow-0-12-adds-support-for-windows.html', target='_blank')
         | 2016年11月までWindowsネイティブでの動作がサポート対象外だったこともあり
       | 、 Ubuntu Linuxでの実行をおすすめします。
       | 私はUbuntu Linux OS上でTensorFlowを実行しています。
@@ -55,7 +55,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         td OS
         td Ubuntu 16.04 64bit
         td
-          a(href='https://www.ubuntu.com/download/desktop')
+          a(href='https://www.ubuntu.com/download/desktop', target='_blank')
             | Ubuntu Desktop
       tr
         td Python
@@ -67,7 +67,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         td TensorFlow
         td r1.0
         td
-          a(href='https://github.com/tensorflow/tensorflow/tree/r1.0')
+          a(href='https://github.com/tensorflow/tensorflow/tree/r1.0', target='_blank')
             | https://github.com/tensorflow/tensorflow/tree/r1.0
     p
       | 私の環境ではTensorFlowをソースインストールしています。
@@ -81,7 +81,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
     p
       | メッセージは、SSE3やAVXなどの
-      a(href='https://ja.wikipedia.org/wiki/Streaming_SIMD_Extensions')
+      a(href='https://ja.wikipedia.org/wiki/Streaming_SIMD_Extensions', target='_blank')
         |拡張命令セット
       | が利用できる環境であるにもかかわらず、これらの拡張命令を使用するようにTensorFlowがビルドされていないと言っているようです。
       | プリコンパイル済みTensorFlowをインストールすると毎回このワーニングがコンソールに出力されてしまいます。
@@ -95,7 +95,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     h6 Bazelのインストール
     p
       | 参考URL:
-      a(href='https://bazel.build/versions/master/docs/install.html')
+      a(href='https://bazel.build/versions/master/docs/install.html', target='_blank')
         | https://bazel.build/versions/master/docs/install.html
     p
       | BazelはGoogle製のビルドツールです。TensorFlowをソースからビルドする際に必要になります。
@@ -283,7 +283,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     //-
       p
         | pipパッケージを生成する前に、TensorBoardのビルドも追加で実行します。
-        a(href='https://www.tensorflow.org/get_started/graph_viz')
+        a(href='https://www.tensorflow.org/get_started/graph_viz', target='_blank')
           | TensorBoardはTensorFlowで作成した"計算グラフ"を可視化するツール
         | です。このビルドも私の環境で20分超かかりました。
         br
