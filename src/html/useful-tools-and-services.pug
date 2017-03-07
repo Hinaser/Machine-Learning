@@ -1,5 +1,13 @@
 extends common/layout.pug
 
+block opengraph
+  include common/mixin
+  - var title = '便利なツール/サービス'
+  - var description = 'TensorFlowを使ってディープラーニングを試す'
+  - var c_url = 'https://hinaser.github.io/Machine-Learning/useful-tools-and-services.html'
+  - var keywords = 'Deep Learning, Neural Network, TensorFlow, Machine Learning, Useful tools'
+  +opengraph-meta(title, description, c_url, keywords)
+
 block title
   title 便利なツール/サービス
 
