@@ -7,50 +7,84 @@ mixin user-input(text)
 
 article.main-article(data-page='deeplearning-by-tensorflow')
   a#preface-part.in-page-anchor
-  h1 TensorFlowのインストール
-  +article-header('2017-03-02')
-
-  img.tensorflow-logo(src='image/deeplearning-by-tensorflow/tf_logo_transp.png', alt='')
-
-  .paragraph
-    h4 TensorFlowとは
-    p
-      a(href='https://www.tensorflow.org/#about-tensorflow')
-        | TensorFlow
-      | はGoogleの開発したオープンソースの数値計算ソフトウェアライブラリです。
-      | ”機械学習のための”、という枕詞がつかないのは、機械学習に限定されない様々な用途で利用できるためです。
-      br
-      | TensorFlowは他の多くの科学数値計算ライブラリと同様に
-      a(href='https://www.python.org/')
-        | Python
-      | 上で動作します。(Python以外の言語で利用できないわけではありません。詳細は
-      a(href='https://www.tensorflow.org/extend/language_bindings')
-        | こちら
-      | 。)
-
-    p
-      | 私も現在のところTensorFlowを勉強中なので、説明ができるレベルで理解ができ次第この項目に文章を追加していこうと思います。
-
+  h1 TensorFlowのインストール(GPU利用編)
+  +article-header('2017-03-06')
 
   .paragraph
     a#install-tensorflow.in-page-anchor
-    h4 TensorFlowのインストール
+    p.warning-this-is-not-extra-content
+      | このページはCUDAに対応したNVidia製グラフィックカードを持っている人向けの内容です。
+    p
+      | このページではGPU計算を有効にしたTensorFlowをインストールする手順を紹介します。
+      | GPUは並列化処理に優れておりTensorFlowでの数値計算速度を向上させることができます。
+    p
+      | TensorFlowはCUDAと呼ばれる、NVidia社が開発した並列計算プラットフォームを利用して高速化させることができます。
+      a(href='http://www.cs.nyu.edu/manycores/cuda_many_cores.pdf') CUDAについてはこちらを参考にしてください。
 
+    h4 GPU版TensorFlowが利用できるNVidia GeForce GPU
     p
-      | TensorFlowのインストール方法は
-      a(href='https://www.tensorflow.org/install/')
-        | オフィシャルサイト
-      | で詳しく説明されています。
-      | ちなみにTensorFlowは現在はWindowsにネイティブで(仮想環境を介さずに)インストールできるようになりましたが、
-      a(href='https://developers.googleblog.com/2016/11/tensorflow-0-12-adds-support-for-windows.html')
-        | 2016年11月までWindowsネイティブでの動作がサポート対象外だったこともあり
-      | 、 Ubuntu Linuxでの実行をおすすめします。
-      | 私はUbuntu Linux OS上でTensorFlowを実行しています。
+      | 2017年3月6日現在、
+      a(href='https://www.tensorflow.org/install/install_sources#optional_install_tensorflow_for_gpu_prerequisites')
+        | TensorFlowのインストールページ
+      | ではCuda Compute Capability3.0以上のグラフィックカードが必要と記載されていいます。
+      | CUDA 3.0以上対応GeForceグラフィックカードは下記のとおりです。
+      | 参考:
+      a(href='https://developer.nvidia.com/cuda-gpus') CUDA GPUs
+      br
+      | ざっと見たところ、6XX系以上のGeForceグラフィックカードを持っていれば大丈夫のようです。
+
+    h6 デスクトップ版GeForce
+    table.list-of-tensorflow-enabled-gpus
+      tr
+        td GTX 10XX系
+        td 1080Ti, 1080, 1070, 1060, 1050
+      tr
+        td TITAN系
+        td NVIDIA TITAN X, GTX TITAN X, GTX TITAN Z, GTX TITAN Black
+      tr
+        td GTX 9XX系
+        td 980Ti, 980, 970, 960, 950
+      tr
+        td GTX 7XX系
+        td 780Ti, 780, 770, 760, 750Ti, 750
+      tr
+        td GT 7XX系
+        td GT740, GT730(*), GT720, GT705
+      tr
+        td GTX 6XX系
+        td 690, 680, 670, 660Ti, 660, 650Ti BOOST, 650Ti, 650
+      tr
+        td GT 6XX系
+        td GT640[GDDR5版]
+
+    small (*) GT730 DDR3, 128bit版を除く
+
+    h6 ノートブック版GeForce
+    table.list-of-tensorflow-enabled-gpus
+      tr
+        td 10XX系
+        td 1080, 1070, 1060
+      tr
+        td 9XX系
+        td 980, 980M, 970M, 965M, 960M, 950M, 940M, 930M, 920M, 910M
+      tr
+        td 8XX系
+        td 880M, 870M, 860M, 850M, 840M, 830M
+      tr
+        td 7XX系
+        td 780M, 770M, 765M, 760M, 750M, 745M, 740M, 735M, 730M
+      tr
+        td GTX 6XX系
+        td 680MX, 680M, 675MX, 670MX, 660M, 650M, 645M, 640M, 640M LE
+
+    h4 インストール環境
     p
-      | 一点、私の環境では上記オフィシャル手順ではスムーズにインストールが完了しませんでした。
-    p
-      | 私と同じ環境でTensorFlowを実行したい方は、私の環境、および実施したインストール手順を下記に記載しますので参考にしてください。
+      | 手順を作成するにあたって用意したマシン環境です。
     table.install-environment
+      tr
+        td GPU
+        td NVidia GeForce GTX 780
+        td ASUS GTX780-DC2OC-3GD5
       tr
         td OS
         td Ubuntu 16.04 64bit
@@ -69,30 +103,114 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         td
           a(href='https://github.com/tensorflow/tensorflow/tree/r1.0')
             | https://github.com/tensorflow/tensorflow/tree/r1.0
-    p
-      | 私の環境ではTensorFlowをソースインストールしています。
-      | 理由は、ソースからのインストール以外の方法でTensorFlowをインストールすると、私の環境では下記のようなワーニングが毎回コンソールに出力されてしまうためです。
-    code.
-      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE3 instructions, but these are available on your machine and could speed up CPU computations.
-      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
-      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
-      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
-      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
-      W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
-    p
-      | メッセージは、SSE3やAVXなどの
-      a(href='https://ja.wikipedia.org/wiki/Streaming_SIMD_Extensions')
-        |拡張命令セット
-      | が利用できる環境であるにもかかわらず、これらの拡張命令を使用するようにTensorFlowがビルドされていないと言っているようです。
-      | プリコンパイル済みTensorFlowをインストールすると毎回このワーニングがコンソールに出力されてしまいます。
 
-    h5 インストール手順
+    h4 インストール手順
     p
-      | Ubuntu 16.04/Python3.5/GPUサポート無し/ソースインストール/virtualenv利用 の構成でのインストール手順を紹介します。
+      | Ubuntu 16.04/Python3.5/GPUサポート有り/GTX780/ソースインストール/virtualenv利用 の構成でのインストール手順を紹介します。
       br
-      | ちなみにこの手順は2017/3/2に検証した手順であり、将来同じ手順で正しくTensorFlowをインストールできない可能性があります。
+      | ちなみにこの手順は2017/3/7に検証した手順であり、将来同じ手順で正しくTensorFlowをインストールできない可能性があります。
+    h5 1. CUDA Tookitのインストール
+    p
+      | 参考:
+      a(href='http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A', target='_blank') NVIDIA CUDA Installation Guide For Linux
+    p CUDAが利用できるGPUが認識されているか確認
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('lspci | grep -i nvidia')
+    p
+      | ここで何も表示されない場合、NVIDIA製のグラフィックボードがインストールされていない、もしくは認識されていないため
+      | これ以降の手順は実施できません。
+    p
+      | gccがインストールされていることを確認します。
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('gcc --version')
+    p gcc 5.3.1以降がインストールされていればOK
+    p Linuxカーネルヘッダーをインストールします。
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('sudo apt-get install linux-headers-$(uname -r)')
+    p
+      | Ubuntu 16.04用のCUDA Tookitをインストールします。
+      br
+      | まず、
+      a(href='https://developer.nvidia.com/cuda-downloads') CUDAダウンロードページ
+      | からUbuntu用debファイルをダウンロードします。
+      br
+      img.download-cuda-toolkit(src='image/deeplearning-by-tensorflow/download-cuda-toolkit.png')
+      br
+      | ダウンロードした.debファイルは/tmpに移動しておきます。
+    p
+      | cuda toolkitをインストールします。(インストールサイズが2GBほどあるので注意。ネットワークが遅いと数十分から数時間かかります。)
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('sudo dpkg -i /tmp/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb')
+      .code-line
+        | $&nbsp;
+        +user-input('sudo apt-get update')
+      .code-line
+        | $&nbsp;
+        +user-input('sudo apt-get install cuda')
+    p
+      | 環境変数LD_LIBRARY_PATHを設定します。
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}')
+      .code-line
+        | $&nbsp;
+        +user-input('echo "export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" >> ~/.profile')
 
-    h6 Bazelのインストール
+    h5 2. cuDNNのインストール
+    p
+      | 参考:
+      a(href='https://developer.nvidia.com/cudnn', target='_blank') NVIDIA cuDNN
+    p
+      | cuDNNはディープラーニング研究者・開発者用のライブラリであり、ダウンロードするにはnVidiaのAccelerated Computing Developer Programのメンバーになる必要があります。
+      | メンバー登録自体は簡単で、nVidiaのサイトでアカウントを作成するだけです。
+    p
+      a(href='https://developer.nvidia.com/cudnn', target='_blank') nVidiaのcuDNNダウンロードサイト
+      | に行きDownloadボタンをクリックします。
+      a(href='https://developer.nvidia.com/cudnn', target='_blank')
+        img(src='image/deeplearning-by-tensorflow/download-cuDNN.png' alt='')
+    p
+      | Join Nowボタンをクリックします。
+      br
+      img(src='image/deeplearning-by-tensorflow/cnDNN-membership-required.png', alt='')
+    p
+      | Eメールアドレス、氏名、組織名、国、規約に同意ボタンをチェックし、Nextボタンをクリックします。
+      br
+      | 組織ではなく個人で登録する場合は組織名(Organization)の箇所は適当にIndividual Developerとでもしておけば良いです。
+      br
+      img(src='image/deeplearning-by-tensorflow/cuDNN-fill-basic-information.png')
+      br
+      | 規約について、私の視点から抑えておくべきポイントは下記の２つです。
+    ul
+      li
+        | Developer Programにおいて、規約同意者は製品改善のための意見やフィードバックをnVidiaに与えることが期待されている。
+        | だが、フィードバックの内容を勝手に公開してはならない。例えばブログ等にcuDNNにはこれこれこういう課題があってここを改善すると良い、
+        | などということを書いてはならない。
+      li
+        | nVidiaは規約同意者をいつでもどんな理由でもDeveloper Programから退会させることができる。Developer Programで知り得た情報を
+        | むやみやたらに公開してしまうと、突然Developer Program上のツールをダウンロードできなくなってしまう可能性がある。規約を守らせるための抑止力といったところか。
+    p
+      | 次のページに行くとアンケート形式でいくつか質問をされる。内容はここには書きませんが、それぞれ自分の状況に合うように入力し登録を完了します。
+    p
+      | 登録完了後再度上のDownloadボタンを押すことでcuDNNをダウンロードすることができます。
+      br
+      | インストール方法はメンバー登録後cuDNNのダウンロードページにあるインストールガイドに記載されていますが、規約により本サイトには内容を記載しません。
+
+    h5 3. libcupti-devのインストール
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input("sudo apt-get install libcupti-dev")
+
+    h5 4. Bazelのインストール
     p
       | 参考URL:
       a(href='https://bazel.build/versions/master/docs/install.html')
@@ -134,7 +252,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         | $&nbsp;
         +user-input("sudo apt-get update && sudo apt-get install bazel")
 
-    h6 PythonのVirtualenv環境のセットアップ
+    h5 5. PythonのVirtualenv環境のセットアップ
     p
       | TensorFlow専用のPython実行環境を作成します。Virtualenvを使うとプロジェクト専用のPythonバージョン、Pythonソフトウェアパッケージ
       | を構築できるようになります。Virtualenv環境を切り替えるとPythonのバージョンや利用できるパッケージも自由に切り替えられるようになります。
@@ -180,7 +298,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         | (tensorflow)$&nbsp;
         +user-input("pip install six numpy wheel")
 
-    h5 TensorFlowのソースをダウンロード/ビルド構成を設定する。
+    h5 6. TensorFlowのソースをダウンロード/ビルド構成を設定する。
     p
       | まずはGithubのTensorFlowのレポジトリからソースコードをダウンロードします。
     .code
@@ -220,8 +338,32 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         | Please input the desired Python library path to use.  Default is [/home/ユーザ名/tensorflow/lib/python3.5/site-packages]
       .code-line.no-copy
         | Do you wish to build TensorFlow with OpenCL support? [y/N]
+      .code-line
+        | Do you wish to build TensorFlow with CUDA support? [y/N]&nbsp;&nbsp;
+        +user-input("Y")
       .code-line.no-copy
-        | Do you wish to build TensorFlow with CUDA support? [y/N]
+        | CUDA support will be enabled for TensorFlow
+      .code-line.no-copy
+        | Please specify which gcc should be used by nvcc as the host compiler. [Default is /usr/bin/gcc]:
+      .code-line
+        | Please specify the Cuda SDK version you want to use, e.g. 7.0. [Leave empty to use system default]:&nbsp;&nbsp;
+        +user-input("8.0")
+      .code-line.no-copy
+        | Please specify the location where CUDA 8.0 toolkit is installed. Refer to README.md for more details. [Default is /usr/local/cuda]:
+      .code-line
+        | Please specify the cuDNN version you want to use. [Leave empty to use system default]:&nbsp;&nbsp;
+        +user-input('5')
+      .code-line.no-copy
+        | Please specify the location where cuDNN 5 library is installed. Refer to README.md for more details. [Default is /usr/local/cuda]:
+      .code-line.no-copy
+        | Please specify a list of comma-separated Cuda compute capabilities you want to build with.
+      .code-line.no-copy
+        | You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.
+      .code-line.no-copy
+        | Please note that each additional compute capability significantly increases your build time and binary size.
+      .code-line
+        | [Default is: "3.5,5.2"]: &nbsp;&nbsp;
+        +user-input('3.0')
     .indent
       p ちなみに私の環境ではここで下記のようなエラーが出力されてしまいました。
       code.
@@ -266,7 +408,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         code.code git reset --hard
         | で戻しておきましょう。
 
-    h5 TensorFlowのソースをビルドする。
+    h5 7. TensorFlowのソースをビルドする。
     p
       | bazel buildでソースをビルドします。
       br
@@ -276,22 +418,12 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     .code
       .code-line
         | (tensorflow)$
-        +user-input("bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both --copt=-msse4.2 //tensorflow/tools/pip_package:build_pip_package")
+        +user-input("bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both --copt=-msse4.2 -config=cuda //tensorflow/tools/pip_package:build_pip_package")
     p
       | 上記のコマンドが完了すると、bazel-bin/tensorflow/tools/pip_package/build_pip_packageというファイルが作成されます。
       | そのファイル名の通り、TensorFlowのpipパッケージを作成するツールです。
-    //-
-      p
-        | pipパッケージを生成する前に、TensorBoardのビルドも追加で実行します。
-        a(href='https://www.tensorflow.org/get_started/graph_viz')
-          | TensorBoardはTensorFlowで作成した"計算グラフ"を可視化するツール
-        | です。このビルドも私の環境で20分超かかりました。
-        br
-        | もしかしたらbuild_pip_packageのビルド時にTensorBoardのビルドも同時に完了していたかもしれません。
-      pre.code
-        | (tensorflow)$ bazel build tensorflow/tensorboard:tensorboard
 
-    h5 TensorFlowのpipパッケージを作成し、インストールする。
+    h5 8. TensorFlowのpipパッケージを作成し、インストールする。
     p
       | カスタムビルドしたTensorFlowをpipパッケージ化します。
       | 下記のコマンドを実行すると、/tmp/tensorflow_pkgディレクトリ直下にpipパッケージファイル(~.whl)を生成します。
@@ -313,7 +445,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     p
       | これでTensorFlowのソースインストールは完了です。
 
-    h5 インストールの検証
+    h5 9. インストールの検証
     p
       | TensorFlowが正しくインストールされたか確認します。
     .code
