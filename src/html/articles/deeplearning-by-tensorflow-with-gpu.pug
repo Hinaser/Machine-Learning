@@ -202,7 +202,8 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     p
       | 登録完了後再度上のDownloadボタンを押すことでcuDNNをダウンロードすることができます。
       br
-      | インストール方法はメンバー登録後cuDNNのダウンロードページにあるインストールガイドに記載されていますが、規約により本サイトには内容を記載しません。
+      | インストール方法はメンバー登録後cuDNNのダウンロードページにあるインストールガイドに記載されているのでそちらを参考にしてください。
+      | 私の環境ではダウンロードしたcuDNNのアーカイブ内のlib64/, include/ディレクトリをそのままCUDA Toolkitの$LD_LIBRARY_PATHに上書き展開しています。
 
     h5 3. libcupti-devのインストール
     .code
@@ -318,7 +319,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         | (tensorflow)$&nbsp;
         +user-input("git checkout r1.0")
     p
-      | ソースのビルド構成を設定します。全てそのままEnterを押してデフォルトの設定を使います。
+      | ソースのビルド構成を設定します。下記を参考にCUDAに関係しない設定はそのままEnterでデフォルトの設定を使うようにします。
     .code
       .code-line
         | (tensorflow)$&nbsp;
@@ -363,7 +364,7 @@ article.main-article(data-page='deeplearning-by-tensorflow')
         | Please note that each additional compute capability significantly increases your build time and binary size.
       .code-line
         | [Default is: "3.5,5.2"]: &nbsp;&nbsp;
-        +user-input('3.0')
+        +user-input('3.5')
     .indent
       p ちなみに私の環境ではここで下記のようなエラーが出力されてしまいました。
       code.
