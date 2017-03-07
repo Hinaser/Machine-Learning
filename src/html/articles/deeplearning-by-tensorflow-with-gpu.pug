@@ -110,13 +110,100 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       br
       | ちなみにこの手順は2017/3/7に検証した手順であり、将来同じ手順で正しくTensorFlowをインストールできない可能性があります。
     h5 1. CUDA Tookitのインストール
-      p
-        | 追記予定。NVIDIAのドキュメントは
-        a(href='http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A') こちら
+    p
+      | 参考:
+      a(href='http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A', target='_blank') NVIDIA CUDA Installation Guide For Linux
+    p CUDAが利用できるGPUが認識されているか確認
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('lspci | grep -i nvidia')
+    p
+      | ここで何も表示されない場合、NVIDIA製のグラフィックボードがインストールされていない、もしくは認識されていないため
+      | これ以降の手順は実施できません。
+    p
+      | gccがインストールされていることを確認します。
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('gcc --version')
+    p gcc 5.3.1以降がインストールされていればOK
+    p Linuxカーネルヘッダーをインストールします。
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('sudo apt-get install linux-headers-$(uname -r)')
+    p
+      | Ubuntu 16.04用のCUDA Tookitをインストールします。
+      br
+      | まず、
+      a(href='https://developer.nvidia.com/cuda-downloads') CUDAダウンロードページ
+      | からUbuntu用debファイルをダウンロードします。
+      br
+      img.download-cuda-toolkit(src='image/deeplearning-by-tensorflow/download-cuda-toolkit.png')
+      br
+      | ダウンロードした.debファイルは/tmpに移動しておきます。
+    p
+      | cuda toolkitをインストールします。(インストールサイズが2GBほどあるので注意。ネットワークが遅いと数十分から数時間かかります。)
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('sudo dpkg -i /tmp/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb')
+      .code-line
+        | $&nbsp;
+        +user-input('sudo apt-get update')
+      .code-line
+        | $&nbsp;
+        +user-input('sudo apt-get install cuda')
+    p
+      | 環境変数LD_LIBRARY_PATHを設定します。
+    .code
+      .code-line
+        | $&nbsp;
+        +user-input('export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}')
+      .code-line
+        | $&nbsp;
+        +user-input('echo "export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" >> ~/.profile')
+
     h5 2. cuDNNのインストール
-      p
-        | 追記予定。NVIDIAのドキュメントは
-        a(href='https://developer.nvidia.com/cudnn') こちら
+    p
+      | 参考:
+      a(href='https://developer.nvidia.com/cudnn', target='_blank') NVIDIA cuDNN
+    p
+      | cuDNNはディープラーニング研究者・開発者用のライブラリであり、ダウンロードするにはnVidiaのAccelerated Computing Developer Programのメンバーになる必要があります。
+      | メンバー登録自体は簡単で、nVidiaのサイトでアカウントを作成するだけです。
+    p
+      a(href='https://developer.nvidia.com/cudnn', target='_blank') nVidiaのcuDNNダウンロードサイト
+      | に行きDownloadボタンをクリックします。
+      a(href='https://developer.nvidia.com/cudnn', target='_blank')
+        img(src='image/deeplearning-by-tensorflow/download-cuDNN.png' alt='')
+    p
+      | Join Nowボタンをクリックします。
+      br
+      img(src='image/deeplearning-by-tensorflow/cnDNN-membership-required.png', alt='')
+    p
+      | Eメールアドレス、氏名、組織名、国、規約に同意ボタンをチェックし、Nextボタンをクリックします。
+      br
+      | 組織ではなく個人で登録する場合は組織名(Organization)の箇所は適当にIndividual Developerとでもしておけば良いです。
+      br
+      img(src='image/deeplearning-by-tensorflow/cuDNN-fill-basic-information.png')
+      br
+      | 規約について、私の視点から抑えておくべきポイントは下記の２つです。
+    ul
+      li
+        | Developer Programにおいて、規約同意者は製品改善のための意見やフィードバックをnVidiaに与えることが期待されている。
+        | だが、フィードバックの内容を勝手に公開してはならない。例えばブログ等にcuDNNにはこれこれこういう課題があってここを改善すると良い、
+        | などということを書いてはならない。
+      li
+        | nVidiaは規約同意者をいつでもどんな理由でもDeveloper Programから退会させることができる。Developer Programで知り得た情報を
+        | むやみやたらに公開してしまうと、突然Developer Program上のツールをダウンロードできなくなってしまう可能性がある。規約を守らせるための抑止力といったところか。
+    p
+      | 次のページに行くとアンケート形式でいくつか質問をされる。内容はここには書きませんが、それぞれ自分の状況に合うように入力し登録を完了します。
+    p
+      | 登録完了後再度上のDownloadボタンを押すことでcuDNNをダウンロードすることができます。
+      br
+      | インストール方法はメンバー登録後cuDNNのダウンロードページにあるインストールガイドに記載されていますが、規約により本サイトには内容を記載しません。
+
     h5 3. libcupti-devのインストール
     .code
       .code-line
