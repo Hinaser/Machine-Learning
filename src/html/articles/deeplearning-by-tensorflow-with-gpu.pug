@@ -413,13 +413,13 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     p
       | bazel buildでソースをビルドします。
       br
-      | ちなみに私のマシン(CPU: i5-4570S@2.9GHz, 4core, RAM: 8GB)では23分かかりました。
-      | CPU使用率もほとんどの時間で4コアとも使用率100%、メモリも見ていた限り最大で8GBの99.7%、スワップも3.5GB使用していました。
+      | ちなみに私のマシン(CPU: i7-2600K@3.9GHz, 4C8T, RAM: 16GB)では23分かかりました。
+      | CPU使用率もほとんどの時間で8コアとも使用率100%、メモリも見ていた限り最大で11GBほど使用していました。
       | 他の作業と同時並行でビルドするのはやめたほうが良いです。他のアプリを閉じたうえでビルドしましょう。
     .code
       .code-line
         | (tensorflow)$
-        +user-input("bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both --copt=-msse4.2 -config=cuda //tensorflow/tools/pip_package:build_pip_package")
+        +user-input("bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both --copt=-msse4.2 --config=cuda //tensorflow/tools/pip_package:build_pip_package")
     p
       | 上記のコマンドが完了すると、bazel-bin/tensorflow/tools/pip_package/build_pip_packageというファイルが作成されます。
       | そのファイル名の通り、TensorFlowのpipパッケージを作成するツールです。
