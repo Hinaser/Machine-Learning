@@ -280,6 +280,15 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     p
       | 上記のコマンドが完了すると、bazel-bin/tensorflow/tools/pip_package/build_pip_packageというファイルが作成されます。
       | そのファイル名の通り、TensorFlowのpipパッケージを作成するツールです。
+    .indent
+      p ※上記のコマンドはAVX/AVX2/FMA/SSE4.2の拡張命令セットが使えるCPUでのみ有効です。(ビルドは成功しますがプログラム実行時にエラーが発生します。)
+        br
+        | 私の持っているCPU(Intel Core i7 2600K)ではAVX2とFMAはサポートされてなかったため、AVX2/FMAに関するオプションを削除した上で実行しました。
+      .code
+        .code-line
+          | (tensorflow)$&nbsp;
+          +user-input("bazel build -c opt --copt=-mavx --copt=-mfpmath=both --copt=-msse4.2 --config=cuda //tensorflow/tools/pip_package:build_pip_package")
+
     //-
       p
         | pipパッケージを生成する前に、TensorBoardのビルドも追加で実行します。

@@ -189,16 +189,8 @@ article.main-article(data-page='deeplearning-by-tensorflow')
       img(src='image/deeplearning-by-tensorflow/cuDNN-fill-basic-information.png')
       br
       | 規約について、私の視点から抑えておくべきポイントは下記の２つです。
-    ul
-      li
-        | Developer Programにおいて、規約同意者は製品改善のための意見やフィードバックをnVidiaに与えることが期待されている。
-        | だが、フィードバックの内容を勝手に公開してはならない。例えばブログ等にcuDNNにはこれこれこういう課題があってここを改善すると良い、
-        | などということを書いてはならない。
-      li
-        | nVidiaは規約同意者をいつでもどんな理由でもDeveloper Programから退会させることができる。Developer Programで知り得た情報を
-        | むやみやたらに公開してしまうと、突然Developer Program上のツールをダウンロードできなくなってしまう可能性がある。規約を守らせるための抑止力といったところか。
     p
-      | 次のページに行くとアンケート形式でいくつか質問をされる。内容はここには書きませんが、それぞれ自分の状況に合うように入力し登録を完了します。
+      | 次のページに行くとアンケート形式でいくつか質問をされます。
     p
       | 登録完了後再度上のDownloadボタンを押すことでcuDNNをダウンロードすることができます。
       br
@@ -423,6 +415,14 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     p
       | 上記のコマンドが完了すると、bazel-bin/tensorflow/tools/pip_package/build_pip_packageというファイルが作成されます。
       | そのファイル名の通り、TensorFlowのpipパッケージを作成するツールです。
+    .indent
+      p ※上記のコマンドはAVX/AVX2/FMA/SSE4.2の拡張命令セットが使えるCPUでのみ有効です。(ビルドは成功しますがプログラム実行時にエラーが発生します。)
+        br
+        | 私の持っているCPU(Intel Core i7 2600K)ではAVX2とFMAはサポートされてなかったため、AVX2/FMAに関するオプションを削除した上で実行しました。
+      .code
+        .code-line
+          | (tensorflow)$&nbsp;
+          +user-input("bazel build -c opt --copt=-mavx --copt=-mfpmath=both --copt=-msse4.2 --config=cuda //tensorflow/tools/pip_package:build_pip_package")
 
     h5 8. TensorFlowのpipパッケージを作成し、インストールする。
     p
