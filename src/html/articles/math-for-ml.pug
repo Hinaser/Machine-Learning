@@ -8,13 +8,52 @@ article.main-article(data-page='math-for-ml')
     a#preface.in-page-anchor
     p
       | 機械学習のより深い理解に必要な数学の基礎についてまとめます。
+      br
+      small 2017/3/11現在加筆中です。内容は適宜追補します。
+    p
+      | このページで取り扱う記号の記法については
+      a(href='http://www.deeplearningbook.org/contents/notation.html', target='_blank')
+        | Goodfellow et al.(2016)
+      | を踏襲します。
+    p
+      | 機械学習で扱う数学は統計学と確率分布の数学が主になります。また機械学習では私が目にする限りでは
+      | 連続型の分布はあまり扱われず、離散型の確率分布が使われるケースがほとんどです。
+
+  .paragraph
+    a#random-variable.in-page-anchor
+    h4 Random variable - 確率変数
+    p
+      | random variableという英語名からわかるように、確率変数は
+      | 単なるランダムな値を取りうる変数です。
+      br
+      | 離散確率変数$\mathbf{x}$は取りうる値が可算個です。
+      | $$\mathbf{x} = \mathbf{x} \in \{x_i|x_1, x_2, ..., x_n\}$$
+      | 上式の記号を用いて言えば$\mathbf{x}$は$n$種類の値のバリエーションしか持たないということになります。
+      br
+      | 事象の確率を考えるとき、それぞれの$x_i$には確率$P(x_i)$が対応づけられます。
+
+  .paragraph
+    a#expectation.in-page-anchor
+    h4 Discrete Probabiity distribution function - 離散型確率分布
+
+    p
+      | 性質
+      | $$ 0 \le P(\mathbf{x} = x_i) \le 1 $$
+      | $$ \sum_{x_i} P(\mathbf{x} = x_i) = 1 $$
+
+  .paragraph
+    a#expectation.in-page-anchor
+    h4 Expectation - 期待値
+
+    p
+      | $$ \mathbb{E}_{x \sim P}[f(x)] = \sum_{x} P(x) f(x) $$
 
   .paragraph
     a#entropy.in-page-anchor
     h4 Entropy - エントロピー
 
     p
-      | $$H(X) = E[-\ln P(X)]$$
+      | $$ H(X) = E[I(X)] = - \sum_{x \sim P} P(x) \ln{P(x)}$$
 
   .paragraph
     a#cross-entropy.in-page-anchor
