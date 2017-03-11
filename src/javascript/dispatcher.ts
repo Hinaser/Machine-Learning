@@ -15,8 +15,6 @@ export default class Dispatcher {
                     break;
                 case 'deeplearning-by-tensorflow':
                     initClipboardJs(function(trigger: Element){
-                        console.log(trigger);
-                        console.log($(trigger).prev('span').text());
                         return $(trigger).prev('span').text();
                     });
                     break;

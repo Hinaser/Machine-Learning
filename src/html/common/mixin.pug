@@ -72,3 +72,9 @@ mixin disqus()
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+
+mixin user-input(text)
+  span.user-input= text
+  .clipboard
+    i.fa.fa-clipboard(aria-hidden='true')
+
