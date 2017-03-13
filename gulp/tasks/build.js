@@ -80,6 +80,11 @@ gulp.task('build:html:only', ['build:css', 'build:image'], function(){
     return gulp.src(config['html']['srcDir'] + '/*.pug')
         .pipe(plumber())
         .pipe(pug())
+        .pipe(uncache({
+            rename: false,
+            append: 'hash',
+            srcDir: config['html']['destDir']
+        }))
         .pipe(gulp.dest(config['html']['destDir']))
 });
 
