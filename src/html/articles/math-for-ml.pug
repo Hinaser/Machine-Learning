@@ -15,45 +15,155 @@ article.main-article(data-page='math-for-ml')
       a(href='http://www.deeplearningbook.org/contents/notation.html', target='_blank')
         | Goodfellow et al.(2016)
       | を踏襲します。
-    p
-      | 機械学習で扱う数学は統計学と確率分布の数学が主になります。また機械学習では私が目にする限りでは
-      | 連続型の分布はあまり扱われず、離散型の確率分布が使われるケースがほとんどです。
 
   .paragraph
     a#random-variable.in-page-anchor
     h4 Random variable - 確率変数
-    p
-      | random variableという英語名からわかるように、確率変数は
-      | 単なるランダムな値を取りうる変数です。
-      br
-      | 離散確率変数$\mathbf{x}$は取りうる値が可算個です。
-      | $$\mathbf{x} = \mathbf{x} \in \{x_i|x_1, x_2, ..., x_n\}$$
-      | 上式の記号を用いて言えば$\mathbf{x}$は$n$種類の値のバリエーションしか持たないということになります。
-      br
-      | 事象の確率を考えるとき、それぞれの$x_i$には確率$P(x_i)$が対応づけられます。
+    h6 特徴
+    ul.features
+      li
+        | 確率変数と書くと大仰で難解な概念に思えるが、英語名のRandom variableで覚えると理解しやすい。ただの取りうる値がランダムな変数。
+        | Stocastic variableともいう。Stocasticは確率論的なという意味。
+      li
+        | 難しく書くと確率変数$X$は標本空間$\Omega$から可測空間$E$への可測関数。
+      li
+        | 身近な例ではコイン投げにおいて、標本空間$\Omega$は'表'と'裏'の2つの元を持つ集合である。
+        | '表'と'裏'のラベルのままだと数学的に扱いにくいので、通常は'表'=1, '裏'=0と標本空間の元に数を割り当てる。
+        | この時標本空間に対応づけられている$\{0,1\}$が確率変数$X$の取りうる値の集合となる。
+      li
+        | 確率変数は離散値をとる場合と連続的な値をとる場合の2種類ある。
+      li
+        | 確率変数が離散的であるとは$X$の個数が有限または可算無限であることをいう。
+      li
+        | 確率変数が連続的であるとは$X$の個数が非可算であることをいう。
+      li
+        | 確率変数$X$の発生しやすさの確率分布関数$P(X)$が合わせて定義される。確率変数$X$の値そのものは確率(起こりやすさ)とは関係がない。
+
+    h6 厳密な理解に必要な知識
+    ul.prerequisite
+      li
+        a(href='https://en.wikipedia.org/wiki/Measure_(mathematics)', target='_blank') Measure Theory - 測度論
+      li
+        a(href='https://www.encyclopediaofmath.org/index.php/Measurable_space', target='_blank') Measuable Space - 可測空間
+      li
+        a(href='https://en.wikipedia.org/wiki/Measurable_function', target='_blank') Measure Function - 可測関数
+      li
+        a(href='https://en.wikipedia.org/wiki/Probability_space', target='_blank') Probability Space - 確率空間
 
   .paragraph
-    a#expectation.in-page-anchor
-    h4 Discrete Probabiity distribution function - 離散型確率分布
+    a#probability-distribution.in-page-anchor
+    h4 Probabiity distribution function - 確率分布関数
 
-    p
-      | 性質
-      | $$ 0 \le P(\mathbf{x} = x_i) \le 1 $$
-      | $$ \sum_{x_i} P(\mathbf{x} = x_i) = 1 $$
+    h6 特徴
+    ul.features
+      li
+        | 確率変数$X$の起こりやすさを表した関数。確率変数が離散的であるか連続的であるかによって確率分布関数の性質は異なる。
+        | 前者の場合の確率分布関数をPMF(Probability Mass Function, 確率質量関数)と呼び、後者をPDF(Probability Density Function、 確率密度関数)と呼ぶ。
+      li
+        | PMFを考えるとき、一般に確率分布関数は大文字の$P$で表記される。
+      li
+        | PDFを考えるとき、一般に確率分布関数は小文字の$p$で表記される。
+      li
+        | $X$が確率分布関数$P$にしたがって分布するとき、
+        | $$ X \sim P$$
+        | と書く。
+
+  .paragraph
+    a#pmf.in-page-anchor
+    h4 Discrete Probabiity distribution function - 離散確率分布関数
+
+    h6 特徴
+    ul.features
+      li
+        | $$ 0 \le P(X=x) \le 1 $$
+      li
+        | $$ \sum_{x \in X} P(x) = 1 $$
+      li
+        | $P(X=x)$は事象$x$の起こりえる確率をそのまま表す。
+
+  .paragraph
+    a#pdf.in-page-anchor
+    h4 Continuous Probabiity distribution function - 連続確率分布関数
+
+    h6 特徴
+    ul.features
+      li
+        | $$ 0 \le p(X=x) $$
+      li
+        | $$ \int_{x \in X} p(x) dx = 1 $$
+      li
+        | $P(X=x)$は離散確率分布と異なり事象$x$の起こりえる確率を直接表さない。
+        | 非可算無限個の元を持つ確率変数$X$に対して無限分の1である$X=x$をピンポイントで
+        | 拾い上げる確率は限りなくゼロに近いため。
+        | 通常は$X$上の連続区間$I \in [a,b]$を考え、区間$I$で表せられる事象が発生する確率を
+        | $$ \int_{a}^{b} p(x) dx $$で表す。
+      li
+        | 連続確率分布の例として一様分布(Uniform Distribution)がある。これは確率分布関数が任意の閉区間$I \in [a,b]$において、
+        | $$ p(x) = u(x;a,b) = \frac{1}{b-a}$$
+        | で表される確率密度関数である。
+        | 区間の長さのみによって確率が決まる非常にシンプルな分布関数である。
 
   .paragraph
     a#expectation.in-page-anchor
     h4 Expectation - 期待値
 
-    p
-      | $$ \mathbb{E}_{x \sim P}[f(x)] = \sum_{x} P(x) f(x) $$
+    h6 特徴
+    ul.features
+      li
+        | 離散確率分布の場合:
+        | $$ \mathbb{E}_{x \sim P}[f(x)] = \sum_{x} P(x) f(x) $$
+      li
+        | 連続確率分布の場合:
+        | $$ \mathbb{E}_{x \sim P}[f(x)] = \int_{x} p(x) f(x) dx $$
+      li
+        | 線形性:
+        | $$ \mathbb{E}_{x \sim P}[\alpha f(x) + \beta g(x)] = \alpha \mathbb{E}[f(x)] + \beta \mathbb{E}[g(X)] $$
+
+
+  .paragraph
+    a#self-information.in-page-anchor
+    h4 Self Information - 自己情報量
+
+    h6 特徴
+    ul.features
+      li
+        | surprisalとも言う。情報の量を定義するために用いられる概念。
+      li
+        | $P(x)=1$、つまりわかりきっている情報は情報量ゼロとなる。
+      li
+        | まれな情報ほど自己情報量$I(x)$が大きい。
+      li
+        | 定義:
+        | $$I(x) = - \log P(x)$$
 
   .paragraph
     a#entropy.in-page-anchor
     h4 Entropy - エントロピー
 
+    h6 特徴
+    ul.features
+      li
+        | 平均情報量とも言う。
+      li
+        | 自己情報量ではある単一の事象$x$における情報量しかわからなかったが、エントロピーの概念を用いれば、
+        | 標本空間全体の情報量を定量することができる。
+      li
+        | 定義:
+        | $$ H(X) = E_{X \sim P}[I(X)] = - \sum_{X \sim P} P(X) \ln{P(X)}$$
+      li
+        | $X \sim P$とすると、エントロピーは$$H(P)$$とも表記される。
+      li
+        | 起こりうる事象の数を固定すると、分布関数の選び方によってエントロピーの大小が変わる。
+        | a個の事象を考えるとき、それぞれの事象の確率が等しく$1/a$であるような一様分布はこの事象のエントロピーを最大にする分布の選び方である。
+        | これは事象の不確定さが最大ということを意味する。
+        | 不確定さが小さくなるほどエントロピーも小さくなる。
+
+  .paragraph
+    a#cross-entropy.in-page-anchor
+    h4 Kullback-Leibler divergence - カルバック・ライブラー情報量
+
     p
-      | $$ H(X) = E[I(X)] = - \sum_{x \sim P} P(x) \ln{P(x)}$$
+      |
 
   .paragraph
     a#cross-entropy.in-page-anchor
