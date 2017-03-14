@@ -26,7 +26,7 @@ article.main-article(data-page='math-for-ml')
       li
         | 難しく書くと確率変数$X$は標本空間$\Omega$から可測空間$E$への可測関数。
       li
-        | 身近な例ではコイン投げにおいて、標本空間$\Omega$は'表'と'裏'の2つの元を持つ集合である。
+        | 身近な例ではコイン投げにおいて、標本空間$\Omega$は'表'と'裏'の2つの元を持つ集合ととれる。
         | '表'と'裏'のラベルのままだと数学的に扱いにくいので、通常は'表'=1, '裏'=0と標本空間の元に数を割り当てる。
         | この時標本空間に対応づけられている$\{0,1\}$が確率変数$X$の取りうる値の集合となる。
       li
@@ -158,32 +158,92 @@ article.main-article(data-page='math-for-ml')
         | 不確定さが小さくなるほどエントロピーも小さくなる。
 
   .paragraph
-    a#cross-entropy.in-page-anchor
+    a#kl-divergence.in-page-anchor
     h4 Kullback-Leibler divergence - カルバック・ライブラー情報量
 
-    p
-      |
+    h6 特徴
+    ul.features
+      li
+        | 2つの確率分布が互いにどれだけ異なっているかを表す指標。$D_{\text{KL}}$で表記される。
+      li
+        | $$ D_{\text{KL}}(P||Q) = E_{x \sim P}[\log \frac{P(x)}{Q(x)}] = \sum_{x} P(x) \log \frac{P(x)}{Q(x)}$$
+      li
+        a(href='https://ja.wikipedia.org/wiki/%E3%82%AE%E3%83%96%E3%82%B9%E3%81%AE%E4%B8%8D%E7%AD%89%E5%BC%8F', target='_blank') ギブスの不等式
+        | より、$D_{\text{KL}}(P||Q) \ge 0$ 。$D_{\text{KL}}(P||Q)=0$となるのは全ての$x$において$P(x)=Q(x)$となる場合のみ。
+        br
+        | つまり確率分布が互いに全く同一であるときにカルバック・ライブラー情報量は$0$になる。
+      li
+        | $$D_{\text{KL}}(P||Q) \ne D_{\text{KL}}(Q||P)$$
 
   .paragraph
     a#cross-entropy.in-page-anchor
     h4 Cross Entropy - クロスエントロピー
 
-    p
-      |
+    h6 特徴
+    ul.features
+      li
+        | 確率分布$P,Q$のクロスエントロピー$H(P,Q)$はエントロピー$H(P)$およびKL Divergenceを使うと下記の式で表せられる。
+        | $$ H(P,Q) = H(P) + D_{\text{KL}}(P||Q) $$
+      li
+        | 上記を展開すると
+        | $$
+        | \begin{align}
+        |   H(P,Q) &= -\sum_{x \sim P} P(x) \log P(x) + \sum_{x} P(x) \log \frac{P(x)}{Q(x)} \\
+        |          &= -\sum_{x \sim P} P(x) \log Q(x)
+        | \end{align}
+        | $$
+      li
+        | Quadratic Cost Functionの場合、誤差の最小値は0となるがクロスエントロピーを誤差関数とする場合はその値の最小値はゼロとはならない。
+        | とはいえクロスエントロピーを最小にすることとKL Divergenceを最小にすることは同義でありこの場合は最小値はゼロとなる。
+        | そのためクロスエントロピーを最小化する、
+        | といったときには誤差の測定に$H(P,Q)$と$D_{\text{KL}}$のどちらを使おうとしているのか注意が必要。
+      li
+        | 機械学習では入力がk個のクラスのうちどれに該当するか判定する場合に誤差関数として採用されることが多い。
+        br
+        | 2値分類(Binary Classification)を例として考える。入力が1であると考えられる確率を$\hat y_1$、2の場合は確率を$\hat y_2$とおく。
+        | また、入力に対する真の判定結果をそれぞれ$y_1, y_2$とおく。このとき
+        | $$
+        | \begin{align}
+        | H(P,Q) = - \sum_{i}^{2} y_i \log \hat{y_i} &= - (y_1 \log \hat{y_1} + y_2 \log \hat{y_2} ) \\
+        | &= - (y_1 \log \hat{y_1} + (1-y_1) \log (1-\hat{y_1}) )
+        | \end{align}
+        | $$
+        | となる。2値分類のため
+        | $ y_2 = 1 - y1,\, \hat y_2 = 1 - \hat y_1$であることを利用している。
+      li
+        | MNISTのように10個の出力ニューロンが出力層に並べられている場合でも、出力層の1つ1つのニューロンはそれぞれ2値分類をしている。
+        | 例えば出力層の最初のニューロンは入力が0かそうでないかを判断するニューロンであり、出力層の最後のニューロンは入力が9かそうでないかを
+        | 判定するだけである。そのため上記の2値分類用のクロスエントロピーを用いて出力層のニューロンの誤差を定量できる。
+
 
   .paragraph
     a#logits.in-page-anchor
     h4 Logits - ロジット
 
-    p
-      |
+    h6 特徴
+    ul.features
+      li
+        | $$logit(p) = \ln \frac{p}{1-p}$$
+      li
+        | ロジットの逆関数はシグモイド関数$$\sigma(z)=1/(1+e^{-z})$$
+        | つまり$$\sigma(logit(p)) = p$$
+      li
+        | $p/(1-p)$はオッズ(odds)と呼ばれる。
+      li
+        | 値域は$(-\infty, +\infty)$
+      li
+        | TensorflowではClassification APIにてsigmoid_cross_entropy_with_logitsのようにlogitsを使った分類メソッドが数多く登場するためここで紹介した。
+      li
+        | ロジット$\ln \frac{p}{1-p}$の値域は$(-\infty,+\infty)$であるため$logits \in \mathbf R$である。ロジットをシグモイド関数にかけると
+        | $(-\infty,+\infty) \to (0,1)$に変換してくれるため、任意の実数を$[0,1]$に規格化する用途で頻繁に利用される。
 
   .paragraph
     a#softmax.in-page-anchor
     h4 Softmax - ソフトマックス
 
-    p
-      |
+    h6 特徴
+    ul.features
+      li
 
 
 +mathjax()
