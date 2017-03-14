@@ -278,7 +278,9 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     .indent
       p ※上記のコマンドはAVX/AVX2/FMA/SSE4.2の拡張命令セットが使えるCPUでのみ有効です。(ビルドは成功しますがプログラム実行時にエラーが発生します。)
         br
-        | 私の持っているCPU(Intel Core i7 2600K)ではAVX2とFMAはサポートされてなかったため、AVX2/FMAに関するオプションを削除した上で実行しました。
+        | 古いCPU(Intel Core i7 2600Kなど)ではAVX2とFMAはサポートされていないため、そのようなCPUを使っている場合はAVX2/FMAに関するオプションを削除した上で実行する必要があります。
+        br
+        | 自分の使っているマシンのCPUがAVX/AVX2/FMA/SSE4.2が利用可能か事前に調べておいてください。
       .code
         .code-line
           | (tensorflow)$&nbsp;
