@@ -223,6 +223,7 @@ article.main-article(data-page='math-for-ml')
     h6 特徴
     ul.features
       li
+        | 確率をpとすると、
         | $$logit(p) = \ln \frac{p}{1-p}$$
       li
         | ロジットの逆関数はシグモイド関数$$\sigma(z)=1/(1+e^{-z})$$
@@ -230,20 +231,143 @@ article.main-article(data-page='math-for-ml')
       li
         | $p/(1-p)$はオッズ(odds)と呼ばれる。
       li
-        | 値域は$(-\infty, +\infty)$
+        | ロジット$\ln \frac{p}{1-p}$の値域は$(-\infty,+\infty)$であり、$logits \in \mathbf R$。
+        br
+        | つまり実変数$x$をロジットと見立ててシグモイド関数にかけると確率が得られたと見ることができる。
       li
-        | TensorflowではClassification APIにてsigmoid_cross_entropy_with_logitsのようにlogitsを使った分類メソッドが数多く登場するためここで紹介した。
+        | TensorFlow等の機械学習フレームワークでは、これから確率に変換しようとしている出力層のニューロンの出力値を
+        | よくロジットと呼ぶことが多い。
       li
-        | ロジット$\ln \frac{p}{1-p}$の値域は$(-\infty,+\infty)$であるため$logits \in \mathbf R$である。ロジットをシグモイド関数にかけると
-        | $(-\infty,+\infty) \to (0,1)$に変換してくれるため、任意の実数を$[0,1]$に規格化する用途で頻繁に利用される。
+        | MNISTのチュートリアルではトレーニングデータとして用意されている出力の真の値は確率分布だが、
+        | ニューロンの出力値は$\mathbf{w}^{\mathbf{T}} \mathbf{x} + \mathbf{b}$ であり、
+        | その値は1より大きくなりえることから$p \in [0,1]$の確率の公理を満たさない。
+        br
+        | そのためこのようなケースでは出力層のニューロンについては出力値を確率を表すように変換してやらなければならない。
+        | ニューロンの出力をソフトマックス関数やシグモイド関数に通してからクロスエントロピーの計算をし、誤差を最小化させるという流れが一般的。
 
   .paragraph
     a#softmax.in-page-anchor
-    h4 Softmax - ソフトマックス
+    h4 Softmax function - ソフトマックス関数
 
     h6 特徴
     ul.features
       li
+        | $$\sigma(\mathbf{z})_j = \frac{e^{z_j}}{\sum_{k} e^{z_k}}$$
+      li
+        | 定義域が$(-\infty,+\infty)$の変数を確率分布$P(x)\in (0,1)$に写す関数。単調増加関数だが上限がある。
+      li
+        a(href='#multiclass-classification') Multiclass classification(多クラス分類)
+        | のニューラルネットの出力層のニューロンの活性化関数として使われるケースが多い。
+      li
+        | 出力層の7個のニューロンのそれぞれの入力総和が
+        | $$
+        | \mathbf z = \left(
+        |               \begin{array}{c}
+        |                 1\\
+        |                 2\\
+        |                 3\\
+        |                 4\\
+        |                 3\\
+        |                 2\\
+        |                 1\\
+        |               \end{array}
+        |             \right)
+        | $$
+        | であるとき、これらのニューロンの入力総和に対する個々のソフトマックスは
+        | $$
+        | \mathbf{\sigma(\mathbf{z})} = \left(
+        |               \begin{array}{c}
+        |                 0.0236\\
+        |                 0.0643\\
+        |                 0.1747\\
+        |                 0.4748\\
+        |                 0.1747\\
+        |                 0.0643\\
+        |                 0.0236\\
+        |               \end{array}
+        |             \right)\\
+        | $$
+        | 同時に
+        | $$
+        | 0 \le \mathbf{\sigma}_i \le 1\\
+        | \sum_i \mathbf{\sigma}_i = 1
+        | $$
+        | となる。
+        br
+        | ソフトマックスの入力の内、最も値が大きいものの出力が強調され他の出力と大きく差をつけられることから
+        | 多クラス分類のような複数のクラスから1つのクラスを選択する場合の分類に向いている。
+
+  .paragraph
+    a#sigmoid.in-page-anchor
+    h4 Sigmoid function - シグモイド関数
+
+    h6 特徴
+    ul.features
+      li
+        | $$s(\mathbf{z})_j = \frac{1}{1+e^{-z_j}}$$
+      li
+        | $$s' = s(1-s)$$
+      li
+        | ソフトマックス関数と同様に、定義域が$(-\infty,+\infty)$の変数を確率分布$P(x)\in (0,1)$に写す関数。単調増加関数だが上限がある。
+      li
+        a(href='#multiclass-classification') Multilabel classification(マルチラベル分類)
+        | のニューラルネットの出力層のニューロンの活性化関数として使われるケースが多い。
+      li
+        | シグモイドはソフトマックスと異なり、入力されたベクトルの成分の和で個々の成分を割り成分の総和が1となるような規格化は行わない。
+        | そのため多クラス分類のようにあり得る複数のクラスの中から1を選ぶような分類には適さない。
+        | 代わりに、出力層のニューロン個々が独立した確率であるようなマルチラベル分類に適している。
+
+  .paragraph
+    a#multiclass-classification.in-page-anchor
+    h4 Multiclass classification - 多クラス分類
+
+    h6 特徴
+    ul.features
+      li
+        | MNISTのようにmutually exclusiveな値の分類。
+      li
+        | 1つの入力に対して複数のクラスの中から1のクラスが割り当てられるような分類
+      li
+        | ニューラルネットでは入力に対する真の出力が下記のようなone-hot vectorとなるような分類
+        | $$
+        | \mathbf y = \left(
+        |               \begin{array}{c}
+        |                 0 \\
+        |                 0 \\
+        |                 0 \\
+        |                 1 \\
+        |                 0 \\
+        |               \end{array}
+        |             \right)
+        | $$
+
+  .paragraph
+    a#multilabel-classification.in-page-anchor
+    h4 Multilabel classification - マルチラベル分類
+
+    h6 特徴
+    ul.features
+      li
+        | Not mutually exclusiveな分類。
+      li
+        | 1つの入力に対して複数のクラスが割り当てられるような分類
+      li
+        | 例としてトピックラベルのように一つの記事に複数のタグをつける場合に使われる分類
+      li
+        | ニューラルネットでは入力に対する真の出力が下記のようなベクトルとなるような分類
+        | $$
+        | \mathbf y = \left(
+        |               \begin{array}{c}
+        |                 0 \\
+        |                 1 \\
+        |                 0 \\
+        |                 1 \\
+        |                 0 \\
+        |               \end{array}
+        |             \right)
+        | $$
+
+
 
 
 +mathjax()
