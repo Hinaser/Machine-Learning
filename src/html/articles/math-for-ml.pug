@@ -76,7 +76,7 @@ article.main-article(data-page='math-for-ml')
       li
         | $$ 0 \le P(X=x) \le 1 $$
       li
-        | $$ \sum_{x \in X} P(x) = 1 $$
+        | $$ \sum_{x} P(x) = 1 $$
       li
         | $P(X=x)$は事象$x$の起こりえる確率をそのまま表す。
 
@@ -87,11 +87,11 @@ article.main-article(data-page='math-for-ml')
     h6 特徴
     ul.features
       li
-        | $$ 0 \le p(X=x) $$
+        | $$ 0 \le p(x \in dx) $$
       li
-        | $$ \int_{x \in X} p(x) dx = 1 $$
+        | $$ \int_{x} p(x) dx = 1 $$
       li
-        | $P(X=x)$は離散確率分布と異なり事象$x$の起こりえる確率を直接表さない。
+        | $p(x)$は離散確率分布と異なり事象$x$の起こりえる確率を直接表さない。
         | 非可算無限個の元を持つ確率変数$X$に対して無限分の1である$X=x$をピンポイントで
         | 拾い上げる確率は限りなくゼロに近いため。
         | 通常は$X$上の連続区間$I \in [a,b]$を考え、区間$I$で表せられる事象が発生する確率を
