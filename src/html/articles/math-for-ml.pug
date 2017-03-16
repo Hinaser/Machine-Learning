@@ -367,7 +367,26 @@ article.main-article(data-page='math-for-ml')
         |             \right)
         | $$
 
+  .paragraph
+    a#hadamard-product.in-page-anchor
+    h4 Hadamard Product - アダマール積
 
+    h6 特徴
+    ul.features
+      li
+        | 同じ形状の2つの行列に対して、それぞれの成分を掛けあわせた同型の行列を作る操作。
+      li
+        | $$
+        | \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
+        | \circ
+        | \begin{pmatrix} b_{11} & b_{12} \\ b_{21} & b_{22} \end{pmatrix}
+        | =
+        | \begin{pmatrix} a_{11} b_{11} & a_{12} b_{12} \\ a_{21} b_{21} & a_{22} b_{22} \end{pmatrix}
+        | $$
+      li
+        | $$(A \circ B)_{i,j} = a_{i,j} b_{i,j}$$
+      li
+        | 畳み込みニューラルネットワーク(CNN)において、生の入力からfeature map(Activation map, Convolved feature)を作る際に利用される演算。
 
 
 +mathjax()
