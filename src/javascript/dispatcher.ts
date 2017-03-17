@@ -2,7 +2,7 @@
 /// <reference path="../../node_modules/@types/clipboard/index.d.ts" />
 import * as $ from 'jquery'
 import {LearnTensorFlowPlayground} from './learntensorflowplayground';
-import {Test} from './test';
+import {MathForML} from './mathForML';
 import {initClipboardJs} from "./commonLib";
 
 export default class Dispatcher {
@@ -18,6 +18,9 @@ export default class Dispatcher {
                     initClipboardJs(function(trigger: Element){
                         return $(trigger).prev('span').text();
                     });
+                    break;
+                case 'math-for-ml':
+                    new MathForML();
                     break;
             }
         });
