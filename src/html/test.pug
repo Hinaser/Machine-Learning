@@ -7,79 +7,89 @@ html
     script(src='js/test.js')
     //enduncache
   body
+    +mathjax()
     .entropy-demo
       #prob-P.probability-bar
         .each-prob.p1
-          | P1
+          | $P_1$
           .prob-val
             span
-              | 91
+              | 0.200
         .prob-separator(data-separator='p1-p2')
         .each-prob.p2
-          | P2
+          | $P_2$
           .prob-val
             span
-              | 91
+              | 0.200
         .prob-separator(data-separator='p2-p3')
         .each-prob.p3
-          | P3
+          | $P_3$
           .prob-val
             span
-              | 92
+              | 0.200
         .prob-separator(data-separator='p3-p4')
         .each-prob.p4
-          | P4
+          | $P_4$
           .prob-val
             span
-              | 92
+              | 0.200
         .prob-separator(data-separator='p4-p5')
         .each-prob.p5
-          | P5
+          | $P_5$
           .prob-val
             span
-              | 92
+              | 0.200
         .entropy-val
-          | H(P)&nbsp;=&nbsp;
+          | $H(P)$&nbsp;=&nbsp;
           span
-            | -ln(0.2)
+            | $-\ln(0.2)$
 
-      svg.line-between-entropy(xmlns='http://www.w3.org/2000/svg')
-        line(data-link='p1-p2_q1-q2' stroke-width='2', stroke='rgba(0,200,128,.8)')
-        line(data-link='p2-p3_q2-q3' stroke-width='2', stroke='rgba(0,200,128,.8)')
-        line(data-link='p3-p4_q3-q4' stroke-width='2', stroke='rgba(0,200,128,.8)')
-        line(data-link='p4-p5_q4-q5' stroke-width='2', stroke='rgba(0,200,128,.8)')
+      .line-between-entropy
+        svg(xmlns='http://www.w3.org/2000/svg')
+          line(data-link='p1-p2_q1-q2' stroke-width='1', stroke='rgba(0,200,128,.8)')
+          line(data-link='p2-p3_q2-q3' stroke-width='1', stroke='rgba(0,200,128,.8)')
+          line(data-link='p3-p4_q3-q4' stroke-width='1', stroke='rgba(0,200,128,.8)')
+          line(data-link='p4-p5_q4-q5' stroke-width='1', stroke='rgba(0,200,128,.8)')
+        .cross-entropy-val
+          | $H(P,Q)$&nbsp;=&nbsp;
+          span.cross-entropy
+            | $-\ln(0.2)$
+          br
+          | $D_{KL}(P||Q)$&nbsp;=&nbsp;
+          span.kl-divergence
+            | 0
 
       #prob-Q.probability-bar
         .each-prob.q1
-          | Q1
+          | $Q_1$
           .prob-val
             span
-              | 91
+              | 0.200
         .prob-separator(data-separator='q1-q2')
         .each-prob.q2
-          | Q2
+          | $Q_2$
           .prob-val
             span
-              | 91
+              | 0.200
         .prob-separator(data-separator='q2-q3')
         .each-prob.q3
-          | Q3
+          | $Q_3$
           .prob-val
             span
-              | 92
+              | 0.200
         .prob-separator(data-separator='q3-q4')
         .each-prob.q4
-          | Q4
+          | $Q_4$
           .prob-val
             span
-              | 92
+              | 0.200
         .prob-separator(data-separator='q4-q5')
         .each-prob.q5
-          | Q5
+          | $Q_5$
           .prob-val
             span
-              | 92
+              | 0.200
         .entropy-val
-          | H(Q)&nbsp;=&nbsp;
+          | $H(Q)$&nbsp;=&nbsp;
           span
-            | -ln(0.2)
+            | $-\ln(0.2)$

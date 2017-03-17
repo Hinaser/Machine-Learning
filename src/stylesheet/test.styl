@@ -1,13 +1,18 @@
-bar-height = 100px
+bar-height = 60px
 bar-width = 600px
-separator-width = 3px
-connector-area-height = 100px
+separator-width = 6px
+connector-area-height = bar-height
 
 body
   padding 40px
 
 .entropy-demo
   position relative
+  user-select: none;
+
+  .mjx-chtml
+    line-height bar-height
+    display inline !important
 
   .probability-bar
     border 1px solid black
@@ -51,6 +56,18 @@ body
   .probability-bar + .probability-bar
     margin-top connector-area-height
 
-  svg.line-between-entropy
-    width bar-width + separator-width * 4
-    height connector-area-height
+  .line-between-entropy
+    position relative
+
+    svg
+      width bar-width + separator-width * 4
+      height connector-area-height
+    .cross-entropy-val
+      position absolute
+      top 0
+      left bar-width + separator-width * 4 + 20px
+      line-height (connector-area-height / 2)
+      height connector-area-height
+
+      .mjx-chtml
+        line-height (bar-height / 3)

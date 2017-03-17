@@ -10238,6 +10238,8 @@ var Separator = (function () {
         this.prevProb = this.separator.prev();
         this.nextProb = this.separator.next();
         this.entropyVal = this.separator.parent().find('.entropy-val span');
+        this.crossEntropyVal = $('.cross-entropy-val span.cross-entropy');
+        this.klDivergenceVal = $('.cross-entropy-val span.kl-divergence');
         this.dragging = false;
         this.px = null;
         this.probbarWholeWidth = this.separator.parent().width() - this.separator.outerWidth() * 4;
@@ -10269,6 +10271,10 @@ var Separator = (function () {
             self.nextProb.find('.prob-val span').text((nextTargetWidth / self.probbarWholeWidth).toFixed(3));
             var entropy = self.getEntropy();
             self.entropyVal.text(entropy.toFixed(3));
+            var cross_entropy = self.getCrossEntropy();
+            self.crossEntropyVal.text(cross_entropy.toFixed(3));
+            var kl_divergence = self.getKLDivergenceFromQtoP();
+            self.klDivergenceVal.text(kl_divergence.toFixed(3));
             self.connector.reposition();
         });
     }
@@ -10286,27 +10292,56 @@ var Separator = (function () {
         entropy = -1 * entropy;
         return entropy;
     };
+    Separator.prototype.getKLDivergenceFromQtoP = function () {
+        var self = this;
+        var kl_divergence = 0;
+        var P = $.map($('#prob-P').find('.each-prob').toArray(), function (el, i) {
+            return $(el).width() / self.probbarWholeWidth;
+        });
+        var Q = $.map($('#prob-Q').find('.each-prob').toArray(), function (el, i) {
+            return $(el).width() / self.probbarWholeWidth;
+        });
+        P.forEach(function (_, i) {
+            kl_divergence += P[i] * Math.log(Q[i] / P[i]);
+        });
+        kl_divergence = -1 * kl_divergence;
+        return kl_divergence;
+    };
+    Separator.prototype.getCrossEntropy = function () {
+        var self = this;
+        var cross_entropy = 0;
+        var P = $.map($('#prob-P').find('.each-prob').toArray(), function (el, i) {
+            return $(el).width() / self.probbarWholeWidth;
+        });
+        var Q = $.map($('#prob-Q').find('.each-prob').toArray(), function (el, i) {
+            return $(el).width() / self.probbarWholeWidth;
+        });
+        P.forEach(function (_, i) {
+            cross_entropy += P[i] * Math.log(Q[i]);
+        });
+        cross_entropy = -1 * cross_entropy;
+        return cross_entropy;
+    };
     return Separator;
 }());
 var Connector = (function () {
     function Connector(_label) {
         this.label = _label;
-        this.connector = $('svg.line-between-entropy line[data-link="' + this.label + '"]');
+        this.connector = $('.line-between-entropy svg line[data-link="' + this.label + '"]');
         var id_endpoint1 = this.label.split('_')[0];
         var id_endpoint2 = this.label.split('_')[1];
         this.endpoint1 = $('.prob-separator[data-separator="' + id_endpoint1 + '"]');
         this.endpoint2 = $('.prob-separator[data-separator="' + id_endpoint2 + '"]');
         this.connector
-            .attr('x1', this.endpoint1.position().left + 2)
+            .attr('x1', this.endpoint1.position().left + 4)
             .attr('y1', this.endpoint1.position().top)
-            .attr('x2', this.endpoint2.position().left + 2)
-            .attr('y2', this.endpoint2.position().top + this.endpoint1.height());
+            .attr('x2', this.endpoint2.position().left + 4)
+            .attr('y2', this.endpoint2.position().top + this.endpoint1.prev().height());
     }
     Connector.prototype.reposition = function () {
-        //console.log(this.endpoint1.position().left + ":" + this.endpoint2.position().left);
         this.connector
-            .attr('x1', this.endpoint1.position().left + 2)
-            .attr('x2', this.endpoint2.position().left + 2);
+            .attr('x1', this.endpoint1.position().left + 4)
+            .attr('x2', this.endpoint2.position().left + 4);
     };
     return Connector;
 }());
