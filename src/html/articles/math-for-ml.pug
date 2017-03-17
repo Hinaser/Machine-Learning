@@ -17,14 +17,13 @@ article.main-article(data-page='math-for-ml')
 
   .paragraph
     a#random-variable.in-page-anchor
-    h4 Random variable - 確率変数
+    h4 Random variables - 確率変数
     h6 特徴
     ul.features
       li
-        | 確率変数と書くと大仰で難解な概念に思えるが、英語名のRandom variableで覚えると理解しやすい。ただの取りうる値がランダムな変数。
-        | Stocastic variableともいう。Stocasticは確率論的なという意味。
+        | 確率変数と書くと大仰で難解な概念に思えるが、英語名のRandom variablesで覚えると理解しやすい。ただの取りうる値がランダムな変数。
       li
-        | 難しく書くと確率変数$X$は標本空間$\Omega$から可測空間$E$への可測関数。
+        | 厳密に言うと確率変数$X$は標本空間$\Omega$から可測空間$E$への可測関数。
       li
         | 身近な例ではコイン投げにおいて、標本空間$\Omega$は'表'と'裏'の2つの元を持つ集合ととれる。
         | '表'と'裏'のラベルのままだと数学的に扱いにくいので、通常は'表'=1, '裏'=0と標本空間の元に数を割り当てる。
@@ -35,8 +34,6 @@ article.main-article(data-page='math-for-ml')
         | 確率変数が離散的であるとは$X$の個数が有限または可算無限であることをいう。
       li
         | 確率変数が連続的であるとは$X$の個数が非可算であることをいう。
-      li
-        | 確率変数$X$の発生しやすさの確率分布関数$P(X)$が合わせて定義される。確率変数$X$の値そのものは確率(起こりやすさ)とは関係がない。
 
     h6 厳密な理解に必要な知識
     ul.prerequisite
@@ -110,13 +107,13 @@ article.main-article(data-page='math-for-ml')
     ul.features
       li
         | 離散確率分布の場合:
-        | $$ \mathbb{E}_{x \sim P}[f(x)] = \sum_{x} P(x) f(x) $$
+        | $$ \mathbb{E}[f(x)] = \sum_{x} P(x) f(x) $$
       li
         | 連続確率分布の場合:
-        | $$ \mathbb{E}_{x \sim P}[f(x)] = \int_{x} p(x) f(x) dx $$
+        | $$ \mathbb{E}[f(x)] = \int_{x} p(x) f(x) dx $$
       li
         | 線形性:
-        | $$ \mathbb{E}_{x \sim P}[\alpha f(x) + \beta g(x)] = \alpha \mathbb{E}[f(x)] + \beta \mathbb{E}[g(X)] $$
+        | $$ \mathbb{E}[\alpha f(x) + \beta g(x)] = \alpha \mathbb{E}[f(x)] + \beta \mathbb{E}[g(X)] $$
 
 
   .paragraph
@@ -215,6 +212,97 @@ article.main-article(data-page='math-for-ml')
         | 例えば出力層の最初のニューロンは入力が0かそうでないかを判断するニューロンであり、出力層の最後のニューロンは入力が9かそうでないかを
         | 判定するだけである。そのため上記の2値分類用のクロスエントロピーを用いて出力層のニューロンの誤差を定量できる。
 
+    p
+      | 2つの離散確率分布$P(x),\,Q(x)$に対するエントロピー、クロスエントロピー、KL情報量の変化の様子を体感できるデモを用意した。
+      br
+      | 機械学習では$P(x)$を参照用の真の確率分布、$Q(x)$をニューロンの出力した確率分布とすると、$Q(x)$の形状を$P(x)$に近づけていく
+      | 操作が繰り返される。$Q$の形が$P$に近いほどKL情報量が$0$に近づく様子が確認できる。
+
+    .entropy-demo
+      #prob-P.probability-bar
+        .each-prob.p1
+          | $P_1$
+          .prob-val
+            span
+              | 0.200
+        .prob-separator(data-separator='p1-p2')
+        .each-prob.p2
+          | $P_2$
+          .prob-val
+            span
+              | 0.200
+        .prob-separator(data-separator='p2-p3')
+        .each-prob.p3
+          | $P_3$
+          .prob-val
+            span
+              | 0.200
+        .prob-separator(data-separator='p3-p4')
+        .each-prob.p4
+          | $P_4$
+          .prob-val
+            span
+              | 0.200
+        .prob-separator(data-separator='p4-p5')
+        .each-prob.p5
+          | $P_5$
+          .prob-val
+            span
+              | 0.200
+        .entropy-val
+          | $H(P)$&nbsp;=&nbsp;
+          span
+            | $-\ln(0.2)$
+
+      .line-between-entropy
+        svg(xmlns='http://www.w3.org/2000/svg')
+          line(data-link='p1-p2_q1-q2' stroke-width='1', stroke='rgba(0,200,128,.8)')
+          line(data-link='p2-p3_q2-q3' stroke-width='1', stroke='rgba(0,200,128,.8)')
+          line(data-link='p3-p4_q3-q4' stroke-width='1', stroke='rgba(0,200,128,.8)')
+          line(data-link='p4-p5_q4-q5' stroke-width='1', stroke='rgba(0,200,128,.8)')
+        .cross-entropy-val
+          | $H(P,Q)$&nbsp;=&nbsp;
+          span.cross-entropy
+            | $-\ln(0.2)$
+          br
+          | $D_{KL}(P||Q)$&nbsp;=&nbsp;
+          span.kl-divergence
+            | 0
+
+      #prob-Q.probability-bar
+        .each-prob.q1
+          | $Q_1$
+          .prob-val
+            span
+              | 0.200
+        .prob-separator(data-separator='q1-q2')
+        .each-prob.q2
+          | $Q_2$
+          .prob-val
+            span
+              | 0.200
+        .prob-separator(data-separator='q2-q3')
+        .each-prob.q3
+          | $Q_3$
+          .prob-val
+            span
+              | 0.200
+        .prob-separator(data-separator='q3-q4')
+        .each-prob.q4
+          | $Q_4$
+          .prob-val
+            span
+              | 0.200
+        .prob-separator(data-separator='q4-q5')
+        .each-prob.q5
+          | $Q_5$
+          .prob-val
+            span
+              | 0.200
+        .entropy-val
+          | $H(Q)$&nbsp;=&nbsp;
+          span
+            | $-\ln(0.2)$
 
   .paragraph
     a#logits.in-page-anchor
@@ -254,7 +342,9 @@ article.main-article(data-page='math-for-ml')
       li
         | $$\sigma(\mathbf{z})_j = \frac{e^{z_j}}{\sum_{k} e^{z_k}}$$
       li
-        | 定義域が$(-\infty,+\infty)$の変数を確率分布$P(x)\in (0,1)$に写す関数。単調増加関数だが上限がある。
+        | 定義域が$(-\infty,+\infty)$の変数を$(0,1)$に写す関数。単調増加関数だが上限がある。
+      li
+        | 任意の実数値を取りうる変数を確率的な変数に規格化したい時に用られる。
       li
         a(href='#multiclass-classification') Multiclass classification(多クラス分類)
         | のニューラルネットの出力層のニューロンの活性化関数として使われるケースが多い。
@@ -308,7 +398,7 @@ article.main-article(data-page='math-for-ml')
       li
         | $$s' = s(1-s)$$
       li
-        | ソフトマックス関数と同様に、定義域が$(-\infty,+\infty)$の変数を確率分布$P(x)\in (0,1)$に写す関数。単調増加関数だが上限がある。
+        | ソフトマックス関数と同様に、定義域が$(-\infty,+\infty)$の変数を$(0,1)$に写す関数。単調増加関数だが上限がある。
       li
         a(href='#multiclass-classification') Multilabel classification(マルチラベル分類)
         | のニューラルネットの出力層のニューロンの活性化関数として使われるケースが多い。
@@ -367,7 +457,26 @@ article.main-article(data-page='math-for-ml')
         |             \right)
         | $$
 
+  .paragraph
+    a#hadamard-product.in-page-anchor
+    h4 Hadamard Product - アダマール積
 
+    h6 特徴
+    ul.features
+      li
+        | 同じ形状の2つの行列に対して、それぞれの成分を掛けあわせた同型の行列を作る操作。
+      li
+        | $$
+        | \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
+        | \circ
+        | \begin{pmatrix} b_{11} & b_{12} \\ b_{21} & b_{22} \end{pmatrix}
+        | =
+        | \begin{pmatrix} a_{11} b_{11} & a_{12} b_{12} \\ a_{21} b_{21} & a_{22} b_{22} \end{pmatrix}
+        | $$
+      li
+        | $$(A \circ B)_{i,j} = a_{i,j} b_{i,j}$$
+      li
+        | 畳み込みニューラルネットワーク(CNN)において、生の入力からfeature map(Activation map, Convolved feature)を作る際に利用される演算。
 
 
 +mathjax()
