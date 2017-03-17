@@ -19,9 +19,6 @@ export default class Dispatcher {
                         return $(trigger).prev('span').text();
                     });
                     break;
-                case 'test':
-                    new Test();
-                    break;
             }
         });
     }

@@ -1,0 +1,56 @@
+bar-height = 100px
+bar-width = 600px
+separator-width = 3px
+connector-area-height = 100px
+
+body
+  padding 40px
+
+.entropy-demo
+  position relative
+
+  .probability-bar
+    border 1px solid black
+    width bar-width + separator-width * 4
+    height bar-height
+    box-sizing content-box
+    position relative
+    margin 20px 0
+
+    .each-prob
+      float left
+      height 100%
+      text-align center
+      line-height bar-height
+      position relative
+      width (bar-width / 5)
+
+      .prob-val
+        position absolute
+        text-align center
+        top bar-height + 20px
+        left 0
+        right 0
+        height 30px
+        line-height 30px
+
+    .prob-separator
+      box-sizing border-box
+      cursor col-resize
+      float left
+      margin-top -20px
+      height bar-height + 20px + 20px
+      border-left separator-width solid rgba(200,200,100,0.7)
+      width separator-width
+
+    .entropy-val
+      position absolute
+      left bar-width + separator-width * 4 + 20px
+      line-height bar-height
+
+  .probability-bar + .probability-bar
+    margin-top connector-area-height
+
+  svg.line-between-entropy
+    width bar-width + separator-width * 4
+    height connector-area-height
