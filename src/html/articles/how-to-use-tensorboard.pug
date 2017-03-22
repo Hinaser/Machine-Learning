@@ -1,0 +1,51 @@
+include ../common/mixin
+
+article.main-article(data-page='how-to-use-tensorboard')
+  a#preface.in-page-anchor
+  h1 TensorBoardの使い方
+
+  .paragraph
+    | 検証中
+
+  pre.
+    import numpy as np
+    import tensorflow as tf
+
+    sess = tf.InteractiveSession()
+
+    A = tf.Variable([[1,0,0],[0,1,0],[0,0,1]], dtype=tf.float32, name="A")
+    b = tf.Variable(tf.zeros([3,1]), dtype=tf.float32, name="b")
+    sess.run(tf.global_variables_initializer())
+
+    x = tf.placeholder(tf.float32, shape=[None, 3, 1], name="x")
+    y_ = tf.matmul(A, x) + b
+
+    x_input = np.arange(3000).reshape([1000, 3,1])
+    y_input = np.arange(3000).reshape([1000, 3,1])
+    y = tf.placeholder(tf.float32, shape=[None, 3,1], name="y")
+
+    for i in range(1000):
+        for j in range(3):
+            x_input[i, j, 0] = i + j
+            y_input[i, j, 0] = i + j
+
+    with tf.name_scope('loss'):
+        loss = tf.sqrt(tf.reduce_mean(tf.square(y_ - y)))
+
+    train = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
+
+    with tf.name_scope('summary'):
+        tf.summary.scalar('y1', tf.reshape(tf.gather(y, 0), []))
+        tf.summary.scalar('y2', tf.reshape(tf.gather(y, 1), []))
+        tf.summary.scalar('y3', tf.reshape(tf.gather(y, 2), []))
+        merged = tf.summary.merge_all()
+        writer = tf.summary.FileWriter('/tmp/test', sess.graph)
+
+    for _ in range(1000):
+        __, summary = sess.run([train, merged], feed_dict={x: x_input, y: y_input})
+        if _ % 100 == 0:
+            writer.add_summary(summary, _)
+            print(sess.run(A))
+            print(sess.run(b))
+
+

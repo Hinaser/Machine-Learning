@@ -1,0 +1,18 @@
+extends common/layout.pug
+
+block opengraph
+  include common/mixin
+  - var title = 'TensorBoardの使い方'
+  - var description = 'TensorBoardの使い方を具体例とともに解説します。'
+  - var c_url = 'https://hinaser.github.io/Machine-Learning/how-to-use-tensor-board.html'
+  - var keywords = 'TensorBoard, Deep Learning, Neural Network, TensorFlow, Machine Learning, CUDA, nVidia'
+  +opengraph-meta(title, description, c_url, keywords)
+
+block title
+  title TensorBoardの使い方
+
+block article
+  include articles/how-to-use-tensorboard
+
+block expand-flag-deeplearning-by-tensorflow
+  .dpln-expand
