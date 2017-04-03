@@ -10,6 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "http-server docs/",
     "serve:dev": "gulp serve:dev",
+    "serve:dev:html": "gulp serve:dev:html",
     "build": "gulp build",
     "clean": "gulp clean"
   },
