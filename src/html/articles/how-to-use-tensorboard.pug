@@ -5,47 +5,598 @@ article.main-article(data-page='how-to-use-tensorboard')
   h1 TensorBoardの使い方
 
   .paragraph
-    | 検証中
+    p
+      | TensorBoardはTensorFlowでコーディングした計算グラフを可視化するツールです。
+      | TensorFlowインストール時に一緒にインストールされます。
+      br
+      | BASHシェル上から
+    code.code
+      | tensorboard --logdir=<ログディレクトリのパス※後述>
+    p
+      | と実行することにより、http://localhost:6006でTensorBoardのWeb画面にアクセスできるようになります。
 
-  pre.
-    import numpy as np
-    import tensorflow as tf
+    p
+      | このTensorBoardで利用されるログは下記のTensorFlow APIで生成されるものを利用します。
+      br
+      a(href='https://www.tensorflow.org/api_docs/python/tf/summary/FileWriter', target='_blank')
+        | tf.summary.FileWriter('ログ出力先ディレクトリ', グラフ)
+    p
+      | このAPIがTensorFlowのpythonスクリプト内で実行されると、
+      | それまでにグラフに登録されたOperation(変数の演算など)やTensorの計算グラフ全体がTensorBoard上に表示されるようになります。
 
-    sess = tf.InteractiveSession()
+    .graph-image
+      img(src='image/how-to-use-tensorboard/computational-graph-sample.png')
 
-    A = tf.Variable([[1,0,0],[0,1,0],[0,0,1]], dtype=tf.float32, name="A")
-    b = tf.Variable(tf.zeros([3,1]), dtype=tf.float32, name="b")
-    sess.run(tf.global_variables_initializer())
+    p
+      | 実際にTensorBoardを使う場合は計算グラフだけではなくトレーニングの過程での誤差の推移等
+      | を確認したい場合が多いと思います。このような場合は下記のAPIを利用し、scalar値として時系列推移グラフを登録します。
+    a(href='https://www.tensorflow.org/api_docs/python/tf/summary/scalar', target='_blank')
+      | tf.summary.scalar('loss', loss)
 
-    x = tf.placeholder(tf.float32, shape=[None, 3, 1], name="x")
-    y_ = tf.matmul(A, x) + b
+    p
+      | 断片的にコード片を見ても実感が湧かないと思いますので、
+      | 実例を元に全体像を説明します。
 
-    x_input = np.arange(3000).reshape([1000, 3,1])
-    y_input = np.arange(3000).reshape([1000, 3,1])
-    y = tf.placeholder(tf.float32, shape=[None, 3,1], name="y")
+    p
+      | TensorFlowを用いて以下のシンプルな行列計算の係数行列$\boldsymbol A$および$\boldsymbol b$の値を推定する機械学習モデルを作り、
+      | これをTensorBoardで可視化することを考えます。
+      | $$
+      | \boldsymbol{y} = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{b}
+      | $$
+      | ここで$\boldsymbol{x}$は入力データ、$\boldsymbol{y}$は出力データとします。
 
-    for i in range(1000):
-        for j in range(3):
-            x_input[i, j, 0] = i + j
-            y_input[i, j, 0] = i + j
+    p
+      | 今回はTensorFlowで
+      | $$ \left(\begin{array}{c} y_1\\y_2\\y_3 \end{array} \right) = \begin{pmatrix} 2&0&0\\0&2&0\\0&0&2 \end{pmatrix} \left(\begin{array}{c} x_1\\x_2\\x_3 \end{array} \right)$$
+      | となるようにモデルを組んでみます。
+      br
+      | つまり、学習の結果
+      | $$ \boldsymbol{A} = 2 \boldsymbol{I}\\\boldsymbol{b} = \left(\begin{array}{c} 0\\0\\0 \end{array} \right) $$
+      | に収束するような学習モデルを作ります。ここで $\boldsymbol{I}$ は $3\times3$の単位行列です。
 
-    with tf.name_scope('loss'):
-        loss = tf.sqrt(tf.reduce_mean(tf.square(y_ - y)))
+    p
+      | このモデルを実現するために例えば下記のようなトレーニングデータを用意します。
+      | $$
+      | x = \left(\begin{array}{c} 5\\2\\3 \end{array} \right),\,
+      | y = \left(\begin{array}{c} 10\\4\\6 \end{array} \right)\\
+      | x = \left(\begin{array}{c} 1\\8\\2 \end{array} \right),\,
+      | y = \left(\begin{array}{c} 2\\16\\4 \end{array} \right)\\
+      | \vdots\\
+      | x = \left(\begin{array}{c} x_1\\x_2\\x_3 \end{array} \right),\,
+      | y = \left(\begin{array}{c} 2x_1\\2x_2\\2x_3 \end{array} \right)
+      | $$
+      | この学習データをTensorFlowの機械学習モデルに入力し、$\boldsymbol{A}, \boldsymbol{b}$の値を学習させます。
 
-    train = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
+    p
+      | 今回利用するPythonのコードを下記に貼っておきます。
+      br
+      | 下記のコードの背景薄緑色の箇所がTensorBoardに関連するコードです。
 
-    with tf.name_scope('summary'):
-        tf.summary.scalar('y1', tf.reshape(tf.gather(y, 0), []))
-        tf.summary.scalar('y2', tf.reshape(tf.gather(y, 1), []))
-        tf.summary.scalar('y3', tf.reshape(tf.gather(y, 2), []))
-        merged = tf.summary.merge_all()
-        writer = tf.summary.FileWriter('/tmp/test', sess.graph)
+  code.sample-python-code
+    div(style='background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;')
+      pre(style='margin: 0; line-height: 125%')
+        span(style='color: #008800; font-weight: bold') import
+        | &nbsp;
+        span(style='color: #0e84b5; font-weight: bold') numpy
+        | &nbsp;
+        span(style='color: #008800; font-weight: bold') as
+        | &nbsp;
+        span(style='color: #0e84b5; font-weight: bold') np
+        br
+        span(style='color: #008800; font-weight: bold') import
+        | &nbsp;
+        span(style='color: #0e84b5; font-weight: bold') tensorflow
+        | &nbsp;
+        span(style='color: #008800; font-weight: bold') as
+        | &nbsp;
+        span(style='color: #0e84b5; font-weight: bold') tf
+        br
+        br
+        span(style='color: #888888') # セッションを生成
+        br
+        |sess&nbsp;
+        span(style='color: #333333') =
+        | &nbsp;tf
+        span(style='color: #333333') .
+        | InteractiveSession()
+        br
+        br
+        span(style='color: #888888') # トレーニングするパラメータを定義
+        br
+        | A&nbsp;
+        span(style='color: #333333') =
+        | &nbsp;tf
+        span(style='color: #333333') .
+        | Variable(tf
+        span(style='color: #333333') .
+        | zeros(shape
+        span(style='color: #333333') =
+        | [
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ]), dtype
+        span(style='color: #333333') =
+        | tf
+        span(style='color: #333333') .
+        | float32, name
+        span(style='color: #333333') =
+        span(style='background-color: #fff0f0') &quot;A&quot;
+        | )
+        br
+        | b&nbsp;
+        span(style='color: #333333') =
+        | &nbsp;tf
+        span(style='color: #333333') .
+        | Variable(tf
+        span(style='color: #333333') .
+        | zeros(shape
+        span(style='color: #333333') =
+        | [
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ]), dtype
+        span(style='color: #333333') =
+        | tf
+        span(style='color: #333333') .
+        | float32, name
+        span(style='color: #333333') =
+        span(style='background-color: #fff0f0') &quot;b&quot;
+        | )
+        br
+        | sess
+        span(style='color: #333333') .
+        | run(tf
+        span(style='color: #333333') .
+        | global_variables_initializer())
+        br
+        br
+        span(style='color: #888888') # 学習用入力データのプレースホルダの定義
+        br
+        | x&nbsp;
+        span(style='color: #333333') =
+        | &nbsp;tf
+        span(style='color: #333333') .
+        | placeholder(tf
+        span(style='color: #333333') .
+        | float32, shape
+        span(style='color: #333333') =
+        | [
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ], name
+        span(style='color: #333333') =
+        span(style='background-color: #fff0f0') &quot;x&quot;
+        | )
+        br
+        span(style='color: #888888') # 学習用出力データのプレースホルダの定義
+        br
+        | y&nbsp;
+        span(style='color: #333333') =
+        |  tf
+        span(style='color: #333333') .
+        | placeholder(tf
+        span(style='color: #333333') .
+        | float32, shape
+        span(style='color: #333333') =
+        | [
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ], name
+        span(style='color: #333333') =
+        span(style='background-color: #fff0f0') &quot;y&quot;
+        | )
+        br
+        br
+        span(style='color: #888888') # 機械学習のモデルを定義
+        br
+        | y_
+        span(style='color: #333333') =
+        |  tf
+        span(style='color: #333333') .
+        | matmul(A, x)
+        span(style='color: #333333') +
+        |  b
+        br
+        br
+        span(style='color: #888888') # 誤差を定義
+        br
+        span(style='color: #008800; font-weight: bold') with
+        |  tf
+        span(style='color: #333333') .
+        | name_scope(
+        span(style='background-color: #fff0f0') &apos;loss&apos;
+        | ):
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;loss&nbsp;
+        span(style='color: #333333') =
+        |  tf
+        span(style='color: #333333') .
+        | reduce_mean(tf
+        span(style='color: #333333') .
+        | square(y_
+        span(style='color: #333333') -
+        |  y))
+        br
+        br
+        span(style='color: #888888') # トレーニングアルゴリズムを定義
+        br
+        span(style='color: #008800; font-weight: bold') with
+        |  tf
+        span(style='color: #333333') .
+        | name_scope(
+        span(style='background-color: #fff0f0') &apos;train&apos;
+        | ):
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;learning_rate
+        span(style='color: #333333') =
+        |
+        span(style='color: #6600EE; font-weight: bold') 1.0e-3
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;train
+        span(style='color: #333333') =
+        |  tf
+        span(style='color: #333333') .
+        | train
+        span(style='color: #333333') .
+        | GradientDescentOptimizer(learning_rate)
+        span(style='color: #333333') .
+        | minimize(loss)
+        br
+        br
+        .summary-code(style='background-color: rgba(0,220,64,.4); border-radius: 6px')
+          span(style='color: #888888') # TensorBoardで追跡する変数を定義
+          br
+          span(style='color: #008800; font-weight: bold') with
+          |  tf
+          span(style='color: #333333') .
+          | name_scope(
+          span(style='background-color: #fff0f0') &apos;summary&apos;
+          | ):
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;tf
+          span(style='color: #333333') .
+          | summary
+          span(style='color: #333333') .
+          | scalar(
+          span(style='background-color: #fff0f0') &apos;A&apos;
+          | , tf
+          span(style='color: #333333') .
+          | reshape(tf
+          span(style='color: #333333') .
+          | matrix_determinant(A), []))
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;tf
+          span(style='color: #333333') .
+          | summary
+          span(style='color: #333333') .
+          | scalar(
+          span(style='background-color: #fff0f0') &apos;b&apos;
+          | , tf
+          span(style='color: #333333') .
+          | reshape(tf
+          span(style='color: #333333') .
+          | norm(b), []))
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;tf
+          span(style='color: #333333') .
+          | summary
+          span(style='color: #333333') .
+          | scalar(
+          span(style='background-color: #fff0f0') &apos;loss&apos;
+          | , loss)
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;merged&nbsp;
+          span(style='color: #333333') =
+          |  tf
+          span(style='color: #333333') .
+          | summary
+          span(style='color: #333333') .
+          | merge_all()
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;writer&nbsp;
+          span(style='color: #333333') =
+          |  tf
+          span(style='color: #333333') .
+          | summary
+          span(style='color: #333333') .
+          | FileWriter(
+          span(style='background-color: #fff0f0') &apos;/tmp/tensorboard-sample&apos;
+          | , sess
+          span(style='color: #333333') .
+          | graph)
+        br
+        span(style='color: #888888') # トレーニングデータを生成
+        br
+        | samples_count&nbsp;
+        span(style='color: #333333') =
+        |&nbsp;
+        span(style='color: #0000DD; font-weight: bold') 100
+        br
+        | x_input&nbsp;
+        span(style='color: #333333') =
+        |  np
+        span(style='color: #333333') .
+        | ndarray(shape
+        span(style='color: #333333') =
+        | [samples_count,
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ])
+        br
+        | y_input&nbsp;
+        span(style='color: #333333') =
+        |  np
+        span(style='color: #333333') .
+        | ndarray(shape
+        span(style='color: #333333') =
+        | [samples_count,
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ])
+        br
+        span(style='color: #008800; font-weight: bold') for
+        |  i&nbsp;
+        span(style='color: #000000; font-weight: bold') in
+        | &nbsp;
+        span(style='color: #007020') range
+        | (samples_count):
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;x_input[i][
+        span(style='color: #0000DD; font-weight: bold') 0
+        | ]&nbsp;
+        span(style='color: #333333') =
+        |  np
+        span(style='color: #333333') .
+        | random
+        span(style='color: #333333') .
+        | rand()
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;x_input[i][
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ]
+        span(style='color: #333333') =
+        |  np
+        span(style='color: #333333') .
+        | random
+        span(style='color: #333333') .
+        | rand()
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;x_input[i][
+        span(style='color: #0000DD; font-weight: bold') 2
+        | ]&nbsp;
+        span(style='color: #333333') =
+        |  np
+        span(style='color: #333333') .
+        | random
+        span(style='color: #333333') .
+        | rand()
+        br
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') for
+        |  j&nbsp;
+        span(style='color: #000000; font-weight: bold') in
+        | &nbsp;
+        span(style='color: #007020') range
+        | (
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ):
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y_input[i][j]&nbsp;
+        span(style='color: #333333') =
+        | &nbsp;x_input[i][j]
+        span(style='color: #333333') *
+        |&nbsp;
+        span(style='color: #0000DD; font-weight: bold') 2
+        br
+        br
+        span(style='color: #888888') # 学習開始
+        br
+        | summary&nbsp;
+        span(style='color: #333333') =
+        |&nbsp;
+        span(style='color: #007020') None
+        br
+        | total_epochs&nbsp;
+        span(style='color: #333333') =
+        | &nbsp;
+        span(style='color: #0000DD; font-weight: bold') 1000
+        br
+        span(style='color: #008800; font-weight: bold') for
+        |  _&nbsp;
+        span(style='color: #000000; font-weight: bold') in
+        | &nbsp;
+        span(style='color: #007020') range
+        | (total_epochs):
+        br
+        span(style='color: #008800; font-weight: bold') &nbsp;&nbsp;&nbsp;&nbsp;for
+        |  i&nbsp;
+        span(style='color: #000000; font-weight: bold') in
+        | &nbsp;
+        span(style='color: #007020') range
+        | (samples_count):
+        .summary-code(style='background-color: rgba(0,220,64,.4); border-radius: 6px')
+          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__, summary&nbsp;
+          span(style='color: #333333') =
+          |  sess
+          span(style='color: #333333') .
+          | run([train, merged], feed_dict
+          span(style='color: #333333') =
+          | {x: x_input[i], y: y_input[i]})
+        br
+        span(style='color: #888888') &nbsp;&nbsp;&nbsp;&nbsp;# 進捗10%毎に途中経過をコンソール出力、TensorBoardに監視対象変数の値を記録
+        br
+        |&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') if
+        |  _
+        span(style='color: #333333') %
+        |  (total_epochs
+        span(style='color: #333333') /
+        span(style='color: #0000DD; font-weight: bold') 10
+        | )&nbsp;
+        span(style='color: #333333') ==
+        | &nbsp;
+        span(style='color: #0000DD; font-weight: bold') 0
+        | :
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;curr_A, curr_b, curr_loss
+        span(style='color: #333333') =
+        |  sess
+        span(style='color: #333333') .
+        | run([A, b, loss], feed_dict
+        span(style='color: #333333') =
+        | {x: x_input[_
+        span(style='color: #333333') %
+        |  samples_count], y: y_input[_
+        span(style='color: #333333') %
+        |  samples_count]})
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;-----------------------------&apos;
+        | )
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;y&apos;
+        | )
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (y_input[_
+        span(style='color: #333333') %
+        |  samples_count])
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;A&apos;
+        | )
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (curr_A)
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;x&apos;
+        | )
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (x_input[_
+        span(style='color: #333333') %
+        |  samples_count])
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;b&apos;
+        | )
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (curr_b)
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;loss&apos;
+        | )
+        br
+        | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        span(style='color: #008800; font-weight: bold') print
+        | (curr_loss)
+        br
+        .summary-code(style='background-color: rgba(0,220,64,.4); border-radius: 6px')
+          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;writer
+          span(style='color: #333333') .
+          | add_summary(summary, _)
+        br
+        span(style='color: #888888') # 学習結果の確認
+        br
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;==========================&apos;
+        | )
+        br
+        span(style='color: #888888') # x = (1,2,3) を入力すると (2,4,6)に近いベクトルが出力されるはずだが、実際にどうなるか確認。
+        br
+        | x_test
+        span(style='color: #333333') =
+        |  np
+        span(style='color: #333333') .
+        | array([
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 2
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ])
+        span(style='color: #333333') .
+        | reshape([
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ])
+        br
+        | y_test&nbsp;
+        span(style='color: #333333') =
+        |  np
+        span(style='color: #333333') .
+        | array([
+        span(style='color: #0000DD; font-weight: bold') 2
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 4
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 6
+        | ])
+        span(style='color: #333333') .
+        | reshape([
+        span(style='color: #0000DD; font-weight: bold') 3
+        | ,
+        span(style='color: #0000DD; font-weight: bold') 1
+        | ])
+        br
+        | estimated_y, final_loss&nbsp;
+        span(style='color: #333333') =
+        |  sess
+        span(style='color: #333333') .
+        | run([y_, loss], feed_dict
+        span(style='color: #333333') =
+        | {x:x_test, y: y_test})
+        br
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;Input x&apos;
+        | )
+        br
+        span(style='color: #008800; font-weight: bold') print
+        | (x_test)
+        br
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;Computed y&apos;
+        | )
+        br
+        span(style='color: #008800; font-weight: bold') print
+        | (estimated_y)
+        br
+        span(style='color: #008800; font-weight: bold') print
+        | (
+        span(style='background-color: #fff0f0') &apos;loss&apos;
+        | )
+        br
+        span(style='color: #008800; font-weight: bold') print
+        | (final_loss)
 
-    for _ in range(1000):
-        __, summary = sess.run([train, merged], feed_dict={x: x_input, y: y_input})
-        if _ % 100 == 0:
-            writer.add_summary(summary, _)
-            print(sess.run(A))
-            print(sess.run(b))
-
-
++mathjax()
