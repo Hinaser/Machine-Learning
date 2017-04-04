@@ -793,6 +793,35 @@ article.main-article(data-page='learntensorflowplayground')
       br
       |  式$(5)$はバックプロパゲーションの名前の由来を物語っています。
     p
+      | なお、層$l$のエラーのベクトル表示は下記のようになります。
+      | $$ \boldsymbol{\delta}^l = \boldsymbol \phi'(\mathbf{z}^l) \circ (\boldsymbol W^{l+1} \boldsymbol{\delta}^{l+1}) $$
+      | ここで$\boldsymbol W^{l+1}$は層$l+1$の重み行列、$\boldsymbol{\delta}^{l+1}$は層$l+1$のエラーを列ベクトルで上から順に並べたものです。
+      | $\circ$は
+      a(href='https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%80%E3%83%9E%E3%83%BC%E3%83%AB%E7%A9%8D', target='_blank') アダマール積
+      | です。
+      | $$
+      | \boldsymbol \phi'(\mathbf{z}^l) = \left(\begin{array}{c}
+      |   \phi'(z^{l}_{1}) \\
+      |   \phi'(z^{l}_{2}) \\
+      |   \cdots \\
+      |   \phi'(z^{l}_{q}) \\
+      | \end{array}\right)
+      | \quad
+      | \boldsymbol W^{l+1} = \begin{pmatrix}
+      |   w^{l+1}_{1,1} & w^{l+1}_{2,1} & \cdots & w^{l+1}_{r,1} \\
+      |   w^{l+1}_{1,2} & w^{l+1}_{2,2} & \cdots & w^{l+1}_{r,2} \\
+      |   \cdots \\
+      |   w^{l+1}_{1,q} & w^{l+1}_{2,q} & \cdots & w^{l+1}_{r,q}
+      | \end{pmatrix}
+      | \quad
+      | \boldsymbol{\delta}^{l+1} = \left(\begin{array}{c}
+      |   \delta^{l+1}_{1} \\
+      |   \delta^{l+1}_{2} \\
+      |   \cdots \\
+      |   \delta^{l+1}_{r}
+      | \end{array}\right)
+      | $$
+    p
       | それでは出力層$L$のニューロンのエラーを求めてみましょう。これが分かれば帰納的に入力層までの全ニューロンについてエラーが計算できるようになります。
       br
       |  元々の定義より、 $$ \delta^{L}_{s} = \frac{\partial C}{\partial z^{L}_{s}} $$ です。ここで$s$は出力層$L$の$s$番目のニューロンです。
