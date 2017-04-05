@@ -90,6 +90,21 @@ article.main-article(data-page='how-to-use-tensorboard')
       | y = \left(\begin{array}{c} 2x_1\\2x_2\\2x_3 \end{array} \right)
       | $$
       | この学習データをTensorFlowの機械学習モデルに入力し、$\boldsymbol{A}, \boldsymbol{b}$の値を学習させます。
+      br
+      strong
+        | ランダム
+      | に生成した$x_1,x_2,x_3$に対して$y_1=2x_1,\, y_2=2x_2,\, y_3=2x_3$を正解データとして組み合わせます。
+    p
+      | ちなみに、筆者ははじめ
+      | $$
+      | x = \left(\begin{array}{c} 1\\1\\1 \end{array} \right),\,
+      | x = \left(\begin{array}{c} 2\\2\\2 \end{array} \right),\,
+      | x = \left(\begin{array}{c} 3\\3\\3 \end{array} \right)
+      | $$
+      | のように$x_1 = x_2 = x_3$とした単純な学習データを作り学習させて大失敗しました。
+      br
+      | この状態で学習させるとどのような$\boldsymbol{A}, \boldsymbol{b}$が導かれるのか、
+      | なぜその値になるのか時間のある人は考えてみてください。
 
     p
       | 今回利用するPythonのコードは下記のとおりです。
