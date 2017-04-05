@@ -1,11 +1,18 @@
-mixin opengraph-meta(_title, _description, _c_url, _keywords)
+mixin opengraph-meta(_title, _description, _c_path, _keywords)
+  - var protocol_host = 'https://hinaser.github.io'
+
+  - var preview_image = protocol_host + "/Machine-Learning/preview.png"
+  - var og_url = protocol_host + _c_path
+
   meta(name='keywords', content=_keywords)
   meta(property='og:title', content=_title)
   meta(property='og:description', content=_description)
-  meta(property='og:url', content=_c_url)
+  meta(property='og:url', content=og_url)
+  meta(property='og:image', content=preview_image)
   meta(name='twitter:title', content=_title)
   meta(name='twitter:description', content=_description)
-  meta(name='twitter:url', content=_c_url)
+  meta(name='twitter:url', content=og_url)
+  meta(name='twitter:image', content=preview_image)
 
 mixin article-header(date)
   .article-metadata
