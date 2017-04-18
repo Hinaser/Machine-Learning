@@ -155,10 +155,10 @@ article.main-article(data-page='deeplearning-by-tensorflow')
     .code
       .code-line
         | $&nbsp;
-        +user-input('export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}')
+        +user-input('export LD_LIBRARY_PATH=/usr/local/cuda-8.0/extras/CUPTI/lib64:/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}')
       .code-line
         | $&nbsp;
-        +user-input('echo "export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" >> ~/.profile')
+        +user-input('echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" >> ~/.profile')
 
     h5 2. cuDNNのインストール
     p

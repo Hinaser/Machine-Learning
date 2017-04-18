@@ -1,0 +1,18 @@
+extends common/layout.pug
+
+block opengraph
+  include common/mixin
+  - var title = 'TensorFlow FAQ'
+  - var description = 'TensorFlowの気になる仕様を解説します'
+  - var c_path = '/Machine-Learning/tensorflow-faq.html'
+  - var keywords = 'TensorFlow, FAQ'
+  +opengraph-meta(title, description, c_path, keywords)
+
+block title
+  title TensorFlow FAQ
+
+block article
+  include articles/tensorflow-faq.pug
+
+block expand-flag-deeplearning-by-tensorflow
+  .dpln-expand

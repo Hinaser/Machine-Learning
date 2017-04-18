@@ -1,0 +1,18 @@
+extends common/layout.pug
+
+block opengraph
+  include common/mixin
+  - var title = 'TensorFlow コードサンプル'
+  - var description = 'TensorFlowのPythonコードサンプルを公開します。'
+  - var c_path = '/Machine-Learning/tensorflow-code-samples.html'
+  - var keywords = 'TensorFlow, Machine Learning, Math, Python, Source code, Samples'
+  +opengraph-meta(title, description, c_path, keywords)
+
+block title
+  title TensorFlow コードサンプル
+
+block article
+  include articles/tensorflow-code-samples.pug
+
+block expand-flag-tensorflow-code-samples
+  .dpln-expand
