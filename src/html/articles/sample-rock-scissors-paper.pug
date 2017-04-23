@@ -1,0 +1,260 @@
+include ../common/mixin
+
+article.main-article(data-page='sample-rock-scissors-paper').code-samples
+  a#preface.in-page-anchor
+  h1 じゃんけんの勝ち方を学習させるデモ
+  +article-header('2017-04-23')
+
+  .paragraph
+    p
+      | タイトルの通りAIにじゃんけんの勝ち方を学習させるデモを紹介します。
+    p
+      | 巷ではAIがプロ棋士に囲碁で勝ったという話題をよく目にすると思います。
+      | このページでは囲碁よりもずっと単純なじゃんけんについて、その勝ち方をAIに学習させる方法について説明します。
+    p
+      | ここでいうAIというのは一体何なのか、AIにゲームの勝ち方を学習させるとはどういうことなのか、実際に何をしているのか。
+      br
+      | 一つひとつ説明しますのでどうぞお付き合いください。
+
+  .paragraph
+    h4 AIという言葉の意味
+    p
+      | AIという言葉は非常に抽象的な言葉です。
+      | 人によっては映画ターミネーターに出てくるサイボーグ、つまり人間の外見をした物質的なモノとして捉える人もいるでしょうし、
+      | ICチップのような小さなチップに収められた人工脳チップを想像する人もいるでしょう。
+    p
+      | 実は私もAIという言葉を聞くとき、その言葉がどのような意味で使われているのかよくわからなくなる時があります。
+      | それどころか通常のITシステムによる単なるオートメーション技術のことを、わざとAIという最もらしいラベルをつけてブランディングしている
+      | のではないかと疑うことが非常に多いです。
+    p
+      | 私はAIという言葉の真の意味について、時間をかけて調べたことはありません。ですが、既存のオートメーション技術とAIの違いについては
+      | 私ははっきりと違いを認識することができます。
+    p
+      | 既存のオートメーション技術は、人が人力でロジックを組み立てます。例えば「ある条件を満たした時、ある値を返す」、
+      | 「こういう入力が入ってきたとき、こういう応答を返す」など、あくまでプログラマなどの「人」がどのような処理をすべきか
+      | ルールベースで処理を記述していきます。このような似非AIの特徴は、あくまで設計者が「どのような組み合わせのデータが入力されてくるか」
+      | を事前にある程度想定しており、想定されたデータをif then elseで条件分岐させながら出力するデータを作り上げていきます。
+    p
+      | それに対し、AIが用いる機械学習的な処理では、人による条件分岐ロジックが存在しません。「あるデータが入力された時、このデータを出力する」
+      | という処理をつくりたいと思った時、それをあらかじめプログラミングしません。
+      | プログラミングするのではなく、こういう入力に対してはこういう出力をする、といった入力と出力の組み合わせのデータを大量に用意し、これを
+      | 学習させます。
+      br
+      | AIがどのような振る舞いをするかは全て学習させるデータに依存します。ロジックには依存しません。
+      br
+      | このページではAIにじゃんけんの勝ち方を学習させることがメインテーマですが、
+      | AI側のロジックを一切変えず学習させるデータを変えることで「AIにじゃんけんの負け方」を学習させることも可能です。
+    p
+      | 少し本題からそれてしまいました。あらためて本ページの目標を再確認しましょう。
+
+  .paragraph
+    h4 目標
+    p
+      | AIにじゃんけんの勝ち方を学習させる、とだけ書くと何やらとんでもなく複雑でものすごいことをしようとしているように見えますが、
+      | 実際にやることは非常に単純です。
+    p
+      | ただ単に、相手がグーを出したらパー、チョキを出したらグー、パーを出したらチョキを出すことをプログラムに学習させるだけです。
+      br
+      | 通常のじゃんけんは手を同時に出しますが、ここでは後出しじゃんけん、つまり相手が手を出したのを見てこちらも出す手を決めるルールとします。
+    p
+      | さて、これだけであれば機械学習やAIなどを使わなくとも
+      | プログラミング言語を勉強したことのある人なら、すぐに下記のようなコードを思い浮かべるでしょう。
+      br
+      | (下記のコードはRubyで書かれていますが、なんとなくやりたいことは解ると思います。)
+    .source-code.
+      <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">winning_hand</span>(opponent_hand)
+          <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&#39;paa&#39;</span> <span style="color: #008800; font-weight: bold">if</span> opponent_hand <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;guu&#39;</span>
+          <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&#39;guu&#39;</span> <span style="color: #008800; font-weight: bold">if</span> opponent_hand <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;choki&#39;</span>
+          <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&#39;choki&#39;</span> <span style="color: #008800; font-weight: bold">if</span> opponent_hand <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;paa&#39;</span>
+      <span style="color: #008800; font-weight: bold">end</span>
+      </pre></div>
+    p
+      | これは上で例に挙げたいわゆる人力でロジックを組むアプローチです。
+    p
+      | たったこれだけのことをわざわざAIなんて持ちだして議論する意味がわからないと思うかもしれませんが、もう少し待ってください。
+      br
+      | オセロもチェスも囲碁も、乱暴に書くと後出しじゃんけんを複雑にしただけのものです。じゃんけんの勝ち方をAIに学習させることを
+      | 理解できれば、その応用の先にオセロやチェス、囲碁の勝ち方をAIに学習させる方法が見えてくると思いませんか。
+
+  .paragraph
+    h4 機械学習的アプローチ
+    p
+      | さて本題に近づいてきました。プログラムにじゃんけんの勝ち方を学習させる具体的な方法についてです。
+    p
+      | TensorFlowのソースコードを貼る前に、下記にじゃんけんの機械学習モデルの仕様をまとめておきます
+    table
+      tr
+        td 入力
+        td
+          | じゃんけんにおいて相手が出す手の確率。例えば[グー: 50%, チョキ: 30%, パー: 20%]
+      tr
+        td 出力
+        td
+          | 相手が出しそうな手に勝てる手。例えば相手がパーを出してくる確率が最も高いなら[グー: 0%, チョキ: 100%, パー: 0%]
+      tr
+        td NNタイプ
+        td
+          | MLP(マルチレイヤーパーセプトロン) ※MLPについて詳細は
+          a(href='index.html' target='_blank') こちら
+          | を参照。
+      tr
+        td レイヤー構成
+        td
+          | 3-10-10-3 (入力層、出力層のニューロンが3つずつ、中間の隠し層のニューロンが10個ずつである構成)
+    p
+      | 上記のレイヤー構成を図示すると下記のようになります。
+    .nn-image
+      img(src='image/code-samples/rock-scissors-paper-nn.png')
+
+    p
+      | ニューラルネットワーク自体に「グーが出されたらパーを返す」ようなロジックをハードコーディングすることなく、
+      | 単に入出力層、隠し層のネットワーク構成が定義されているだけのプログラムをTensorFlowで作ります。
+
+  .paragraph
+    h4 ソースコード
+    .source-code.
+      <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">numpy</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">np</span>
+      <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">tensorflow</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">tf</span>
+
+
+      <span style="color: #DD4422">&quot;&quot;&quot;</span>
+      <span style="color: #DD4422">じゃんけん用学習データを生成するクラス。</span>
+      <span style="color: #DD4422">本来であればプログラムでデータを自動生成するのではなく、</span>
+      <span style="color: #DD4422">人が実際にじゃんけんをして得られる”手作り”データを用いる方が</span>
+      <span style="color: #DD4422">「機械に人間の行動を学習させる」例としては良いのだが</span>
+      <span style="color: #DD4422">今回は簡単なデモということでデータを自動生成させている。</span>
+      <span style="color: #DD4422">&quot;&quot;&quot;</span>
+      <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">RockScissorsPaper</span>:
+          <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">__init__</span>(<span style="color: #007020">self</span>, number_of_data<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">1000</span>):
+              <span style="color: #007020">self</span><span style="color: #333333">.</span>number_of_data <span style="color: #333333">=</span> number_of_data
+
+          <span style="color: #888888"># 相手が出すじゃんけんの手の確率</span>
+          <span style="color: #888888"># 戻値：[グーを出す確率, チョキを出す確率, パーを出す確率]</span>
+          <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">opponent_hand</span>(<span style="color: #007020">self</span>):
+              rand_rock <span style="color: #333333">=</span> np<span style="color: #333333">.</span>random<span style="color: #333333">.</span>rand()
+              rand_scissors <span style="color: #333333">=</span> np<span style="color: #333333">.</span>random<span style="color: #333333">.</span>rand()
+              rand_paper <span style="color: #333333">=</span> np<span style="color: #333333">.</span>random<span style="color: #333333">.</span>rand()
+              total <span style="color: #333333">=</span> rand_rock <span style="color: #333333">+</span> rand_scissors <span style="color: #333333">+</span> rand_paper
+              <span style="color: #008800; font-weight: bold">return</span> [rand_rock<span style="color: #333333">/</span>total, rand_scissors<span style="color: #333333">/</span>total, rand_paper<span style="color: #333333">/</span>total]
+
+          <span style="color: #888888"># グーが来る確率が一番高かったらパー、</span>
+          <span style="color: #888888"># チョキが来る確率が一番高かったらグー、</span>
+          <span style="color: #888888"># パーが来る確率が一番高かったらチョキ</span>
+          <span style="color: #888888"># を返す。</span>
+          <span style="color: #888888"># 引数：[グーが来る確率, チョキが来る確率, パーが来る確率]</span>
+          <span style="color: #888888"># 戻値：[グーを返すか否か(0or1), チョキを返すか否か(0or1), パーを返すか否か(0or1)]</span>
+          <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">winning_hand</span>(<span style="color: #007020">self</span>, rock, scissors, paper) <span style="color: #333333">-&gt;</span> [<span style="color: #007020">float</span>, <span style="color: #007020">float</span>, <span style="color: #007020">float</span>]:
+              mx <span style="color: #333333">=</span> <span style="color: #007020">max</span>([rock, scissors, paper])
+              <span style="color: #008800; font-weight: bold">if</span> rock <span style="color: #333333">==</span> mx: <span style="color: #008800; font-weight: bold">return</span> [<span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">1</span>]
+              <span style="color: #008800; font-weight: bold">if</span> scissors <span style="color: #333333">==</span> mx: <span style="color: #008800; font-weight: bold">return</span> [<span style="color: #0000DD; font-weight: bold">1</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>]
+              <span style="color: #008800; font-weight: bold">if</span> paper <span style="color: #333333">==</span> mx: <span style="color: #008800; font-weight: bold">return</span> [<span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">1</span>, <span style="color: #0000DD; font-weight: bold">0</span>]
+
+          <span style="color: #888888"># この手が来た時にあの手を返すと勝てる、を集めた学習用データ</span>
+          <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">get_training_data</span>(<span style="color: #007020">self</span>):
+              <span style="color: #888888"># トレーニングデータ生成</span>
+              training_data_input <span style="color: #333333">=</span> []
+              training_data_output <span style="color: #333333">=</span> []
+              <span style="color: #008800; font-weight: bold">for</span> i <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(<span style="color: #007020">self</span><span style="color: #333333">.</span>number_of_data):
+                  rock_prob, scissors_prob, paper_prob <span style="color: #333333">=</span> <span style="color: #007020">self</span><span style="color: #333333">.</span>opponent_hand()
+                  input_probs <span style="color: #333333">=</span> [rock_prob, scissors_prob, paper_prob]
+                  training_data_input<span style="color: #333333">.</span>append(input_probs)
+                  training_data_output<span style="color: #333333">.</span>append(<span style="color: #007020">self</span><span style="color: #333333">.</span>winning_hand(<span style="color: #333333">*</span>input_probs))
+              <span style="color: #008800; font-weight: bold">return</span> training_data_input, training_data_output
+
+      <span style="color: #888888"># ニューラルネットワークの入力部分の作成</span>
+      <span style="color: #008800; font-weight: bold">with</span> tf<span style="color: #333333">.</span>name_scope(<span style="background-color: #fff0f0">&#39;Inputs&#39;</span>):
+          <span style="color: #007020">input</span> <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>placeholder(tf<span style="color: #333333">.</span>float32, shape<span style="color: #333333">=</span>[<span style="color: #008800; font-weight: bold">None</span>, <span style="color: #0000DD; font-weight: bold">3</span>], name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Input&#39;</span>)
+      <span style="color: #008800; font-weight: bold">with</span> tf<span style="color: #333333">.</span>name_scope(<span style="background-color: #fff0f0">&#39;Outputs&#39;</span>):
+          true_output <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>placeholder(tf<span style="color: #333333">.</span>float32, shape<span style="color: #333333">=</span>[<span style="color: #008800; font-weight: bold">None</span>, <span style="color: #0000DD; font-weight: bold">3</span>], name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Output&#39;</span>)
+
+      <span style="color: #888888"># ニューラルネットワークのレイヤーを作成する関数</span>
+      <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">hidden_layer</span>(x, layer_size, is_output<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">False</span>):
+          name <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&#39;Hidden-Layer&#39;</span> <span style="color: #008800; font-weight: bold">if</span> <span style="color: #000000; font-weight: bold">not</span> is_output <span style="color: #008800; font-weight: bold">else</span> <span style="background-color: #fff0f0">&#39;Output-Layer&#39;</span>
+          <span style="color: #008800; font-weight: bold">with</span> tf<span style="color: #333333">.</span>name_scope(name):
+              <span style="color: #888888"># 重み</span>
+              w <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>Variable(tf<span style="color: #333333">.</span>random_normal([x<span style="color: #333333">.</span>_shape[<span style="color: #0000DD; font-weight: bold">1</span>]<span style="color: #333333">.</span>value, layer_size]), name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Weight&#39;</span>)
+              <span style="color: #888888"># バイアス</span>
+              b <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>Variable(tf<span style="color: #333333">.</span>random_normal([layer_size]), name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Bias&#39;</span>)
+              <span style="color: #888888"># 入力総和(バッチ単位)</span>
+              z <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>matmul(x, w) <span style="color: #333333">+</span> b
+              a <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>tanh(z) <span style="color: #008800; font-weight: bold">if</span> <span style="color: #000000; font-weight: bold">not</span> is_output <span style="color: #008800; font-weight: bold">else</span> z
+          <span style="color: #008800; font-weight: bold">return</span> a
+
+      <span style="color: #888888"># レイヤーを作成</span>
+      <span style="color: #888888"># 3-10-10-3のDNN</span>
+      layer1 <span style="color: #333333">=</span> hidden_layer(<span style="color: #007020">input</span>, <span style="color: #0000DD; font-weight: bold">10</span>)
+      layer2 <span style="color: #333333">=</span> hidden_layer(layer1, <span style="color: #0000DD; font-weight: bold">10</span>)
+      output <span style="color: #333333">=</span> hidden_layer(layer2, <span style="color: #0000DD; font-weight: bold">3</span>, is_output<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">True</span>)
+
+      <span style="color: #888888"># 誤差の定義</span>
+      <span style="color: #008800; font-weight: bold">with</span> tf<span style="color: #333333">.</span>name_scope(<span style="background-color: #fff0f0">&quot;Loss&quot;</span>):
+          <span style="color: #888888"># クロスエントロピー</span>
+          <span style="color: #008800; font-weight: bold">with</span> tf<span style="color: #333333">.</span>name_scope(<span style="background-color: #fff0f0">&quot;Cross-Entropy&quot;</span>):
+              error <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>reduce_mean(tf<span style="color: #333333">.</span>nn<span style="color: #333333">.</span>softmax_cross_entropy_with_logits(labels<span style="color: #333333">=</span>true_output, logits<span style="color: #333333">=</span>output))
+          <span style="color: #888888"># 真の出力と計算した出力がどれだけ一致するか</span>
+          <span style="color: #008800; font-weight: bold">with</span> tf<span style="color: #333333">.</span>name_scope(<span style="background-color: #fff0f0">&quot;Accuracy&quot;</span>):
+              accuracy <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>reduce_mean(tf<span style="color: #333333">.</span>cast(tf<span style="color: #333333">.</span>equal(tf<span style="color: #333333">.</span>arg_max(true_output, <span style="color: #0000DD; font-weight: bold">1</span>), tf<span style="color: #333333">.</span>argmax(output, <span style="color: #0000DD; font-weight: bold">1</span>)), tf<span style="color: #333333">.</span>float32)) <span style="color: #333333">*</span> <span style="color: #6600EE; font-weight: bold">100.0</span>
+          <span style="color: #008800; font-weight: bold">with</span> tf<span style="color: #333333">.</span>name_scope(<span style="background-color: #fff0f0">&quot;Prediction&quot;</span>):
+              <span style="color: #888888"># 出力値を確率にノーマライズするOP(起こりうる事象の和を1にする)</span>
+              prediction <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>nn<span style="color: #333333">.</span>softmax(output)
+
+      <span style="color: #888888"># 学習用OPの作成</span>
+      <span style="color: #008800; font-weight: bold">with</span> tf<span style="color: #333333">.</span>name_scope(<span style="background-color: #fff0f0">&quot;Train&quot;</span>):
+          learning_rate <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.07</span>
+          train_op <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>train<span style="color: #333333">.</span>GradientDescentOptimizer(learning_rate)<span style="color: #333333">.</span>minimize(error)
+
+      <span style="color: #888888"># セッション生成、変数初期化</span>
+      sess <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>Session()
+      sess<span style="color: #333333">.</span>run(tf<span style="color: #333333">.</span>global_variables_initializer())
+
+      <span style="color: #888888"># TensorBoard用サマリ</span>
+      writer <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>summary<span style="color: #333333">.</span>FileWriter(<span style="background-color: #fff0f0">&#39;/tmp/test/summary2&#39;</span>, sess<span style="color: #333333">.</span>graph)
+      tf<span style="color: #333333">.</span>summary<span style="color: #333333">.</span>scalar(<span style="background-color: #fff0f0">&#39;CrossEntropy&#39;</span>, error)
+      tf<span style="color: #333333">.</span>summary<span style="color: #333333">.</span>scalar(<span style="background-color: #fff0f0">&#39;Accuracy&#39;</span>, accuracy)
+      summary <span style="color: #333333">=</span> tf<span style="color: #333333">.</span>summary<span style="color: #333333">.</span>merge_all()
+
+      <span style="color: #888888"># 学習用データ取得</span>
+      number_of_data <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1000</span>
+      janken <span style="color: #333333">=</span> RockScissorsPaper(number_of_data)
+      input_data, output_data <span style="color: #333333">=</span> janken<span style="color: #333333">.</span>get_training_data()
+
+      <span style="color: #888888"># 学習</span>
+      batch_size <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">10</span>
+      loop_per_epoch <span style="color: #333333">=</span> <span style="color: #007020">int</span>(janken<span style="color: #333333">.</span>number_of_data <span style="color: #333333">/</span> batch_size)
+      max_epoch <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">100</span>
+      step <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+      <span style="color: #008800; font-weight: bold">for</span> e <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(max_epoch):
+          <span style="color: #008800; font-weight: bold">for</span> i <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(loop_per_epoch):
+              batch_input <span style="color: #333333">=</span> input_data[i<span style="color: #333333">*</span>batch_size:(i<span style="color: #333333">+</span><span style="color: #0000DD; font-weight: bold">1</span>)<span style="color: #333333">*</span>batch_size]
+              batch_output <span style="color: #333333">=</span> output_data[i<span style="color: #333333">*</span>batch_size:(i<span style="color: #333333">+</span><span style="color: #0000DD; font-weight: bold">1</span>)<span style="color: #333333">*</span>batch_size]
+              _, loss, acc, report <span style="color: #333333">=</span> sess<span style="color: #333333">.</span>run([train_op, error, accuracy, summary], feed_dict<span style="color: #333333">=</span>{<span style="color: #007020">input</span>: batch_input, true_output: batch_output})
+              step <span style="color: #333333">+=</span> batch_size
+
+          writer<span style="color: #333333">.</span>add_summary(report, step)
+          writer<span style="color: #333333">.</span>flush()
+          <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;クロスエントロピー:%.6f    正答率:%.2f%%&#39;</span> <span style="color: #333333">%</span> (loss, acc))
+
+      <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;--------------------------------------&#39;</span>)
+
+      <span style="color: #888888"># 学習具合を実値で確認</span>
+      <span style="color: #008800; font-weight: bold">for</span> k <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(<span style="color: #0000DD; font-weight: bold">10</span>):
+          rock_prob, scissors_prob, paper_prob <span style="color: #333333">=</span> janken<span style="color: #333333">.</span>opponent_hand()
+          input_probs <span style="color: #333333">=</span> [rock_prob, scissors_prob, paper_prob]
+          output_probs <span style="color: #333333">=</span> [janken<span style="color: #333333">.</span>winning_hand(<span style="color: #333333">*</span>input_probs)]
+          input_probs <span style="color: #333333">=</span> [input_probs]
+
+          acc, predict <span style="color: #333333">=</span> sess<span style="color: #333333">.</span>run([accuracy, prediction], feed_dict<span style="color: #333333">=</span>{<span style="color: #007020">input</span>: input_probs, true_output: output_probs})
+          <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;　　　　  %s %s %s&#39;</span> <span style="color: #333333">%</span> (<span style="background-color: #fff0f0">&#39;グー&#39;</span><span style="color: #333333">.</span>ljust(<span style="color: #0000DD; font-weight: bold">4</span>), <span style="background-color: #fff0f0">&#39;チョキ&#39;</span><span style="color: #333333">.</span>ljust(<span style="color: #0000DD; font-weight: bold">4</span>), <span style="background-color: #fff0f0">&#39;パー&#39;</span><span style="color: #333333">.</span>ljust(<span style="color: #0000DD; font-weight: bold">4</span>)))
+          <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;真の入力: %.4f %.4f %.4f&#39;</span> <span style="color: #333333">%</span> <span style="color: #007020">tuple</span>(input_probs[<span style="color: #0000DD; font-weight: bold">0</span>]))
+          <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;真の出力: %.4f %.4f %.4f&#39;</span> <span style="color: #333333">%</span> <span style="color: #007020">tuple</span>(output_probs[<span style="color: #0000DD; font-weight: bold">0</span>]))
+          <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;計算出力: %.4f %.4f %.4f&#39;</span> <span style="color: #333333">%</span> <span style="color: #007020">tuple</span>(predict[<span style="color: #0000DD; font-weight: bold">0</span>]))
+          <span style="color: #007020">print</span>(np<span style="color: #333333">.</span>equal(np<span style="color: #333333">.</span>argmax(output_probs,<span style="color: #0000DD; font-weight: bold">1</span>), np<span style="color: #333333">.</span>argmax(predict,<span style="color: #0000DD; font-weight: bold">1</span>)))
+          <span style="color: #007020">print</span>()
+      </pre></div>
+    p
+      | 上記のソースコードを自分の環境で実行するためにはマシンにTensorFlowをインストールが必要があります。
+      br
+      | TensorFlowのインストール方法については本サイトでも他のページで解説していますが、CPUやGPUの最適化を考えずとりあえずデモが動けば良い程度で
+      | であればpython3をマシンにインストールし管理者権限で`pip3 install --upgrade tensorflow`とコマンドを打てばWindowsでもLinuxでもTensorFlowを導入できます。
+  .paragraph
+    h4
