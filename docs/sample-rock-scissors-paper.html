@@ -1,4 +1,4 @@
-<html><head lang="ja"><link rel="icon" type="image/png" href="favicon.png"/><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><meta property="og:type" content="article"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:image:width" content="1200"/><meta name="twitter:image:height" content="630"/><meta name="author" content="Hinase"/><meta name="keywords" content="TensorFlow, Machine Learning, Math, Python, Source code, Samples"/><meta property="og:title" content="TensorFlow コードサンプル"/><meta property="og:description" content="TensorFlowのPythonコードサンプルを公開します。"/><meta property="og:url" content="https://hinaser.github.io/Machine-Learning/tensorflow-code-samples.html"/><meta property="og:image" content="https://hinaser.github.io/Machine-Learning/preview.png"/><meta name="twitter:title" content="TensorFlow コードサンプル"/><meta name="twitter:description" content="TensorFlowのPythonコードサンプルを公開します。"/><meta name="twitter:url" content="https://hinaser.github.io/Machine-Learning/tensorflow-code-samples.html"/><meta name="twitter:image" content="https://hinaser.github.io/Machine-Learning/preview.png"/><title>TensorFlow コードサンプル</title><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/><link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"/><script defer="" src="https://code.getmdl.io/1.3.0/material.min.js"></script><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/><link href="https://fonts.googleapis.com/earlyaccess/notosansjapanese.css" rel="stylesheet"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="css/lib.css" type="text/css" data-turbolinks-track="reload"/><link rel="stylesheet" href="css/main.css?0e3c0ca367" type="text/css" data-turbolinks-track="reload"/><script id="st_insights_js" type="text/javascript" src="https://ws.sharethis.com/button/buttons.js?publisher=8fde68e6-f234-4808-b7ab-c498ac41fe48"></script><script type="text/javascript">stLight.options({
+<html><head lang="ja"><link rel="icon" type="image/png" href="favicon.png"/><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><meta property="og:type" content="article"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:image:width" content="1200"/><meta name="twitter:image:height" content="630"/><meta name="author" content="Hinase"/><meta name="keywords" content="TensorFlow, Machine Learning, Math, Python, Source code, Samples"/><meta property="og:title" content="TensorFlow コードサンプル"/><meta property="og:description" content="TensorFlowのPythonコードサンプルを公開します。"/><meta property="og:url" content="https://hinaser.github.io/Machine-Learning/tensorflow-code-samples.html"/><meta property="og:image" content="https://hinaser.github.io/Machine-Learning/preview.png"/><meta name="twitter:title" content="TensorFlow コードサンプル"/><meta name="twitter:description" content="TensorFlowのPythonコードサンプルを公開します。"/><meta name="twitter:url" content="https://hinaser.github.io/Machine-Learning/tensorflow-code-samples.html"/><meta name="twitter:image" content="https://hinaser.github.io/Machine-Learning/preview.png"/><title>TensorFlow コードサンプル</title><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/><link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"/><script defer="" src="https://code.getmdl.io/1.3.0/material.min.js"></script><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/><link href="https://fonts.googleapis.com/earlyaccess/notosansjapanese.css" rel="stylesheet"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="css/lib.css" type="text/css" data-turbolinks-track="reload"/><link rel="stylesheet" href="css/main.css?d008e6589e" type="text/css" data-turbolinks-track="reload"/><script id="st_insights_js" type="text/javascript" src="https://ws.sharethis.com/button/buttons.js?publisher=8fde68e6-f234-4808-b7ab-c498ac41fe48"></script><script type="text/javascript">stLight.options({
     publisher: "8fde68e6-f234-4808-b7ab-c498ac41fe48",
     doNotHash: true,
     doNotCopy: true,
@@ -271,67 +271,10 @@ tf<span style="color: #333333">.</span>app<span style="color: #333333">.</span>f
     tf<span style="color: #333333">.</span>app<span style="color: #333333">.</span>run()
 </pre></div>
 </div><p>上記のソースコードを自分の環境で実行するためにはマシンにTensorFlowをインストールが必要があります。<br/>TensorFlowのインストール方法については本サイトでも他のページで解説していますが、CPUやGPUの最適化を考えずとりあえずデモが動けば良い程度で
-あればpython3をマシンにインストールし管理者権限で`pip3 install --upgrade tensorflow`とコマンドを打てばWindowsでもLinuxでもTensorFlowを導入できます。</p></div><div class="paragraph"><h4>コード実行結果例</h4><p>上記のコードを引数無しでそのまま実行すると、下記の処理が走ります。</p><ol><li>相手のじゃんけんの手、およびその手に勝てる手の組み合わせのデータを1000セット生成</li><li>層構成が3-10-10-3のニューラルネットワーク(MLP)の計算グラフを作成</li><li>学習前の赤ん坊状態のAIにじゃんけんをさせてみて勝率を確認(当てずっぽうに手を出すので勝率は33%程度となる見込み。)</li><li>100エポック分上記の学習用データを使って機械学習開始。(1エポックの定義については<a href="index.html#batchsize-part" target="_blank">こちら</a>を参照)。</li><li>学習後、じゃんけんをさせAIの勝率を再度確認</li></ol><p>それでは試しにこのソースコードを実行して出力を確認してみましょう。</p><div class="console-output"><!-- HTML generated using hilite.me --><div style="overflow:auto;width:auto;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">(tensorflow) someuser@somehost:~/tensorflow-test$ python janken.py
-学習無しの素の状態でAIがじゃんけんに勝てるか確認
-----------------------------------------------検証開始----------------------------------------------
-       相手の手                      勝てる手                      AIの判断                     結果
-No.    グー　   チョキ   パー　      グー　   チョキ   パー　      グー　   チョキ   パー　
-1      0.1259  [0.8430]  0.0311     [1.0000]  0.0000   0.0000      0.0114  [0.9873]  0.0013     外れ
-2     [0.4561]  0.1684   0.3755      0.0000   0.0000  [1.0000]     0.0191  [0.9346]  0.0462     外れ
-3     [0.4827]  0.3280   0.1893      0.0000   0.0000  [1.0000]     0.0641  [0.9019]  0.0340     外れ
-4     [0.7317]  0.1438   0.1245      0.0000   0.0000  [1.0000]    [0.5712]  0.0517   0.3770     外れ
-5      0.3394  [0.4240]  0.2366     [1.0000]  0.0000   0.0000      0.0084  [0.9875]  0.0041     外れ
-6      0.3231   0.2909  [0.3860]     0.0000  [1.0000]  0.0000      0.0046  [0.9873]  0.0081     一致
-7     [0.4529]  0.3157   0.2314      0.0000   0.0000  [1.0000]     0.0294  [0.9473]  0.0232     外れ
-8     [0.6105]  0.1652   0.2243      0.0000   0.0000  [1.0000]     0.2446  [0.5118]  0.2436     外れ
-9     [0.6131]  0.3463   0.0406      0.0000   0.0000  [1.0000]    [0.5171]  0.3063   0.1766     外れ
-10     0.4289  [0.5422]  0.0289     [1.0000]  0.0000   0.0000      0.1689  [0.8165]  0.0146     外れ
-----------------------------------------------検証終了----------------------------------------------
-AIの勝率: 1勝/9敗 勝率10.000%
-----------------------------------------------学習開始----------------------------------------------
-エポック: 10    クロスエントロピー:0.176981    正答率: 90.00%    学習速度:26.99エポック/秒
-エポック: 20    クロスエントロピー:0.158905    正答率: 90.00%    学習速度:27.19エポック/秒
-エポック: 30    クロスエントロピー:0.140431    正答率: 90.00%    学習速度:27.17エポック/秒
-エポック: 40    クロスエントロピー:0.120159    正答率: 90.00%    学習速度:27.26エポック/秒
-エポック: 50    クロスエントロピー:0.099404    正答率:100.00%    学習速度:27.30エポック/秒
-エポック: 60    クロスエントロピー:0.076915    正答率:100.00%    学習速度:27.32エポック/秒
-エポック: 70    クロスエントロピー:0.057713    正答率:100.00%    学習速度:27.31エポック/秒
-エポック: 80    クロスエントロピー:0.048996    正答率:100.00%    学習速度:27.28エポック/秒
-エポック: 90    クロスエントロピー:0.045507    正答率:100.00%    学習速度:27.26エポック/秒
-エポック:100    クロスエントロピー:0.042403    正答率:100.00%    学習速度:27.27エポック/秒
-----------------------------------------------学習終了----------------------------------------------
-100エポックの学習に要した時間: 3.67秒
-学習後、AIのじゃんけんの勝率はいかに…！
-----------------------------------------------検証開始----------------------------------------------
-       相手の手                      勝てる手                      AIの判断                     結果
-No.    グー　   チョキ   パー　      グー　   チョキ   パー　      グー　   チョキ   パー　
-1      0.1259  [0.8430]  0.0311     [1.0000]  0.0000   0.0000     [1.0000]  0.0000   0.0000     一致
-2     [0.4561]  0.1684   0.3755      0.0000   0.0000  [1.0000]     0.0000   0.0001  [0.9999]    一致
-3     [0.4827]  0.3280   0.1893      0.0000   0.0000  [1.0000]     0.0000   0.0000  [1.0000]    一致
-4     [0.7317]  0.1438   0.1245      0.0000   0.0000  [1.0000]     0.0000   0.0000  [1.0000]    一致
-5      0.3394  [0.4240]  0.2366     [1.0000]  0.0000   0.0000     [0.9999]  0.0000   0.0001     一致
-6      0.3231   0.2909  [0.3860]     0.0000  [1.0000]  0.0000      0.0000  [0.9999]  0.0001     一致
-7     [0.4529]  0.3157   0.2314      0.0000   0.0000  [1.0000]     0.0000   0.0000  [1.0000]    一致
-8     [0.6105]  0.1652   0.2243      0.0000   0.0000  [1.0000]     0.0000   0.0000  [1.0000]    一致
-9     [0.6131]  0.3463   0.0406      0.0000   0.0000  [1.0000]     0.0001   0.0000  [0.9999]    一致
-10     0.4289  [0.5422]  0.0289     [1.0000]  0.0000   0.0000     [0.9939]  0.0000   0.0061     一致
-----------------------------------------------検証終了----------------------------------------------
-AIの勝率: 10勝/0敗 勝率100.000%
-</pre></div>
-
-</div><p>学習前は後出しじゃんけんでAIはどの手を出すべきか全くわかっていませんので当てずっぽうに手を出し、勝率は10%になっています。<br/>そして学習後、たった10回の試行ではありますが、AIはどの手を出せば勝てるかきちんと学習していることがわかります。</p><h4>テスト回数を増やしてみる</h4><p>上記のpythonプログラムは引数でニューラルネットワークのパラメータをいくつか変えることができます。
+あればpython3をマシンにインストールし管理者権限で`pip3 install --upgrade tensorflow`とコマンドを打てばWindowsでもLinuxでもTensorFlowを導入できます。</p></div><div class="paragraph"><h4>コード実行結果例</h4><p>上記のコードを引数無しでそのまま実行すると、下記の処理が走ります。</p><ol><li>相手のじゃんけんの手、およびその手に勝てる手の組み合わせのデータを1000セット生成</li><li>層構成が3-10-10-3のニューラルネットワーク(MLP)の計算グラフを作成</li><li>学習前の赤ん坊状態のAIにじゃんけんをさせてみて勝率を確認(当てずっぽうに手を出すので勝率は33%程度となる見込み。)</li><li>100エポック分上記の学習用データを使って機械学習開始。(1エポックの定義については<a href="index.html#batchsize-part" target="_blank">こちら</a>を参照)。</li><li>学習後、じゃんけんをさせAIの勝率を再度確認</li></ol><p>それでは試しにこのソースコードを実行して出力を確認してみましょう。</p><div class="nn-image"><img src="image/code-samples/program-result.png" alt="janken.py"/></div><p>学習前は後出しじゃんけんでAIはどの手を出すべきか全くわかっていませんので当てずっぽうに手を出し、勝率は10%になっています。<br/>そして学習後、たった10回の試行ではありますが、AIはどの手を出せば勝てるかきちんと学習していることがわかります。</p><h4>テスト回数を増やしてみる</h4><p>上記のpythonプログラムは引数でニューラルネットワークのパラメータをいくつか変えることができます。
 例えば</p><div class="code">python janken.py --test-data 100</div><p>のように--test-dataのオプションを使うと、この例ではAIのじゃんけんの勝率を100個のテストデータで検証することができます。<br/>私の環境ではテストデータ100個のテストデータのテストを数回してみましたが、ほとんどのケースでAIが100勝0敗で勝率100%を達成していました。<br/>まれに98勝2敗のようにAIが後出しじゃんけんに負けるケースも確認できました。<br/>そういったケースでは下記のように、相手が出す手の確率が横並びになっており相手がどの手を出すかはっきりと断定しにくい状態が多く見られました。
 相手が確実にグーを出してくるならパーを出せば良いと判断できますが、グーとパーを出す確率がほぼ同じであれば出す手に悩みますね。
-こういったところは非常に人間的な判断に見えてしまいます。</p><div class="console-output"><!-- HTML generated using hilite.me --><div style="overflow:auto;width:auto;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">----------------------------------------------検証開始----------------------------------------------
-       相手の手                      勝てる手                      AIの判断                     結果
-No.    グー　   チョキ   パー　      グー　   チョキ   パー　      グー　   チョキ   パー　
-...
-29    [0.4471]  0.1112   0.4417      0.0000   0.0000  [1.0000]     0.0003  [0.5777]  0.4220     外れ
-...
-55    [0.4861]  0.4796   0.0343      0.0000   0.0000  [1.0000]    [0.5512]  0.0003   0.4486     外れ
-</pre></div>
-
-</div><h4>AIに「じゃんけんの負け方を教える」</h4><p>本ページ冒頭でデータを変えることでじゃんけんの負け方を学習させることが可能と書きました。
+こういったところは非常に人間的な判断に見えてしまいます。</p><div class="nn-image"><img src="image/code-samples/program-result2.png" alt="janken.py"/></div><h4>AIに「じゃんけんの負け方を教える」</h4><p>本ページ冒頭でデータを変えることでじゃんけんの負け方を学習させることが可能と書きました。
 さて、それでは上記のソースコードをどう変えればAIにじゃんけんの負け方を教えることができるでしょうか。</p><p>答えは非常に単純です。学習用データを自動生成するクラスRockScissorsPaperの下記のメソッドをこっそり書き換えてやれば良いです。</p><div class="source-code"><!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">    <span style="color: #888888"># グーが来る確率が一番高かったらパー、</span>
     <span style="color: #888888"># チョキが来る確率が一番高かったらグー、</span>
     <span style="color: #888888"># パーが来る確率が一番高かったらチョキ</span>
