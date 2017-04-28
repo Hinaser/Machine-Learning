@@ -22,11 +22,13 @@ article.main-article(data-page='sample-rock-scissors-paper').code-samples
       | 物々しいタイトルをつけてはいますが、ここで厳密にAIの定義について語ることはしません。もしかしたらどこかの誰かがAIの厳密な
       | 定義を定めているのかもしれませんが、ここでは機械学習の仕組みをある程度学んだ私の個人的な印象、所感を書きます。
     p
-      | 意図的かそうでないかはわかりませんが、
-      | ソフトウェア、ITシステムによる単なる自動化技術にAIという最もらしいラベルをつけてブランディングしている
-      | のではないかと思わざるを得ない場面が多々あります。
+      | 「人工知能とかAIとか言ってるけど、ソフトウェア・ITシステムによる単なる自動化技術にAIという最もらしいラベルをつけてブランディングしてるだけじゃないの？」
+      | と思ったことはありませんか？
     p
-      | これだけAIや機械学習が話題を集めている昨今では仕方のないことですが、本当にAIのコンセプトが取り入れられているか素人が判断するのはなかなか難しいと思います。
+      | これだけAIや機械学習が話題を集めている昨今、「AIを活用した〜システム」と書くだけで簡単に注目度を上げられてしまうため、
+      | 実際にはAIを活用していない似非AIシステムがマーケットに氾濫することは想像に難くありません。
+    p
+      | とはいえ本当にAIのコンセプトが取り入れられているか素人が判断するのはなかなか難しいと思います。
       | 私は「コアロジックをプログラムが持っているのかデータが持っているのか」が単なる自動化システムとAIを区別する最も重要なポイントだと考えています。
     p
       | 既存のITによる自動化技術では人が人力でロジックを組み立てます。例えば「ある条件を満たした時、ある値を返す」、
@@ -45,13 +47,15 @@ article.main-article(data-page='sample-rock-scissors-paper').code-samples
       | AI側のロジックを一切変えず学習させるデータを変えることで「AIにじゃんけんの負け方」を学習させることも可能です。
     p
       | ここで注意すべき点は、AIは学習データがなければ何もできない(精度が非常に低い)ということです。
-      | 学習に用いるデータに何を用いているかは似非AIと本物のAIを見分ける最も簡単な重要で要チェック項目です。
+      | 学習データに何を用いているかは、似非AIと本物のAIを見分けるための最も簡単に質問できてかつ重要な確認項目です。
       | 例えば「あなたの会社に最適な人材をAIが自動で見つけます！」などという宣伝文句をみたら、気にすべきはAIの仕組みではありません。
       | 使っているデータの種類とその量です。
-    p
-      | ちょっと議論を呼んでしまうかもれませんが、AIのバックエンド技術である機械学習の仕組みは、
-      | 一般的な想像と異なりかなりシンプルであり、その種類も細かい点を除けば多いわけではありません。
-      | AIのコアな処理をラップする周辺APIはプロジェクトによって多種多様ですが、AIの本体、機械学習部分の技術は2017年現在コモディティ化しつつあります。
+      br
+      | さらに踏み込めば、上のようなケースではデータの信頼性を(とりあえず)疑うことが非常に重要です。
+      | 100人程度のアンケートサンプルをAIに学習させたところで1億人にフィットするような汎用的な学習成果が果たして得られるか、
+      | 100人のアンケートから回答傾向を「外挿」し、100万人分のデータを同じ傾向に基づいて数だけ大量に自動生成していないか、などデータの由来を
+      | 考えることが非常に重要です。データの信頼性についてはAIや機械学習について深い知識がなくても簡単に質問できるので、気になるAIシステムがあれば
+      | 利用しているデータについて問い合わせると面白いと思います。
     p
       | 少し本題からそれてしまいました。あらためて本ページの目標を再確認しましょう。
 
@@ -83,6 +87,9 @@ article.main-article(data-page='sample-rock-scissors-paper').code-samples
       br
       | オセロもチェスも囲碁も、乱暴に書くと後出しじゃんけんを複雑にしただけのものです。じゃんけんの勝ち方をAIに学習させることを
       | 理解できれば、その応用の先にオセロやチェス、囲碁の勝ち方をAIに学習させる方法が見えてくるはずです。
+      br
+      | なお、チェス等のAIは強化学習という今回紹介するシンプルな機械学習の仕組みとは異なる仕組みを使っているので、このページを読んだだけで
+      | チェスに勝てるAIを作れるようになるわけではありません。あしからず。
 
   .paragraph
     h4 機械学習的アプローチ
@@ -112,7 +119,8 @@ article.main-article(data-page='sample-rock-scissors-paper').code-samples
     p
       | 上記のレイヤー構成を図示すると下記のようになります。
     .nn-image
-      img(src='image/code-samples/rock-scissors-paper-nn.png')
+      a(href='image/code-samples/rock-scissors-paper-nn.png', target='_blank')
+        img(src='image/code-samples/rock-scissors-paper-nn.png')
 
     p
       | ニューラルネットワーク自体に「グーが出されたらパーを返す」ようなロジックをハードコーディングすることなく、
@@ -384,7 +392,8 @@ article.main-article(data-page='sample-rock-scissors-paper').code-samples
       | それでは試しにこのソースコードを実行して出力を確認してみましょう。
 
     .console-output-image
-      img(src='image/code-samples/program-result.png' alt='janken.py')
+      a(href='image/code-samples/program-result.png', target='_blank')
+        img(src='image/code-samples/program-result.png' alt='janken.py')
 
     p
       | 学習前は後出しじゃんけんでAIはどの手を出すべきか全くわかっていませんので当てずっぽうに手を出し、勝率は10%になっています。
@@ -409,7 +418,8 @@ article.main-article(data-page='sample-rock-scissors-paper').code-samples
       | こういったところは非常に人間的な判断に見えてしまいます。
 
     .console-output-image
-      img(src='image/code-samples/program-result2.png' alt='janken.py')
+      a(href='image/code-samples/program-result2.png', target='_blank')
+        img(src='image/code-samples/program-result2.png' alt='janken.py')
 
     h4 AIに「じゃんけんの負け方を教える」
     p
@@ -459,10 +469,8 @@ article.main-article(data-page='sample-rock-scissors-paper').code-samples
     .nn-image
       img(src='image/code-samples/rock-scissors-paper-tensorboard-graph.png' alt='Tensorboard graph image')
     p
-      | 入出力データがTensorとして計算グラフ上のノードを移動(Flow)し、誤差(Loss)を最小化するように学習(Train)する流れとなっていることがわかると思います。
-    p
       | 私は記事を書いている時点ではMLPのような単純なニューラルネットの計算グラフしかまだ扱ったことがありませんが、
-      | これがCNN(畳み込みニューラルネット)やLSTMなどのRNN(再帰型ニューラルネット)ではどのようなグラフになっていくのか気になって仕方ありません。
+      | 今後CNN(畳み込みニューラルネット)やLSTMなどのRNN(再帰型ニューラルネット)のきれいな計算グラフを作れるようになりたいです。
     p
       | 以上です。ここまでお読みくださりありがとうございました。
 

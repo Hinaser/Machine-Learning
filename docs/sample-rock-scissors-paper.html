@@ -15,9 +15,9 @@
   fill: none;
 }</style></defs><title>Twitter_Logo_White-on-Blue</title><g id="Dark_Blue" data-name="Dark Blue"><rect class="cls-1" width="400" height="400"></rect></g><g id="Logo_FIXED" data-name="Logo — FIXED"><path class="cls-2" d="M153.62 301.59c94.34 0 145.94-78.16 145.94-145.94 0-2.22 0-4.43-.15-6.63A104.36 104.36 0 0 0 325 122.47a102.38 102.38 0 0 1-29.46 8.07 51.47 51.47 0 0 0 22.55-28.37 102.79 102.79 0 0 1-32.57 12.45 51.34 51.34 0 0 0-87.41 46.78A145.62 145.62 0 0 1 92.4 107.81a51.33 51.33 0 0 0 15.88 68.47A50.91 50.91 0 0 1 85 169.86c0 .21 0 .43 0 .65a51.31 51.31 0 0 0 41.15 50.28 51.21 51.21 0 0 1-23.16.88 51.35 51.35 0 0 0 47.92 35.62 102.92 102.92 0 0 1-63.7 22A104.41 104.41 0 0 1 75 278.55a145.21 145.21 0 0 0 78.62 23"></path><rect class="cls-3" width="400" height="400"></rect></g></svg></a></span><span class="social-share"><span class="st_facebook_hcount" displaytext="Facebook"></span><span class="st_twitter_hcount" displaytext="Tweet"></span><span class="st_googleplus_hcount" displaytext="Google +"></span></span></div><div class="paragraph"><p>タイトルの通りAIにじゃんけんの勝ち方を学習させるデモを紹介します。</p><p>巷ではAIがプロ棋士に囲碁で勝ったという話題をよく目にしますが、
 このページでは囲碁よりもずっと単純なじゃんけんについて、その勝ち方をAIに学習させる方法について説明します。</p><p>ここでいうAIというのは一体何なのか、AIにゲームの勝ち方を学習させるとはどういうことなのか、実際に何をしているのか。<br/>一つひとつ説明します。</p></div><div class="paragraph"><h4>AIとは</h4><p>物々しいタイトルをつけてはいますが、ここで厳密にAIの定義について語ることはしません。もしかしたらどこかの誰かがAIの厳密な
-定義を定めているのかもしれませんが、ここでは機械学習の仕組みをある程度学んだ私の個人的な印象、所感を書きます。</p><p>意図的かそうでないかはわかりませんが、
-ソフトウェア、ITシステムによる単なる自動化技術にAIという最もらしいラベルをつけてブランディングしている
-のではないかと思わざるを得ない場面が多々あります。</p><p>これだけAIや機械学習が話題を集めている昨今では仕方のないことですが、本当にAIのコンセプトが取り入れられているか素人が判断するのはなかなか難しいと思います。
+定義を定めているのかもしれませんが、ここでは機械学習の仕組みをある程度学んだ私の個人的な印象、所感を書きます。</p><p>「人工知能とかAIとか言ってるけど、ソフトウェア・ITシステムによる単なる自動化技術にAIという最もらしいラベルをつけてブランディングしてるだけじゃないの？」
+と思ったことはありませんか？</p><p>これだけAIや機械学習が話題を集めている昨今、「AIを活用した〜システム」と書くだけで簡単に注目度を上げられてしまうため、
+実際にはAIを活用していない似非AIシステムがマーケットに氾濫することは想像に難くありません。</p><p>とはいえ本当にAIのコンセプトが取り入れられているか素人が判断するのはなかなか難しいと思います。
 私は「コアロジックをプログラムが持っているのかデータが持っているのか」が単なる自動化システムとAIを区別する最も重要なポイントだと考えています。</p><p>既存のITによる自動化技術では人が人力でロジックを組み立てます。例えば「ある条件を満たした時、ある値を返す」、
 「こういう入力が入ってきたとき、こういう応答を返す」など、プログラマなどの「人」がどのような処理をすべきか
 ルールベースでソースコードに処理の手順や判定内容をハードコーディングしていきます。
@@ -28,11 +28,13 @@
 プログラミングするのではなく、こういう入力に対してはこういう出力をする、といった入力と出力の組み合わせのデータを大量に用意し、これを
 学習させます。つまりAIがどのような振る舞いをするかは学習させるデータに依存し、AIのソースコードに処理方法はコーディングしません。<br/>このページではAIにじゃんけんの勝ち方を学習させることがメインテーマですが、
 AI側のロジックを一切変えず学習させるデータを変えることで「AIにじゃんけんの負け方」を学習させることも可能です。</p><p>ここで注意すべき点は、AIは学習データがなければ何もできない(精度が非常に低い)ということです。
-学習に用いるデータに何を用いているかは似非AIと本物のAIを見分ける最も簡単な重要で要チェック項目です。
+学習データに何を用いているかは、似非AIと本物のAIを見分けるための最も簡単に質問できてかつ重要な確認項目です。
 例えば「あなたの会社に最適な人材をAIが自動で見つけます！」などという宣伝文句をみたら、気にすべきはAIの仕組みではありません。
-使っているデータの種類とその量です。</p><p>ちょっと議論を呼んでしまうかもれませんが、AIのバックエンド技術である機械学習の仕組みは、
-一般的な想像と異なりかなりシンプルであり、その種類も細かい点を除けば多いわけではありません。
-AIのコアな処理をラップする周辺APIはプロジェクトによって多種多様ですが、AIの本体、機械学習部分の技術は2017年現在コモディティ化しつつあります。</p><p>少し本題からそれてしまいました。あらためて本ページの目標を再確認しましょう。</p></div><div class="paragraph"><h4>目標</h4><p>AIにじゃんけんの勝ち方を学習させる、とだけ書くと何やらとんでもなく複雑でものすごいことをしようとしているように見えますが、
+使っているデータの種類とその量です。<br/>さらに踏み込めば、上のようなケースではデータの信頼性を(とりあえず)疑うことが非常に重要です。
+100人程度のアンケートサンプルをAIに学習させたところで1億人にフィットするような汎用的な学習成果が果たして得られるか、
+100人のアンケートから回答傾向を「外挿」し、100万人分のデータを同じ傾向に基づいて数だけ大量に自動生成していないか、などデータの由来を
+考えることが非常に重要です。データの信頼性についてはAIや機械学習について深い知識がなくても簡単に質問できるので、気になるAIシステムがあれば
+利用しているデータについて問い合わせると面白いと思います。</p><p>少し本題からそれてしまいました。あらためて本ページの目標を再確認しましょう。</p></div><div class="paragraph"><h4>目標</h4><p>AIにじゃんけんの勝ち方を学習させる、とだけ書くと何やらとんでもなく複雑でものすごいことをしようとしているように見えますが、
 実際にやることは非常に単純です。</p><p>ただ単に、相手がグーを出したらパー、チョキを出したらグー、パーを出したらチョキを出すことをプログラムに学習させるだけです。<br/>通常のじゃんけんは手を同時に出しますが、ここでは後出しじゃんけん、つまり相手が手を出したのを見てこちらも出す手を決めるルールとします。</p><p>さて、これだけであれば機械学習やAIなどを使わなくとも
 プログラミング言語を勉強したことのある人なら、すぐに下記のようなコードを思い浮かべるでしょう。<br/>(下記のコードはRubyで書かれていますが、なんとなくやりたいことは解ると思います。)</p><div class="source-code"><!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">winning_hand</span>(opponent_hand)
     <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&#39;paa&#39;</span> <span style="color: #008800; font-weight: bold">if</span> opponent_hand <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;guu&#39;</span>
@@ -40,7 +42,8 @@ AIのコアな処理をラップする周辺APIはプロジェクトによって
     <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&#39;choki&#39;</span> <span style="color: #008800; font-weight: bold">if</span> opponent_hand <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;paa&#39;</span>
 <span style="color: #008800; font-weight: bold">end</span>
 </pre></div></div><p>これは上で例に挙げたいわゆる人力でロジックを組むアプローチです。</p><p>たったこれだけのことをわざわざAIを持ちだして議論することに違和感を覚えるかもしれませんが、もう少し待ってください。<br/>オセロもチェスも囲碁も、乱暴に書くと後出しじゃんけんを複雑にしただけのものです。じゃんけんの勝ち方をAIに学習させることを
-理解できれば、その応用の先にオセロやチェス、囲碁の勝ち方をAIに学習させる方法が見えてくるはずです。</p></div><div class="paragraph"><h4>機械学習的アプローチ</h4><p>ここからが本題です。AIにじゃんけんの勝ち方を学習させる具体的な方法について説明します。</p><p>まずはじゃんけんを機械学習で扱えるようモデル化します。</p><table><tr><td>入力</td><td>じゃんけんにおいて相手が出す手の確率。例えば[グー: 50%, チョキ: 30%, パー: 20%]</td></tr><tr><td>出力</td><td>相手が出しそうな手に勝てる手。例えば相手がパーを出してくる確率が最も高いなら[グー: 0%, チョキ: 100%, パー: 0%]</td></tr><tr><td>NNタイプ</td><td>MLP(マルチレイヤーパーセプトロン) ※MLPについて詳細は<a href="index.html" target="_blank">こちら</a>を参照。</td></tr><tr><td>レイヤー構成</td><td>3-10-10-3 (入力層、出力層のニューロンが3つずつ、中間の隠し層のニューロンが10個ずつである構成)</td></tr></table><p>上記のレイヤー構成を図示すると下記のようになります。</p><div class="nn-image"><img src="image/code-samples/rock-scissors-paper-nn.png"/></div><p>ニューラルネットワーク自体に「グーが出されたらパーを返す」ようなロジックをハードコーディングすることなく、
+理解できれば、その応用の先にオセロやチェス、囲碁の勝ち方をAIに学習させる方法が見えてくるはずです。<br/>なお、チェス等のAIは強化学習という今回紹介するシンプルな機械学習の仕組みとは異なる仕組みを使っているので、このページを読んだだけで
+チェスに勝てるAIを作れるようになるわけではありません。あしからず。</p></div><div class="paragraph"><h4>機械学習的アプローチ</h4><p>ここからが本題です。AIにじゃんけんの勝ち方を学習させる具体的な方法について説明します。</p><p>まずはじゃんけんを機械学習で扱えるようモデル化します。</p><table><tr><td>入力</td><td>じゃんけんにおいて相手が出す手の確率。例えば[グー: 50%, チョキ: 30%, パー: 20%]</td></tr><tr><td>出力</td><td>相手が出しそうな手に勝てる手。例えば相手がパーを出してくる確率が最も高いなら[グー: 0%, チョキ: 100%, パー: 0%]</td></tr><tr><td>NNタイプ</td><td>MLP(マルチレイヤーパーセプトロン) ※MLPについて詳細は<a href="index.html" target="_blank">こちら</a>を参照。</td></tr><tr><td>レイヤー構成</td><td>3-10-10-3 (入力層、出力層のニューロンが3つずつ、中間の隠し層のニューロンが10個ずつである構成)</td></tr></table><p>上記のレイヤー構成を図示すると下記のようになります。</p><div class="nn-image"><a href="image/code-samples/rock-scissors-paper-nn.png" target="_blank"><img src="image/code-samples/rock-scissors-paper-nn.png"/></a></div><p>ニューラルネットワーク自体に「グーが出されたらパーを返す」ようなロジックをハードコーディングすることなく、
 単に入出力層、隠し層のネットワーク構成が定義されているだけのプログラムをTensorFlowで作ります。</p></div><div class="paragraph"><h4>Python ソースコード</h4><p>TensorFlowでAIにじゃんけんの勝ち方を学習させるソースコードです。要望があればソースコードを一つ一つ解説しますが、
 まずはソースコードを自分で読んでみてください。できる限り易読化しようと努力はしました。</p><p>なお、MLPや入力がどのように計算されて出力を決めるのか、については<a href="" target="_blank">TensorFlow Playgroundの仕組み</a>でページを割いて説明しています。残念ですが、とても一言では説明できるものではないので機械学習本体の仕組みについては先のページで別途確認ください。</p><p>すでにTensorFlowを自分のローカルPCにインストール済みであれば、
 下記のコードをコピー＆ペーストして'janken.py'などのようなファイル名で保存し、そのままpythonで実行できます。</p><div class="code">python janken.py</div><div class="source-code"><!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
@@ -271,10 +274,10 @@ tf<span style="color: #333333">.</span>app<span style="color: #333333">.</span>f
     tf<span style="color: #333333">.</span>app<span style="color: #333333">.</span>run()
 </pre></div>
 </div><p>上記のソースコードを自分の環境で実行するためにはマシンにTensorFlowをインストールが必要があります。<br/>TensorFlowのインストール方法については本サイトでも他のページで解説していますが、CPUやGPUの最適化を考えずとりあえずデモが動けば良い程度で
-あればpython3をマシンにインストールし管理者権限で`pip3 install --upgrade tensorflow`とコマンドを打てばWindowsでもLinuxでもTensorFlowを導入できます。</p></div><div class="paragraph"><h4>コード実行結果例</h4><p>上記のコードを引数無しでそのまま実行すると、下記の処理が走ります。</p><ol><li>相手のじゃんけんの手、およびその手に勝てる手の組み合わせのデータを1000セット生成</li><li>層構成が3-10-10-3のニューラルネットワーク(MLP)の計算グラフを作成</li><li>学習前の赤ん坊状態のAIにじゃんけんをさせてみて勝率を確認(当てずっぽうに手を出すので勝率は33%程度となる見込み。)</li><li>100エポック分上記の学習用データを使って機械学習開始。(1エポックの定義については<a href="index.html#batchsize-part" target="_blank">こちら</a>を参照)。</li><li>学習後、じゃんけんをさせAIの勝率を再度確認</li></ol><p>それでは試しにこのソースコードを実行して出力を確認してみましょう。</p><div class="console-output-image"><img src="image/code-samples/program-result.png" alt="janken.py"/></div><p>学習前は後出しじゃんけんでAIはどの手を出すべきか全くわかっていませんので当てずっぽうに手を出し、勝率は10%になっています。<br/>そして学習後、たった10回の試行ではありますが、AIはどの手を出せば勝てるかきちんと学習していることがわかります。</p><h4>テスト回数を増やしてみる</h4><p>上記のpythonプログラムは引数でニューラルネットワークのパラメータをいくつか変えることができます。
+あればpython3をマシンにインストールし管理者権限で`pip3 install --upgrade tensorflow`とコマンドを打てばWindowsでもLinuxでもTensorFlowを導入できます。</p></div><div class="paragraph"><h4>コード実行結果例</h4><p>上記のコードを引数無しでそのまま実行すると、下記の処理が走ります。</p><ol><li>相手のじゃんけんの手、およびその手に勝てる手の組み合わせのデータを1000セット生成</li><li>層構成が3-10-10-3のニューラルネットワーク(MLP)の計算グラフを作成</li><li>学習前の赤ん坊状態のAIにじゃんけんをさせてみて勝率を確認(当てずっぽうに手を出すので勝率は33%程度となる見込み。)</li><li>100エポック分上記の学習用データを使って機械学習開始。(1エポックの定義については<a href="index.html#batchsize-part" target="_blank">こちら</a>を参照)。</li><li>学習後、じゃんけんをさせAIの勝率を再度確認</li></ol><p>それでは試しにこのソースコードを実行して出力を確認してみましょう。</p><div class="console-output-image"><a href="image/code-samples/program-result.png" target="_blank"><img src="image/code-samples/program-result.png" alt="janken.py"/></a></div><p>学習前は後出しじゃんけんでAIはどの手を出すべきか全くわかっていませんので当てずっぽうに手を出し、勝率は10%になっています。<br/>そして学習後、たった10回の試行ではありますが、AIはどの手を出せば勝てるかきちんと学習していることがわかります。</p><h4>テスト回数を増やしてみる</h4><p>上記のpythonプログラムは引数でニューラルネットワークのパラメータをいくつか変えることができます。
 例えば</p><div class="code">python janken.py --test-data 100</div><p>のように--test-dataのオプションを使うと、この例ではAIのじゃんけんの勝率を100個のテストデータで検証することができます。<br/>私の環境ではテストデータ100個のテストデータのテストを数回してみましたが、ほとんどのケースでAIが100勝0敗で勝率100%を達成していました。<br/>まれに98勝2敗のようにAIが後出しじゃんけんに負けるケースも確認できました。<br/>そういったケースでは下記のように、相手が出す手の確率が横並びになっており相手がどの手を出すかはっきりと断定しにくい状態が多く見られました。
 相手が確実にグーを出してくるならパーを出せば良いと判断できますが、グーとパーを出す確率がほぼ同じであれば出す手に悩みますね。
-こういったところは非常に人間的な判断に見えてしまいます。</p><div class="console-output-image"><img src="image/code-samples/program-result2.png" alt="janken.py"/></div><h4>AIに「じゃんけんの負け方を教える」</h4><p>本ページ冒頭でデータを変えることでじゃんけんの負け方を学習させることが可能と書きました。
+こういったところは非常に人間的な判断に見えてしまいます。</p><div class="console-output-image"><a href="image/code-samples/program-result2.png" target="_blank"><img src="image/code-samples/program-result2.png" alt="janken.py"/></a></div><h4>AIに「じゃんけんの負け方を教える」</h4><p>本ページ冒頭でデータを変えることでじゃんけんの負け方を学習させることが可能と書きました。
 さて、それでは上記のソースコードをどう変えればAIにじゃんけんの負け方を教えることができるでしょうか。</p><p>答えは非常に単純です。学習用データを自動生成するクラスRockScissorsPaperの下記のメソッドをこっそり書き換えてやれば良いです。</p><div class="source-code"><!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">    <span style="color: #888888"># グーが来る確率が一番高かったらパー、</span>
     <span style="color: #888888"># チョキが来る確率が一番高かったらグー、</span>
     <span style="color: #888888"># パーが来る確率が一番高かったらチョキ</span>
@@ -298,8 +301,8 @@ tf<span style="color: #333333">.</span>app<span style="color: #333333">.</span>f
 真の出力と計算した出力との誤差が小さくなるようニューラルネットワークのパラメータの更新を繰り返すだけです。</p><p>ですのでAIを用いたシステムの品質を左右するのは本質的にはAI技術ではなくデータの品質です。（少なくとも私はそう考えています）
 悪意を持って意図的に偏ったり誤った学習データをAIに学習させればその悪意が反映されたAIが出来上がります。</p><p>学習させるデータによってAIは善にも悪にもなりうる、そういったSFのような壮大な話が、
 この単純なじゃんけんの学習を通じてその一端を理解できるというのは非常に感慨深いですね。</p><h4>おまけ: Tensorboardの計算グラフ</h4><p>ソースコードの中にTensorboard関連の処理を入れておきましたが、
-このコードを実行して得られる計算グラフを参考までに紹介します。</p><div class="nn-image"><img src="image/code-samples/rock-scissors-paper-tensorboard-graph.png" alt="Tensorboard graph image"/></div><p>入出力データがTensorとして計算グラフ上のノードを移動(Flow)し、誤差(Loss)を最小化するように学習(Train)する流れとなっていることがわかると思います。</p><p>私は記事を書いている時点ではMLPのような単純なニューラルネットの計算グラフしかまだ扱ったことがありませんが、
-これがCNN(畳み込みニューラルネット)やLSTMなどのRNN(再帰型ニューラルネット)ではどのようなグラフになっていくのか気になって仕方ありません。</p><p>以上です。ここまでお読みくださりありがとうございました。</p></div><div id="disqus_thread"></div><script>var disqus_config = function () {
+このコードを実行して得られる計算グラフを参考までに紹介します。</p><div class="nn-image"><img src="image/code-samples/rock-scissors-paper-tensorboard-graph.png" alt="Tensorboard graph image"/></div><p>私は記事を書いている時点ではMLPのような単純なニューラルネットの計算グラフしかまだ扱ったことがありませんが、
+今後CNN(畳み込みニューラルネット)やLSTMなどのRNN(再帰型ニューラルネット)のきれいな計算グラフを作れるようになりたいです。</p><p>以上です。ここまでお読みくださりありがとうございました。</p></div><div id="disqus_thread"></div><script>var disqus_config = function () {
     this.page.url = document.location.href;
     this.page.identifier = document.location.pathname;
 };
