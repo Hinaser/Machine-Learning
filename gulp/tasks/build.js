@@ -17,7 +17,6 @@ var browserify = require('browserify');
 var tsify = require('tsify');
 var uncache = require('gulp-uncache');
 var newer = require('gulp-newer');
-var imagemin = require('gulp-imagemin');
 var gutil = require('gulp-util');
 
 var config = require('../config.js');
@@ -60,7 +59,6 @@ gulp.task('build:image', /*['clean:image'],*/ function(){ // gulp-changed cannot
     return gulp.src([config['image']['srcDir'] + '/**/*.{tiff,jpg,png,gif}'], {base: config['image']['srcDir']})
         .pipe(plumber())
         .pipe(newer(config['image']['destDir']))
-        .pipe(imagemin())
         .pipe(gulp.dest(config['image']['destDir']));
 });
 
