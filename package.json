@@ -31,21 +31,21 @@
     "browserify": "^14.1.0",
     "clipboard": "^1.6.1",
     "del": "^2.2.2",
-    "globby": "^6.1.0",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.1",
-    "gulp-clean-css": "^3.0.3",
+    "globby": "^10.0.1",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-data": "^1.2.1",
-    "gulp-environments": "^0.1.1",
-    "gulp-if": "^2.0.2",
+    "gulp-environments": "^1.0.0",
+    "gulp-if": "^3.0.0",
     "gulp-imagemin": "^3.1.1",
     "gulp-newer": "^1.3.0",
     "gulp-plumber": "^1.1.0",
-    "gulp-pug": "^3.2.0",
+    "gulp-pug": "^4.0.1",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-stylus": "^2.6.0",
-    "gulp-uglify": "^2.0.1",
+    "gulp-uglify": "^3.0.2",
     "gulp-uncache": "^0.4.0-beta1",
     "gulp-util": "^3.0.8",
     "html5shiv": "^3.7.3",
@@ -57,10 +57,10 @@
     "typescript": "^2.2.1",
     "typings": "^2.1.0",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "http-server": "^0.9.0"
+    "http-server": "^0.12.0"
   },
   "optionalDependencies": {}
 }

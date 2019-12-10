@@ -38,8 +38,8 @@ gulp.task('clean:lib:css', function(){
     return del([config['stylesheet']['destDir'] + '/lib.css']);
 });
 
-gulp.task('clean:lib', ['clean:lib:js', 'clean:lib:css']);
+gulp.task('clean:lib', gulp.series('clean:lib:js', 'clean:lib:css'));
 
-gulp.task('clean', ['clean:css', 'clean:js', 'clean:image', 'clean:html', 'clean:lib'], function(){
+gulp.task('clean', gulp.series('clean:css', 'clean:js', 'clean:image', 'clean:html', 'clean:lib', function(){
     return true;
-});
+}));

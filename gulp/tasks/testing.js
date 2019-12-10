@@ -57,19 +57,19 @@ gulp.task('build:test:css', function(){
         .pipe(gulp.dest(config['stylesheet']['destDir']))
 });
 
-gulp.task('build:test:html', ['build:test:css', 'build:test:js'], function(){
-    return gulp.src(config['html']['srcDir'] + '/test.pug')
-        .pipe(plumber())
-        .pipe(pug())
-        .pipe(uncache({
-            rename: false,
-            append: 'hash',
-            srcDir: config['html']['destDir']
-        }))
-        .pipe(gulp.dest(config['html']['destDir']))
-});
+gulp.task('build:test:html', gulp.series('build:test:css', 'build:test:js', function(){
+  return gulp.src(config['html']['srcDir'] + '/test.pug')
+    .pipe(plumber())
+    .pipe(pug())
+    .pipe(uncache({
+      rename: false,
+      append: 'hash',
+      srcDir: config['html']['destDir']
+    }))
+    .pipe(gulp.dest(config['html']['destDir']))
+}));
 
-gulp.task('build:test', ['build:test:html']);
+gulp.task('build:test', gulp.series('build:test:html'));
 
 gulp.task('clean:test:css', function(){
     return del([config['stylesheet']['destDir'] + '/test.css']);
@@ -83,19 +83,19 @@ gulp.task('clean:test:html', function(){
     return del([config['html']['destDir'] + '/test.html']);
 });
 
-gulp.task('clean:test', ['clean:test:css', 'clean:test:js', 'clean:test:html']);
+gulp.task('clean:test', gulp.series('clean:test:css', 'clean:test:js', 'clean:test:html'));
 
-gulp.task('build:test:sync', ['build:test'], function(){browsersync.reload();});
+gulp.task('build:test:sync', gulp.series('build:test', function(){browsersync.reload();}));
 
-gulp.task('serve:test', ['build:test'], function(){
-    browsersync.init({
-        server: {
-            baseDir: './docs',
-            index: 'test.html'
-        }
-    });
-
-    gulp.watch(config['js']['srcDir'] + '/test.ts', ['build:test:sync']);
-    gulp.watch(config['stylesheet']['srcDir'] + '/test.styl', ['build:test:sync']);
-    gulp.watch(config['html']['srcDir'] + '/test.pug', ['build:test:sync']);
-});
+gulp.task('serve:test', gulp.series('build:test', function(){
+  browsersync.init({
+    server: {
+      baseDir: './docs',
+      index: 'test.html'
+    }
+  });
+  
+  gulp.watch(config['js']['srcDir'] + '/test.ts', ['build:test:sync']);
+  gulp.watch(config['stylesheet']['srcDir'] + '/test.styl', ['build:test:sync']);
+  gulp.watch(config['html']['srcDir'] + '/test.pug', ['build:test:sync']);
+}));
