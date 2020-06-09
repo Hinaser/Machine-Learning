@@ -49,7 +49,7 @@
     "gulp-uncache": "^0.4.0-beta1",
     "gulp-util": "^3.0.8",
     "html5shiv": "^3.7.3",
-    "jquery": "^3.1.1",
+    "jquery": "^3.5.0",
     "modernizr": "^3.3.1",
     "require-dir": "^1.2.0",
     "sprintf-js": "^1.0.3",
